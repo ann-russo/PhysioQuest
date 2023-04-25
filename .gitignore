@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.idea
+.vscode
+.project
+.settings
+.classpath
+/.idea/dictionaries/

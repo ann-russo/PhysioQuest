@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "730454000176",
+    "project_id": "physioquest-705de",
+    "storage_bucket": "physioquest-705de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730454000176:android:28649b8a18f6f2d2ff63f5",
+        "android_client_info": {
+          "package_name": "com.example.physioquest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730454000176-sj30i187gl8k775hq4mt20ekn5am0il9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcnCJkl7OgxyEhEgPHwdIOI3pEXMqF6SE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730454000176-sj30i187gl8k775hq4mt20ekn5am0il9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

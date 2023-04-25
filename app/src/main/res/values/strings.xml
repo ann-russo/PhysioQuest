@@ -1,3 +1,19 @@
 <resources>
+    <!-- Common -->
     <string name="app_name">PhysioQuest</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="username">Benutzername</string>
+    <string name="generic_error">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
+    <string name="email_error">Bitte gib eine gültige E-Mail-Adresse ein.</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="try_again">Try again</string>
+
+    <!-- LoginScreen -->
+    <string name="sign_in">Einloggen</string>
+    <string name="login_details">Melde dich an, um fortzufahren</string>
+    <string name="forgot_password">Passwort vergessen? Klicke hier, um eine Wiederherstellungs-E-Mail zu erhalten.</string>
+    <string name="recovery_email_sent">Überprüfe dein Postfach für die Wiederherstellungs-E-Mail.</string>
+    <string name="empty_password_error">Das Passwort kann nicht leer sein.</string>
+
 </resources>
