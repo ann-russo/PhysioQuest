@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +35,19 @@ fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier =
         onValueChange = { onNewValue(it) },
         placeholder = { Text(stringResource(AppText.email)) },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UsernameField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        onValueChange = { onNewValue(it) },
+        placeholder = { Text(stringResource(AppText.username)) },
+        leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "Username") }
     )
 }
 

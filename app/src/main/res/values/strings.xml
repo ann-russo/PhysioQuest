@@ -1,19 +1,40 @@
 <resources>
     <!-- Common -->
     <string name="app_name">PhysioQuest</string>
-    <string name="email">E-Mail</string>
+    <string name="email">E-Mail-Adresse</string>
     <string name="password">Passwort</string>
     <string name="username">Benutzername</string>
-    <string name="generic_error">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
-    <string name="email_error">Bitte gib eine gültige E-Mail-Adresse ein.</string>
+    <string name="error_generic">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
+    <string name="error_email_generic">Bitte gib eine gültige E-Mail-Adresse ein.</string>
+    <string name="error_email_fh">Bitte benutze deine E-Mail-Adresse der FH-Campus Wien.</string>
     <string name="cancel">Abbrechen</string>
     <string name="try_again">Try again</string>
 
     <!-- LoginScreen -->
-    <string name="sign_in">Einloggen</string>
+    <string name="sign_in">Anmelden</string>
     <string name="login_details">Melde dich an, um fortzufahren</string>
-    <string name="forgot_password">Passwort vergessen? Klicke hier, um eine Wiederherstellungs-E-Mail zu erhalten.</string>
+    <string name="forgot_password">Passwort vergessen?</string>
+    <string name="register_option">Account erstellen</string>
     <string name="recovery_email_sent">Überprüfe dein Postfach für die Wiederherstellungs-E-Mail.</string>
-    <string name="empty_password_error">Das Passwort kann nicht leer sein.</string>
+    <string name="error_password_empty">Das Passwort kann nicht leer sein.</string>
+
+    <!-- RegistrationScreen -->
+    <string name="register_details">Erstelle ein neues Konto</string>
+    <string name="error_username_empty">Der Benutzername kann nicht leer sein.</string>
+    <string name="error_username_length">Der Benutzername muss zwischen 6 und 20 Zeichen lang sein.</string>
+    <string name="error_password_pattern">Gib eine Kombination aus mindestens 6 Klein- und Großbuchstaben, Zahlen und Sonderzeichen ein.</string>
+    <string name="error_fields_empty">Bitte fülle alle Felder aus.</string>
+    <string name="sign_up">Registrieren</string>
+    <string name="login_option">Du hast bereits ein Konto?</string>
+
+    <!-- Lernmodus -->
+    <string name="lernmodus_title">Lern-Modus</string>
+    <string name="lernmodus_subtitle">Spiele alleine und teste dein Wissen</string>
+    <string name="lernmodus_action">Spielen</string>
+
+    <!-- Duellmodus -->
+    <string name="duellmodus_title">Duell-Modus</string>
+    <string name="duellmodus_subtitle">Spiele gegen andere für eine Herausforderung</string>
+    <string name="duellmodus_action">Duell starten</string>
 
 </resources>

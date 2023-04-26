@@ -37,7 +37,7 @@ fun StartScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (viewModel.showError.value) {
-            Text(text = stringResource(AppText.generic_error))
+            Text(text = stringResource(AppText.error_generic))
         } else {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
         }

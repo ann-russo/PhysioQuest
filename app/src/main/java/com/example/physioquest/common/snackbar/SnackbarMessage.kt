@@ -19,7 +19,7 @@ sealed class SnackbarMessage {
         fun Throwable.toSnackbarMessage(): SnackbarMessage {
             val message = this.message.orEmpty()
             return if (message.isNotBlank()) StringSnackbar(message)
-            else ResourceSnackbar(AppText.generic_error)
+            else ResourceSnackbar(AppText.error_generic)
         }
     }
 }

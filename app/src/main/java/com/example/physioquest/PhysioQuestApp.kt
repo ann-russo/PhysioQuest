@@ -24,7 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.physioquest.screens.home.HomeScreen
 import com.example.physioquest.screens.login.LoginScreen
-import com.example.physioquest.screens.RegistrationScreen
+import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
 import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.example.physioquest.common.snackbar.SnackbarManager
@@ -35,9 +35,8 @@ import kotlinx.coroutines.CoroutineScope
 fun PhysioQuestApp() {
     PhysioQuestTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            val appState = rememberAppState()
             val snackbarHostState = remember { SnackbarHostState() }
-
+            val appState = rememberAppState(snackbarHostState = snackbarHostState)
             Scaffold(
                 snackbarHost = {
                     SnackbarHost(
@@ -66,7 +65,7 @@ fun PhysioQuestApp() {
 
 @Composable
 fun rememberAppState(
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: SnackbarHostState,
     navController: NavHostController = rememberNavController(),
     snackbarManager: SnackbarManager = SnackbarManager,
     resources: Resources = resources(),

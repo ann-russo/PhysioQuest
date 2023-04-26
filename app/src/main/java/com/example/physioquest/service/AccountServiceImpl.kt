@@ -2,6 +2,7 @@ package com.example.physioquest.service
 
 import com.example.physioquest.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -18,7 +19,9 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
     override val currentUser: Flow<User>
         get() = callbackFlow {
             val listener = FirebaseAuth.AuthStateListener { auth ->
-                this.trySend(auth.currentUser?.let { it.email?.let { it1 -> User(it.uid, it1) } } ?: User())
+                this.trySend(auth.currentUser?.let {
+                    it.email?.let { it1 -> it.displayName?.let { it2 -> User(it.uid, it1, it2) } }
+                } ?: User())
             }
             auth.addAuthStateListener(listener)
             awaitClose { auth.removeAuthStateListener(listener) }
@@ -29,7 +32,10 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
     }
 
     override suspend fun createAccount(nickname: String, email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password).await()
+        auth.createUserWithEmailAndPassword(email, password).await().user?.let { firebaseUser ->
+            val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
+            firebaseUser.updateProfile(profileUpdates).await()
+        }
     }
 
     override suspend fun deleteAccount() {

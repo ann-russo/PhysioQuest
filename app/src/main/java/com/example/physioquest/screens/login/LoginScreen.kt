@@ -2,6 +2,7 @@ package com.example.physioquest.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -46,10 +47,22 @@ fun LoginScreen(
         EmailField(uiState.email, viewModel::onEmailChange, Modifier.fieldModifier())
         PasswordField(uiState.password, viewModel::onPasswordChange, Modifier.fieldModifier())
 
-        BasicButton(AppText.sign_in, Modifier.basicButton()) { viewModel.onSignInClick(openAndPopUp) }
+        BasicButton(
+            AppText.sign_in,
+            Modifier.basicButton()
+        ) { viewModel.onSignInClick(openAndPopUp) }
 
-        BasicTextButton(AppText.forgot_password, Modifier.textButton()) {
-            viewModel.onForgotPasswordClick()
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            BasicTextButton(AppText.forgot_password, Modifier.textButton()) {
+                viewModel.onForgotPasswordClick()
+            }
+
+            BasicTextButton(AppText.register_option, Modifier.textButton()) {
+                viewModel.onSignUpClick(openAndPopUp)
+            }
         }
     }
 }

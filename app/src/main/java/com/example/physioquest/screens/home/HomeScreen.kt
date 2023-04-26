@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.common.composable.ActionToolBar
+import com.example.physioquest.common.composable.ElevatedCard
+import com.example.physioquest.common.util.card
 import com.example.physioquest.common.util.smallSpacer
 import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.R.drawable as AppIcon
@@ -30,7 +32,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     Scaffold() {
-        Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()) {
             ActionToolBar(
                 title = AppText.app_name,
                 modifier = Modifier.toolbarActions(),
@@ -38,7 +42,27 @@ fun HomeScreen(
                 endAction = { viewModel.onSignOutClick(restartApp)}
             )
             Spacer(modifier = Modifier.smallSpacer())
-            val currentUser = viewModel.user.value?.email
+
+            ElevatedCard(
+                title = AppText.lernmodus_title,
+                subtitle = AppText.lernmodus_subtitle,
+                actionText = AppText.lernmodus_action,
+                modifier = Modifier.card(),
+                onButtonClick = { /*TODO*/ }
+            )
+
+            Spacer(modifier = Modifier.smallSpacer())
+
+            ElevatedCard(
+                title = AppText.duellmodus_title,
+                subtitle = AppText.duellmodus_subtitle,
+                actionText = AppText.duellmodus_action,
+                modifier = Modifier.card(),
+                onButtonClick = { /*TODO*/ }
+            )
+
+            val currentUser = viewModel.user.value?.username
+
             Text(
                 text = "Hello $currentUser!",
                 style = MaterialTheme.typography.bodyLarge,
