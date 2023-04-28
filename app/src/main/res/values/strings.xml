@@ -19,6 +19,7 @@
     <string name="register_option">Account erstellen</string>
     <string name="recovery_email_sent">Überprüfe dein Postfach für die Wiederherstellungs-E-Mail.</string>
     <string name="error_password_empty">Das Passwort kann nicht leer sein.</string>
+    <string name="add">Hinzufügen</string>
 
     <!-- RegistrationScreen -->
     <string name="register_details">Erstelle ein neues Konto</string>
@@ -33,6 +34,7 @@
     <string name="lernmodus_title">Lern-Modus</string>
     <string name="lernmodus_subtitle">Spiele alleine und teste dein Wissen</string>
     <string name="lernmodus_action">Spielen</string>
+    <string name="next_question">Zur nächsten Frage</string>
 
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>

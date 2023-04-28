@@ -18,15 +18,23 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
             .get()
             .await()
         val fragen = snapshot.documents.mapNotNull { document ->
-            val antwortenSnapshot = firestore.collection(FRAGEN_COLLECTION)
-                .document(document.id)
-                .collection(ANTWORTEN_COLLECTION)
-                .get()
-                .await()
-            val antworten = antwortenSnapshot.documents.mapNotNull { antwortDoc ->
-                antwortDoc.toObject(Antwort::class.java)?.copy(id = antwortDoc.id)
+            val antworten = document.get("antworten") as? List<Map<String, Any>>
+            if (antworten != null) {
+                val antwortenList = antworten.mapNotNull { antwortMap ->
+                    Antwort(
+                        antwortInhalt = antwortMap["antwortInhalt"] as? String ?: return@mapNotNull null,
+                        antwortKorrekt = antwortMap["antwortKorrekt"] as? Boolean ?: return@mapNotNull null,
+                    )
+                }
+                Frage(
+                    id = document.id,
+                    kategorie = document.get("kategorie") as? String ?: "",
+                    frageInhalt = document.get("frageInhalt") as? String ?: "",
+                    antworten = antwortenList
+                )
+            } else {
+                null
             }
-            document.toObject(Frage::class.java)?.copy(id = document.id, antworten = antworten)
         }
         emit(fragen)
     }
@@ -35,9 +43,12 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
         TODO()
     }
 
+    override suspend fun addFrage(frage: Frage) {
+        firestore.collection(FRAGEN_COLLECTION).add(frage).await()
+    }
+
     companion object {
         private const val FRAGEN_COLLECTION = "fragen"
-        private const val ANTWORTEN_COLLECTION = "antworten"
     }
 }
 
