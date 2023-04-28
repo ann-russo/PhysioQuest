@@ -3,6 +3,7 @@ package com.example.physioquest.screens.home
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.example.physioquest.LERNMODUS_SCREEN
 import com.example.physioquest.START_SCREEN
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
@@ -31,5 +32,10 @@ class HomeViewModel @Inject constructor(private val accountService: AccountServi
         }
     }
 
+    fun onLernmodusClick(openScreen: (String) -> Unit) {
+        launchCatching {
+            openScreen(LERNMODUS_SCREEN)
+        }
+    }
 
 }

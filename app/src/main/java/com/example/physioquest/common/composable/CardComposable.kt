@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.physioquest.common.util.cardButton
 
@@ -38,7 +39,9 @@ fun ElevatedCard(
         colors = CardDefaults.elevatedCardColors()
     ) {
         Column(
-            modifier = Modifier.padding(16.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -62,10 +65,37 @@ fun ElevatedCard(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary
                 ),
-                modifier = Modifier.align(Alignment.End).cardButton()
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .cardButton()
             ) {
                 Text(text = stringResource(actionText))
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AntwortCard(
+    antwortText: String,
+    onCardClick: () -> Unit,
+    modifier: Modifier
+) {
+    Card(
+        onClick = onCardClick,
+        modifier = modifier,
+        enabled = true,
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+    ) {
+        Text(
+            text = antwortText,
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(24.dp)
+        )
     }
 }

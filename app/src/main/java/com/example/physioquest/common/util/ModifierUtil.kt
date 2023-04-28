@@ -37,3 +37,7 @@ fun Modifier.smallSpacer(): Modifier {
 fun Modifier.card(): Modifier {
     return this.padding(16.dp, 0.dp, 16.dp, 8.dp).fillMaxWidth().height(IntrinsicSize.Max)
 }
+
+fun Modifier.antwortCard(): Modifier {
+    return this.padding(8.dp).width(150.dp).height(150.dp)
+}

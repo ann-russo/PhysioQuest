@@ -48,7 +48,7 @@ fun HomeScreen(
                 subtitle = AppText.lernmodus_subtitle,
                 actionText = AppText.lernmodus_action,
                 modifier = Modifier.card(),
-                onButtonClick = { /*TODO*/ }
+                onButtonClick = { viewModel.onLernmodusClick(openScreen) }
             )
 
             Spacer(modifier = Modifier.smallSpacer())

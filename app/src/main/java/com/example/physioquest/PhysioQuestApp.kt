@@ -28,6 +28,7 @@ import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
 import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.example.physioquest.common.snackbar.SnackbarManager
+import com.example.physioquest.screens.lernmodus.LernmodusScreen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -108,6 +109,13 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
 
     composable(HOME_SCREEN) {
         HomeScreen(
+            restartApp = { route -> appState.clearAndNavigate(route) },
+            openScreen = { route -> appState.navigate(route) }
+        )
+    }
+
+    composable(LERNMODUS_SCREEN) {
+        LernmodusScreen(
             restartApp = { route -> appState.clearAndNavigate(route) },
             openScreen = { route -> appState.navigate(route) }
         )

@@ -1,6 +1,9 @@
 package com.example.physioquest.model
 
+import com.google.firebase.firestore.DocumentId
+
 data class Antwort(
-    val antwortText: String,
-    val antwortKorrekt: Boolean
+    @DocumentId val id: String = "",
+    val antwortInhalt: String = "",
+    val antwortKorrekt: Boolean = false
 )

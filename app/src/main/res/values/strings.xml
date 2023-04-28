@@ -4,11 +4,13 @@
     <string name="email">E-Mail-Adresse</string>
     <string name="password">Passwort</string>
     <string name="username">Benutzername</string>
+    <string name="logout">Ausloggen</string>
     <string name="error_generic">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
     <string name="error_email_generic">Bitte gib eine gültige E-Mail-Adresse ein.</string>
     <string name="error_email_fh">Bitte benutze deine E-Mail-Adresse der FH-Campus Wien.</string>
     <string name="cancel">Abbrechen</string>
     <string name="try_again">Try again</string>
+    <string name="dropdown">Dropdown Menu</string>
 
     <!-- LoginScreen -->
     <string name="sign_in">Anmelden</string>

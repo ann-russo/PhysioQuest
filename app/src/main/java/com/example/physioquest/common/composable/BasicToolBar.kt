@@ -4,8 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,8 +18,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.example.physioquest.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,14 +40,40 @@ fun ActionToolBar(
     modifier: Modifier,
     endAction: () -> Unit
 ) {
+    var dropDownMenuExpanded by remember { mutableStateOf(false) }
+
     TopAppBar(
         title = { Text(stringResource(title)) },
         modifier = Modifier.background(toolbarColor()),
         actions = {
-            Box(modifier) {
-                IconButton(onClick = endAction) {
-                    Icon(painter = painterResource(endActionIcon), contentDescription = "Action")
+            TopAppBarMenu(
+                imageVector = Icons.Outlined.MoreVert,
+                description = stringResource(AppText.dropdown)
+            ) {
+                dropDownMenuExpanded = true
+            }
+
+            DropdownMenu(
+                expanded = dropDownMenuExpanded,
+                onDismissRequest = {
+                    dropDownMenuExpanded = false
                 }
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            stringResource(AppText.logout),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    },
+                    onClick = endAction,
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(endActionIcon),
+                            contentDescription = stringResource(AppText.logout)
+                        )
+                    }
+                )
             }
         }
     )
@@ -51,4 +82,17 @@ fun ActionToolBar(
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
     return if (darkTheme) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
+}
+
+@Composable
+fun TopAppBarMenu(
+    imageVector: ImageVector,
+    description: String,
+    onClick: () -> Unit
+) {
+    IconButton(onClick = {
+        onClick()
+    }) {
+        Icon(imageVector = imageVector, contentDescription = description)
+    }
 }
