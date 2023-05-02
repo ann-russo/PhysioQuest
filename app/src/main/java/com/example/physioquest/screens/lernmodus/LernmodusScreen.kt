@@ -3,15 +3,16 @@ package com.example.physioquest.screens.lernmodus
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,11 +33,9 @@ import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.AntwortCard
-import com.example.physioquest.common.composable.BasicTextButton
 import com.example.physioquest.common.util.antwortCard
 import com.example.physioquest.common.util.fieldModifier
 import com.example.physioquest.common.util.smallSpacer
-import com.example.physioquest.common.util.textButton
 import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.model.Antwort
 import com.example.physioquest.model.Frage
@@ -75,10 +75,9 @@ fun LernmodusScreen(
             )
 
             fragen.value.getOrNull(currentQuestionIndex)?.let { currentQuestion ->
-                FrageItem(frage = currentQuestion)
+                FrageItem(frage = currentQuestion, currentQuestionIndex+1, fragen.value.size)
                 AntwortList(
                     antworten = currentQuestion.antworten,
-                    viewModel = viewModel,
                     onAnswerSelected = {
                         selectedIndex = -1
                         currentQuestionIndex++
@@ -108,14 +107,14 @@ fun LernmodusScreen(
 }
 
 @Composable
-fun FrageItem(frage: Frage) {
+fun FrageItem(frage: Frage, index: Int, fragenAnzahl: Int) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
         Text(
-            text = frage.frageInhalt,
+            text = "$index/$fragenAnzahl ${frage.frageInhalt}",
             style = MaterialTheme.typography.headlineLarge
         )
         Spacer(Modifier.smallSpacer())
@@ -125,20 +124,22 @@ fun FrageItem(frage: Frage) {
 @Composable
 fun AntwortList(
     antworten: List<Antwort>,
-    viewModel: LernmodusViewModel,
     onAnswerSelected: () -> Unit,
     selectedIndex: Int,
     onCardClicked: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
-            .height(510.dp)
             .padding(16.dp)
             .fillMaxHeight()
             .fillMaxWidth(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            userScrollEnabled = false,
+            contentPadding = PaddingValues(0.dp, 50.dp)
+        ) {
             items(4) { index ->
                 val antwort = antworten[index]
                 val isEnabled = selectedIndex == -1
@@ -147,7 +148,6 @@ fun AntwortList(
                     antwortText = antwort.antwortInhalt,
                     onCardClick = {
                         if (isEnabled) {
-                            viewModel.validateAntwort(antwort)
                             onCardClicked(index)
                         }
                     },
@@ -158,15 +158,19 @@ fun AntwortList(
                 )
             }
         }
-    }
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.BottomEnd
-    ) {
-        BasicTextButton(
-            text = R.string.next_question,
-            modifier = Modifier.textButton(),
-            action = onAnswerSelected
-        )
+
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Button(
+                modifier = Modifier.padding(16.dp, 8.dp, 10.dp, 0.dp),
+                enabled = selectedIndex != -1,
+                onClick = onAnswerSelected
+            )
+            {
+                Text(text = stringResource(R.string.next_question))
+            }
+        }
     }
 }

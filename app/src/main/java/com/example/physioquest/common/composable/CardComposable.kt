@@ -107,7 +107,7 @@ fun AntwortCard(
     ) {
         Text(
             text = antwortText,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(24.dp)
         )
