@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
@@ -49,9 +50,11 @@ fun LernmodusScreen(
     openScreen: (String) -> Unit,
     viewModel: LernmodusViewModel = hiltViewModel()
 ) {
-    val fragen = viewModel.fragen.collectAsStateWithLifecycle(emptyList())
+    val fragen = viewModel.fragen
     var currentQuestionIndex by rememberSaveable { mutableStateOf(0) }
     var selectedIndex by rememberSaveable { mutableStateOf(-1) }
+    var numCorrectAnswers by rememberSaveable { mutableStateOf(0) }
+    val isLoading = viewModel.isLoading
 
     Scaffold {
         Column(
@@ -66,36 +69,49 @@ fun LernmodusScreen(
                 endAction = { viewModel.onSignOutClick(restartApp) }
             )
 
-            Spacer(Modifier.smallSpacer())
+            if (isLoading.value) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (currentQuestionIndex < fragen.size) {
+                Spacer(Modifier.smallSpacer())
 
-            Text(
-                text = fragen.value.getOrNull(currentQuestionIndex)?.kategorie ?: "",
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.fieldModifier()
-            )
-
-            fragen.value.getOrNull(currentQuestionIndex)?.let { currentQuestion ->
-                FrageItem(frage = currentQuestion, currentQuestionIndex+1, fragen.value.size)
-                AntwortList(
-                    antworten = currentQuestion.antworten,
-                    onAnswerSelected = {
-                        selectedIndex = -1
-                        currentQuestionIndex++
-                    },
-                    selectedIndex = selectedIndex,
-                    onCardClicked = { index ->
-                        if (selectedIndex == -1) {
-                            selectedIndex = index
-                        }
-                    }
-                )
-            } ?: run {
                 Text(
-                    text = "No more questions!",
-                    style = MaterialTheme.typography.headlineLarge,
+                    text = fragen.getOrNull(currentQuestionIndex)?.kategorie ?: "",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.fieldModifier()
+                )
+
+                fragen.getOrNull(currentQuestionIndex)?.let { currentQuestion ->
+                    FrageItem(frage = currentQuestion, currentQuestionIndex+1, fragen.size)
+                    AntwortList(
+                        antworten = currentQuestion.antworten,
+                        onAnswerSelected = {
+                            selectedIndex = -1
+                            currentQuestionIndex++
+                        },
+                        selectedIndex = selectedIndex,
+                        onCardClicked = { index ->
+                            if (selectedIndex == -1) {
+                                selectedIndex = index
+                                if (currentQuestion.antworten[index].antwortKorrekt) {
+                                    numCorrectAnswers++
+                                }
+                            }
+                        }
+                    )
+                }
+
+            } else {
+                Text(
+                    text = "$numCorrectAnswers/${fragen.size} richtig beantwortet",
+                    style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier
                         .fillMaxSize()
-                        .wrapContentSize(Alignment.Center),
+                        .wrapContentSize(Alignment.Center).wrapContentWidth(),
                 )
                 LaunchedEffect(true) {
                     delay(3000)
