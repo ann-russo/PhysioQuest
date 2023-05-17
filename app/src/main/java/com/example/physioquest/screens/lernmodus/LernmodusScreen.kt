@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -79,14 +80,8 @@ fun LernmodusScreen(
             } else if (currentQuestionIndex < fragen.size) {
                 Spacer(Modifier.smallSpacer())
 
-                Text(
-                    text = fragen.getOrNull(currentQuestionIndex)?.kategorie ?: "",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.fieldModifier()
-                )
-
                 fragen.getOrNull(currentQuestionIndex)?.let { currentQuestion ->
-                    FrageItem(frage = currentQuestion, currentQuestionIndex+1, fragen.size)
+                    FrageItem(frage = currentQuestion, currentQuestionIndex + 1, fragen.size)
                     AntwortList(
                         antworten = currentQuestion.antworten,
                         onAnswerSelected = {
@@ -111,7 +106,8 @@ fun LernmodusScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier
                         .fillMaxSize()
-                        .wrapContentSize(Alignment.Center).wrapContentWidth(),
+                        .wrapContentSize(Alignment.Center)
+                        .wrapContentWidth(),
                 )
                 LaunchedEffect(true) {
                     delay(3000)
@@ -131,7 +127,7 @@ fun FrageItem(frage: Frage, index: Int, fragenAnzahl: Int) {
     ) {
         Text(
             text = "$index/$fragenAnzahl ${frage.frageInhalt}",
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineSmall
         )
         Spacer(Modifier.smallSpacer())
     }
@@ -144,17 +140,19 @@ fun AntwortList(
     selectedIndex: Int,
     onCardClicked: (Int) -> Unit
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxHeight()
-            .fillMaxWidth(),
-        contentAlignment = Alignment.BottomCenter
+            .fillMaxWidth()
     ) {
+        Box(Modifier.weight(1f)) {
+
+        }
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Fixed(1),
             userScrollEnabled = false,
-            contentPadding = PaddingValues(0.dp, 50.dp)
+            contentPadding = PaddingValues(0.dp, 10.dp)
         ) {
             items(4) { index ->
                 val antwort = antworten[index]
@@ -174,19 +172,14 @@ fun AntwortList(
                 )
             }
         }
-
-        Box(
+        Spacer(Modifier.height(10.dp))
+        Button(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            Button(
-                modifier = Modifier.padding(16.dp, 8.dp, 10.dp, 0.dp),
-                enabled = selectedIndex != -1,
-                onClick = onAnswerSelected
-            )
-            {
-                Text(text = stringResource(R.string.next_question))
-            }
+            enabled = selectedIndex != -1,
+            onClick = onAnswerSelected
+        )
+        {
+            Text(text = stringResource(R.string.next_question))
         }
     }
 }
