@@ -81,35 +81,32 @@ fun ElevatedCard(
 @Composable
 fun AntwortCard(
     antwortText: String,
-    onCardClick: () -> Unit,
     isSelected: Boolean,
-    isCorrect: Boolean,
     isEnabled: Boolean,
+    correctChoice: Boolean,
+    onSelectAnswer: () -> Unit,
     modifier: Modifier
 ) {
     Card(
-        onClick = onCardClick,
+        onClick = { onSelectAnswer() },
         modifier = modifier,
-        enabled = isEnabled,
-        border = if (isSelected) {
-            if (isCorrect) {
-                BorderStroke(4.dp, Color.Green)
-            } else {
-                BorderStroke(4.dp, Color.Red)
-            }
-        } else {
-            null
+        border = when {
+            isEnabled && isSelected -> BorderStroke(2.dp, Color.Gray)
+            !isEnabled && isSelected && correctChoice -> BorderStroke(2.dp, Color.Green)
+            !isEnabled && isSelected && !correctChoice -> BorderStroke(2.dp, Color.Red)
+            else -> null
         },
         colors = CardDefaults.outlinedCardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            contentColor = MaterialTheme.colorScheme.onTertiary
         ),
     ) {
         Text(
             text = antwortText,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(24.dp),
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

@@ -39,5 +39,5 @@ fun Modifier.card(): Modifier {
 }
 
 fun Modifier.antwortCard(): Modifier {
-    return this.padding(8.dp).width(150.dp).height(120.dp)
+    return this.padding(8.dp).width(150.dp).height(95.dp)
 }

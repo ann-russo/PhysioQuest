@@ -35,6 +35,9 @@
     <string name="lernmodus_subtitle">Spiele alleine und teste dein Wissen</string>
     <string name="lernmodus_action">Spielen</string>
     <string name="next_question">Zur nächsten Frage</string>
+    <string name="submit">Antwort(en) einreichen</string>
+    <string name="results">Dein Ergebnis:</string>
+    <string name="finish">Beenden</string>
 
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>
