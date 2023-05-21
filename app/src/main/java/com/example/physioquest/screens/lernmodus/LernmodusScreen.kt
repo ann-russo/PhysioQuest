@@ -91,7 +91,7 @@ fun LernmodusScreen(
                 )
 
                 questions.getOrNull(currentQuestionIndex)?.let { question ->
-                    QuestionItem(question = question)
+                    QuestionItem(question)
                     AntwortList(
                         antworten = question.antworten,
                         selectedAnswers = selectedAnswers,
