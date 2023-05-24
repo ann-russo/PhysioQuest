@@ -4,8 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -13,6 +16,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
@@ -21,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,5 +101,35 @@ fun TopAppBarMenu(
         onClick()
     }) {
         Icon(imageVector = imageVector, contentDescription = description)
+    }
+}
+
+@Composable
+fun BottomNavBar(
+    selectedScreen: String,
+    onScreenSelected: (String) -> Unit
+) {
+    val items = listOf("Home", "Leaderboard", "Account")
+    val selectedItem = items.indexOf(selectedScreen)
+
+    NavigationBar {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    when (item) {
+                        "Home" -> Icon(Icons.Filled.Home, contentDescription = item)
+                        "Leaderboard" -> Icon(
+                            painterResource(AppIcon.leaderboard),
+                            modifier = Modifier.size(26.dp),
+                            contentDescription = item
+                        )
+                        "Account" -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
+                    }
+                },
+                label = { Text(item) },
+                selected = selectedItem == index,
+                onClick = { onScreenSelected(item) }
+            )
+        }
     }
 }

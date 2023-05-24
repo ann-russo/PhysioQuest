@@ -48,5 +48,4 @@ class LernmodusViewModel @Inject constructor(
             restartApp(START_SCREEN)
         }
     }
-
 }

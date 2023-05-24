@@ -1,4 +1,4 @@
-package com.example.physioquest.screens.account
+package com.example.physioquest.screens.leaderboard
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -17,15 +17,15 @@ import com.example.physioquest.common.util.toolbarActions
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountScreen(
+fun LeaderboardScreen(
     restartApp: (String) -> Unit,
     openScreen: (String) -> Unit,
-    viewModel: AccountViewModel = hiltViewModel()
+    viewModel: LeaderboardViewModel = hiltViewModel()
 ) {
     Scaffold(
         bottomBar = {
             BottomNavBar(
-                selectedScreen = "Account",
+                selectedScreen = "Leaderboard",
                 onScreenSelected = { screen ->
                     when (screen) {
                         "Home" -> {
@@ -47,7 +47,7 @@ fun AccountScreen(
                 .fillMaxHeight()
         ) {
             ActionToolBar(
-                title = R.string.account_title,
+                title = R.string.leaderboard_title,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = R.drawable.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }

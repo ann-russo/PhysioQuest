@@ -45,4 +45,8 @@
     <string name="duellmodus_subtitle">Spiele gegen andere für eine Herausforderung</string>
     <string name="duellmodus_action">Duell starten</string>
 
+    <string name="leaderboard_title">Leaderboard</string>
+
+    <string name="account_title">Profil</string>
+
 </resources>

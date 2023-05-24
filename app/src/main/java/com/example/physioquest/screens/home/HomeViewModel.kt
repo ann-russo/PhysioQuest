@@ -3,6 +3,9 @@ package com.example.physioquest.screens.home
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.example.physioquest.ACCOUNT_SCREEN
+import com.example.physioquest.HOME_SCREEN
+import com.example.physioquest.LEADERBOARD_SCREEN
 import com.example.physioquest.LERNMODUS_SCREEN
 import com.example.physioquest.START_SCREEN
 import com.example.physioquest.model.User
@@ -37,6 +40,24 @@ class HomeViewModel @Inject constructor(
     fun onLernmodusClick(openScreen: (String) -> Unit) {
         launchCatching {
             openScreen(LERNMODUS_SCREEN)
+        }
+    }
+
+    fun onHomeClick(openScreen: (String) -> Unit) {
+        launchCatching {
+            openScreen(HOME_SCREEN)
+        }
+    }
+
+    fun onLeaderboardClick(openScreen: (String) -> Unit) {
+        launchCatching {
+            openScreen(LEADERBOARD_SCREEN)
+        }
+    }
+
+    fun onAccountClick(openScreen: (String) -> Unit) {
+        launchCatching {
+            openScreen(ACCOUNT_SCREEN)
         }
     }
 }
