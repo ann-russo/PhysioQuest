@@ -1,7 +1,7 @@
 package com.example.physioquest.service
 
-import com.example.physioquest.model.Antwort
-import com.example.physioquest.model.Frage
+import com.example.physioquest.model.Answer
+import com.example.physioquest.model.Question
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -12,43 +12,44 @@ class StorageServiceImpl
 @Inject
 constructor(private val firestore: FirebaseFirestore) : StorageService {
 
-    override val fragen: Flow<List<Frage>> = flow {
-        val snapshot = firestore.collection(FRAGEN_COLLECTION)
-            .orderBy("frageInhalt")
+    override val questions: Flow<List<Question>> = flow {
+        val snapshot = firestore.collection(QUESTIONS_COLLECTION)
+            .orderBy("category")
             .get()
             .await()
-        val fragen = snapshot.documents.mapNotNull { document ->
-            val antworten = document.get("antworten") as? List<Map<String, Any>>
-            if (antworten != null) {
-                val antwortenList = antworten.mapNotNull { antwortMap ->
-                    Antwort(
-                        antwortInhalt = antwortMap["antwortInhalt"] as? String ?: return@mapNotNull null,
-                        antwortKorrekt = antwortMap["antwortKorrekt"] as? Boolean ?: return@mapNotNull null,
+        val questions = snapshot.documents.mapNotNull { document ->
+            val answers = document.get(ANSWERS_ARRAY) as? List<Map<String, Any>>
+            if (answers != null) {
+                val answerList = answers.mapNotNull { answersMap ->
+                    Answer(
+                        content = answersMap["content"] as? String ?: return@mapNotNull null,
+                        isCorrect = answersMap["isCorrect"] as? Boolean ?: return@mapNotNull null,
                     )
                 }
-                Frage(
+                Question(
                     id = document.id,
-                    kategorie = document.get("kategorie") as? String ?: "",
-                    frageInhalt = document.get("frageInhalt") as? String ?: "",
-                    antworten = antwortenList
+                    category = document.get("category") as? String ?: "",
+                    content = document.get("content") as? String ?: "",
+                    answers = answerList
                 )
             } else {
                 null
             }
         }
-        emit(fragen)
+        emit(questions)
     }
 
-    override suspend fun getFrage(frageId: String): Frage? {
+    override suspend fun getQuestions(questionId: String): Question? {
         TODO()
     }
 
-    override suspend fun addFrage(frage: Frage) {
-        firestore.collection(FRAGEN_COLLECTION).add(frage).await()
+    override suspend fun addQuestions(question: Question) {
+        firestore.collection(QUESTIONS_COLLECTION).add(question).await()
     }
 
     companion object {
-        private const val FRAGEN_COLLECTION = "fragen"
+        private const val QUESTIONS_COLLECTION = "questions"
+        private const val ANSWERS_ARRAY = "answers"
     }
 }
 

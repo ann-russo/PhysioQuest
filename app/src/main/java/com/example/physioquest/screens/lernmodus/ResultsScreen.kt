@@ -85,14 +85,12 @@ fun MedalBadge(correct: Int, total: Int) {
             val radius = size.minDimension / 2
             val strokeWidth = 20f
 
-            // Draw the background circle
             drawCircle(
                 color = Color.Gray,
                 radius = radius,
                 style = Stroke(strokeWidth)
             )
 
-            // Draw the progress arc
             drawArc(
                 color = Color.Green,
                 startAngle = -90f,

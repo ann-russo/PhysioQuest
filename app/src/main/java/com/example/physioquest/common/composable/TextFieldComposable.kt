@@ -22,8 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import com.example.physioquest.R.string as AppText
 import com.example.physioquest.R.drawable as AppIcon
+import com.example.physioquest.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.physioquest.R.string as AppText
 import com.example.physioquest.common.composable.BasicButton
 import com.example.physioquest.common.composable.BasicTextButton
 import com.example.physioquest.common.composable.BasicToolBar
@@ -24,6 +23,7 @@ import com.example.physioquest.common.composable.UsernameField
 import com.example.physioquest.common.util.basicButton
 import com.example.physioquest.common.util.fieldModifier
 import com.example.physioquest.common.util.textButton
+import com.example.physioquest.R.string as AppText
 
 @Composable
 fun RegistrationScreen(

@@ -5,19 +5,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.LERNMODUS_SCREEN
 import com.example.physioquest.START_SCREEN
-import com.example.physioquest.model.Antwort
-import com.example.physioquest.model.Frage
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
-import com.example.physioquest.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val accountService: AccountService,
-    private val storageService: StorageService
+    private val accountService: AccountService
 ) :
     PhysioQuestViewModel() {
     private val _user: MutableState<User?> = mutableStateOf(null)
@@ -43,33 +39,4 @@ class HomeViewModel @Inject constructor(
             openScreen(LERNMODUS_SCREEN)
         }
     }
-
-    fun addFrage() {
-        val frage = Frage(
-            kategorie = "Physiologie",
-            frageInhalt = "Was ist die Funktion des Lymphsystems?",
-            antworten = listOf(
-                Antwort(
-                    antwortInhalt = "Abwehr von Krankheitserregern im Körper",
-                    antwortKorrekt = true
-                ),
-                Antwort(
-                    antwortInhalt = "Transport von Nährstoffen und Sauerstoff im Körper",
-                    antwortKorrekt = false
-                ),
-                Antwort(
-                    antwortInhalt = "Regulation des Blutdrucks im Körper",
-                    antwortKorrekt = false
-                ),
-                Antwort(
-                    antwortInhalt = "Produktion von Hormonen im Körper",
-                    antwortKorrekt = false
-                )
-            )
-        )
-        launchCatching {
-            storageService.addFrage(frage)
-        }
-    }
-
 }

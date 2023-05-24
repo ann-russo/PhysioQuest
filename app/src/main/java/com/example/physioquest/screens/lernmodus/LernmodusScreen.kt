@@ -27,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
-import com.example.physioquest.common.composable.AntwortCard
-import com.example.physioquest.common.util.antwortCard
+import com.example.physioquest.common.composable.SelectableAnswerOption
+import com.example.physioquest.common.util.card
 import com.example.physioquest.common.util.toolbarActions
-import com.example.physioquest.model.Antwort
-import com.example.physioquest.model.Frage
+import com.example.physioquest.model.Answer
+import com.example.physioquest.model.Question
 import com.example.physioquest.R.string as AppText
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LernmodusScreen(
@@ -49,7 +50,7 @@ fun LernmodusScreen(
     openScreen: (String) -> Unit,
     viewModel: LernmodusViewModel = hiltViewModel()
 ) {
-    val questions = viewModel.fragen
+    val questions = viewModel.questions
     var currentQuestionIndex by rememberSaveable { mutableStateOf(0) }
     var numCorrectAnswers by rememberSaveable { mutableStateOf(0) }
     val selectedAnswersState = rememberSaveable { mutableStateOf(mutableListOf<Int>()) }
@@ -58,9 +59,9 @@ fun LernmodusScreen(
     var isEvaluationEnabled by remember { mutableStateOf(true) }
     val evaluationStatus by remember(questions) {
         derivedStateOf {
-            Array(questions.size) { index ->
-                selectedAnswers.contains(index) && questions[currentQuestionIndex].antworten[index].antwortKorrekt
-            }
+            List(questions[currentQuestionIndex].answers.size) { index ->
+                selectedAnswers.contains(index) && questions[currentQuestionIndex].answers[index].isCorrect
+            }.toMutableStateList()
         }
     }
 
@@ -92,8 +93,8 @@ fun LernmodusScreen(
 
                 questions.getOrNull(currentQuestionIndex)?.let { question ->
                     QuestionItem(question)
-                    AntwortList(
-                        antworten = question.antworten,
+                    AnswersList(
+                        answers = question.answers,
                         selectedAnswers = selectedAnswers,
                         isEvaluationEnabled = isEvaluationEnabled,
                         onAnswerSelected = { answerIndex ->
@@ -109,14 +110,22 @@ fun LernmodusScreen(
                             }
                         },
                         onEvaluateClicked = {
-                            val correctAnswers = question.antworten.filter { it.antwortKorrekt }
-                            val selectedCorrectAnswers = selectedAnswers.map { question.antworten[it] }
-                            val isCorrect = correctAnswers.size == selectedCorrectAnswers.size && selectedCorrectAnswers.containsAll(correctAnswers)
+                            val correctAnswers = question.answers.filter { it.isCorrect }
+                            val selectedCorrectAnswers =
+                                selectedAnswers.map { question.answers[it] }
+                            val isCorrect =
+                                correctAnswers.size == selectedCorrectAnswers.size && selectedCorrectAnswers.containsAll(
+                                    correctAnswers
+                                )
 
-                            for (i in question.antworten.indices) {
-                                evaluationStatus[i] = i in selectedAnswers && isCorrect || i !in selectedAnswers && !isCorrect
+                            for (i in question.answers.indices) {
+                                evaluationStatus[i] =
+                                    i in selectedAnswers && isCorrect || i !in selectedAnswers && !isCorrect
                             }
-                            if (isCorrect) { numCorrectAnswers++ }
+
+                            if (isCorrect) {
+                                numCorrectAnswers++
+                            }
                             isEvaluationEnabled = false
                         },
                         onNextClicked = {
@@ -138,8 +147,8 @@ fun LernmodusScreen(
 }
 
 @Composable
-fun AntwortList(
-    antworten: List<Antwort>,
+fun AnswersList(
+    answers: List<Answer>,
     selectedAnswers: List<Int>,
     isEvaluationEnabled: Boolean,
     onAnswerSelected: (Int) -> Unit,
@@ -158,17 +167,17 @@ fun AntwortList(
                 columns = GridCells.Fixed(1),
                 contentPadding = PaddingValues(0.dp, 10.dp)
             ) {
-                itemsIndexed(antworten) { index, antwort ->
+                itemsIndexed(answers) { index, answer ->
                     val isSelected = selectedAnswers.contains(index)
-                    val isCorrect = antwort.antwortKorrekt
+                    val isCorrect = answer.isCorrect
 
-                    AntwortCard(
-                        antwortText = antwort.antwortInhalt,
+                    SelectableAnswerOption(
                         isSelected = isSelected,
                         isEnabled = isEvaluationEnabled,
                         correctChoice = isSelected == isCorrect,
-                        onSelectAnswer = { onAnswerSelected(index) },
-                        modifier = Modifier.antwortCard()
+                        title = answer.content,
+                        modifier = Modifier.card(),
+                        onClick = { onAnswerSelected(index) }
                     )
                 }
             }
@@ -197,14 +206,14 @@ fun AntwortList(
 }
 
 @Composable
-fun QuestionItem(question: Frage) {
+fun QuestionItem(question: Question) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp, 0.dp)
     ) {
         Text(
-            text = question.frageInhalt,
+            text = question.content,
             style = MaterialTheme.typography.titleLarge
         )
     }

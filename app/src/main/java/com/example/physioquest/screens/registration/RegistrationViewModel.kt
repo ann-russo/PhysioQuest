@@ -3,7 +3,6 @@ package com.example.physioquest.screens.registration
 import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LOGIN_SCREEN
-import com.example.physioquest.R.string as AppText
 import com.example.physioquest.REGISTRATION_SCREEN
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.common.util.isAllowedEmail
@@ -14,6 +13,7 @@ import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import com.example.physioquest.R.string as AppText
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val accountService: AccountService) :

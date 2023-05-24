@@ -11,6 +11,7 @@
     <string name="cancel">Abbrechen</string>
     <string name="try_again">Try again</string>
     <string name="dropdown">Dropdown Menu</string>
+    <string name="welcome">Willkommen,</string>
 
     <!-- LoginScreen -->
     <string name="sign_in">Anmelden</string>

@@ -1,10 +1,10 @@
 package com.example.physioquest.service
 
-import com.example.physioquest.model.Frage
+import com.example.physioquest.model.Question
 import kotlinx.coroutines.flow.Flow
 
 interface StorageService {
-    val fragen: Flow<List<Frage>>
-    suspend fun getFrage(frageId: String): Frage?
-    suspend fun addFrage(frage: Frage)
+    val questions: Flow<List<Question>>
+    suspend fun getQuestions(questionId: String): Question?
+    suspend fun addQuestions(question: Question)
 }

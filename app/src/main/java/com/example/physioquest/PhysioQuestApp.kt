@@ -22,13 +22,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.physioquest.common.snackbar.SnackbarManager
+import com.example.physioquest.screens.account.AccountScreen
 import com.example.physioquest.screens.home.HomeScreen
+import com.example.physioquest.screens.lernmodus.LernmodusScreen
 import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
 import com.example.physioquest.ui.theme.PhysioQuestTheme
-import com.example.physioquest.common.snackbar.SnackbarManager
-import com.example.physioquest.screens.lernmodus.LernmodusScreen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -116,6 +117,13 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
 
     composable(LERNMODUS_SCREEN) {
         LernmodusScreen(
+            restartApp = { route -> appState.clearAndNavigate(route) },
+            openScreen = { route -> appState.navigate(route) }
+        )
+    }
+
+    composable(ACCOUNT_SCREEN) {
+        AccountScreen(
             restartApp = { route -> appState.clearAndNavigate(route) },
             openScreen = { route -> appState.navigate(route) }
         )
