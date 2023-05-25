@@ -50,7 +50,7 @@ fun LernmodusScreen(
     openScreen: (String) -> Unit,
     viewModel: LernmodusViewModel = hiltViewModel()
 ) {
-    val questions = viewModel.questions
+    var questions by rememberSaveable { mutableStateOf(viewModel.questions) }
     var currentQuestionIndex by rememberSaveable { mutableStateOf(0) }
     var numCorrectAnswers by rememberSaveable { mutableStateOf(0) }
     val selectedAnswersState = rememberSaveable { mutableStateOf(mutableListOf<Int>()) }
@@ -64,6 +64,9 @@ fun LernmodusScreen(
             }.toMutableStateList()
         }
     }
+
+    var displayCategories by remember { mutableStateOf(true) }
+    var selectedCategory by rememberSaveable { mutableStateOf("") }
 
     Scaffold {
         Column(
@@ -85,12 +88,22 @@ fun LernmodusScreen(
                 ) {
                     CircularProgressIndicator()
                 }
-            } else if (currentQuestionIndex < questions.size) {
+            }
+            else if (displayCategories) {
+                CategoryScreen(
+                    categories = viewModel.getCategories(),
+                    onCategorySelected = { category ->
+                        selectedCategory = category
+                        questions = viewModel.questions.filter { it.category == selectedCategory }
+                        displayCategories = false
+                    }
+                )
+            }
+            else if (currentQuestionIndex < questions.size) {
                 ProgressIndicator(
                     progressText = "${currentQuestionIndex + 1}/${questions.size}",
                     modifier = Modifier.padding(vertical = 5.dp)
                 )
-
                 questions.getOrNull(currentQuestionIndex)?.let { question ->
                     QuestionItem(question)
                     AnswersList(

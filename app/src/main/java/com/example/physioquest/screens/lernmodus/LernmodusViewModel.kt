@@ -42,6 +42,10 @@ class LernmodusViewModel @Inject constructor(
         }
     }
 
+    fun getCategories(): List<String> {
+        return questions.map { it.category }.distinct()
+    }
+
     fun onSignOutClick(restartApp: (String) -> Unit) {
         launchCatching {
             accountService.signOut()
