@@ -41,6 +41,14 @@
     <string name="questions_correct">Fragen richtig beantwortet</string>
     <string name="finish">Lern-Modus beenden</string>
 
+    <!-- Categories Names -->
+    <string name="general">Allgemein</string>
+    <string name="foot">Fuss</string>
+    <string name="arm">Hand/Ellbogen</string>
+    <string name="hips">Hüfte</string>
+    <string name="knees">Knie</string>
+    <string name="shoulder">Schulter</string>
+
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>
     <string name="duellmodus_subtitle">Spiele gegen andere für eine Herausforderung</string>
