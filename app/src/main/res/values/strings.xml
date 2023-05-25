@@ -38,7 +38,8 @@
     <string name="next_question">Zur nächsten Frage</string>
     <string name="submit">Antwort(en) einreichen</string>
     <string name="results">Dein Ergebnis:</string>
-    <string name="finish">Beenden</string>
+    <string name="questions_correct">Fragen richtig beantwortet</string>
+    <string name="finish">Lern-Modus beenden</string>
 
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>

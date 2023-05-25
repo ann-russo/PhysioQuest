@@ -1,5 +1,9 @@
 package com.example.physioquest.screens.lernmodus
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +23,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +38,19 @@ import com.example.physioquest.R.string as AppText
 
 @Composable
 fun ResultsScreen(correct: Int, total: Int, openScreen: (String) -> Unit) {
+    val progress = correct.toFloat() / total.toFloat()
+    val angle = remember { Animatable(0f) }
+
+    LaunchedEffect(progress) {
+        angle.animateTo(
+            targetValue = progress * 360f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioNoBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,14 +65,21 @@ fun ResultsScreen(correct: Int, total: Int, openScreen: (String) -> Unit) {
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 16.dp)
         )
+        Text(
+            text = "$correct/$total " + stringResource(AppText.questions_correct),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .wrapContentWidth()
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 16.dp)
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .padding(vertical = 16.dp),
+                .weight(1f),
             contentAlignment = Alignment.Center
         ) {
-            MedalBadge(correct, total)
+            MedalBadge(angle.value)
         }
         Button(
             onClick = { openScreen(HOME_SCREEN) },
@@ -73,9 +100,8 @@ fun ResultsScreen(correct: Int, total: Int, openScreen: (String) -> Unit) {
 }
 
 @Composable
-fun MedalBadge(correct: Int, total: Int) {
-    val progress = correct.toFloat() / total.toFloat()
-    val angle = progress * 360f
+fun MedalBadge(angle: Float) {
+    val sweepAngle by animateFloatAsState(targetValue = angle)
 
     Box(
         modifier = Modifier.size(200.dp),
@@ -94,14 +120,14 @@ fun MedalBadge(correct: Int, total: Int) {
             drawArc(
                 color = Color.Green,
                 startAngle = -90f,
-                sweepAngle = angle,
+                sweepAngle = sweepAngle,
                 useCenter = false,
                 style = Stroke(strokeWidth)
             )
         }
 
         Text(
-            text = "$correct/$total",
+            text = "${(sweepAngle / 360f * 100).toInt()}%",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
         )
