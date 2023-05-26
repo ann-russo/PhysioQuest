@@ -92,7 +92,6 @@ fun CategoryCard(category: String, onCategorySelected: (String) -> Unit) {
                     contentDescription = category,
                     modifier = Modifier.size(94.dp)
                 )
-
                 Text(
                     text = category,
                     style = MaterialTheme.typography.titleLarge,

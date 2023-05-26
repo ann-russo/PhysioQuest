@@ -36,7 +36,7 @@ fun HomeScreen(
     Scaffold(
         bottomBar = {
             BottomNavBar(
-                selectedScreen = "Home",
+                selectedScreen = stringResource(AppText.home),
                 onScreenSelected = { screen ->
                     when (screen) {
                         "Home" -> {
@@ -45,7 +45,7 @@ fun HomeScreen(
                         "Leaderboard" -> {
                             viewModel.onLeaderboardClick(openScreen)
                         }
-                        "Account" -> {
+                        "Profil" -> {
                             viewModel.onAccountClick(openScreen)
                         }
                     }

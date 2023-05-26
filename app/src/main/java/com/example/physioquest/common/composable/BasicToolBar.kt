@@ -109,7 +109,7 @@ fun BottomNavBar(
     selectedScreen: String,
     onScreenSelected: (String) -> Unit
 ) {
-    val items = listOf("Home", "Leaderboard", "Account")
+    val items = listOf("Home", "Leaderboard", "Profil")
     val selectedItem = items.indexOf(selectedScreen)
 
     NavigationBar {
@@ -123,7 +123,7 @@ fun BottomNavBar(
                             modifier = Modifier.size(26.dp),
                             contentDescription = item
                         )
-                        "Account" -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
+                        "Profil" -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
                     }
                 },
                 label = { Text(item) },

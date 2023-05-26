@@ -44,18 +44,18 @@
     <!-- Categories Names -->
     <string name="general">Allgemein</string>
     <string name="foot">Fuss</string>
-    <string name="arm">Hand/Ellbogen</string>
+    <string name="arm">Ellbogen/Hand</string>
     <string name="hips">Hüfte</string>
     <string name="knees">Knie</string>
     <string name="shoulder">Schulter</string>
 
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>
-    <string name="duellmodus_subtitle">Spiele gegen andere für eine Herausforderung</string>
+    <string name="duellmodus_subtitle">Fordere dich heraus gegen andere Spieler</string>
     <string name="duellmodus_action">Duell starten</string>
 
-    <string name="leaderboard_title">Leaderboard</string>
-
-    <string name="account_title">Profil</string>
+    <string name="home">Home</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="account">Profil</string>
 
 </resources>

@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -45,9 +46,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.example.physioquest.R
 import com.example.physioquest.common.util.cardButton
 import kotlinx.coroutines.launch
+import com.example.physioquest.R.drawable as AppIcon
+import com.example.physioquest.R.string as AppText
 
 @Composable
 @ExperimentalMaterial3Api
@@ -64,40 +66,66 @@ fun ElevatedCard(
         elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.elevatedCardColors()
     ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(title),
-                    style = MaterialTheme.typography.headlineMedium
+        val learnImage = painterResource(AppIcon.idea_144)
+        val duelImage = painterResource(AppIcon.boxing_glove_144)
+
+        Box {
+            when (title) {
+                AppText.lernmodus_title -> learnImage
+                AppText.duellmodus_title -> duelImage
+                else -> null
+            }?.let {
+                Image(
+                    painter = it,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(95.dp)
+                        .padding(top = 8.dp, end = 16.dp)
+                        .alpha(0.5f)
+                        .align(Alignment.TopEnd),
+                    alignment = Alignment.TopEnd
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(subtitle),
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.weight(1f))
 
-            Button(
-                onClick = onButtonClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
-                ),
+            Column(
                 modifier = Modifier
-                    .align(Alignment.End)
-                    .cardButton()
+                    .padding(16.dp)
+                    .fillMaxWidth()
             ) {
-                Text(text = stringResource(actionText))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(title),
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(subtitle),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = onButtonClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .cardButton()
+                ) {
+                    Text(text = stringResource(actionText))
+                }
             }
         }
+
+
     }
 }
 
@@ -132,11 +160,11 @@ fun SelectableAnswerOption(
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
     icon: Painter =
         when {
-            isEnabled && isSelected -> painterResource(R.drawable.circle_checked)
-            !isEnabled && isSelected && !correctChoice -> painterResource(R.drawable.circle_false)
-            !isEnabled && isSelected && correctChoice -> painterResource(R.drawable.circle_true)
-            !isEnabled && !isSelected && !correctChoice -> painterResource(R.drawable.circle_true)
-            else -> painterResource(R.drawable.circle_empty)
+            isEnabled && isSelected -> painterResource(AppIcon.circle_checked)
+            !isEnabled && isSelected && !correctChoice -> painterResource(AppIcon.circle_false)
+            !isEnabled && isSelected && correctChoice -> painterResource(AppIcon.circle_true)
+            !isEnabled && !isSelected && !correctChoice -> painterResource(AppIcon.circle_true)
+            else -> painterResource(AppIcon.circle_empty)
         },
     onClick: () -> Unit
 ) {

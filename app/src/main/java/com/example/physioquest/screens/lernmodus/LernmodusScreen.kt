@@ -31,6 +31,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R
@@ -60,7 +61,8 @@ fun LernmodusScreen(
     val evaluationStatus by remember(questions) {
         derivedStateOf {
             List(questions[currentQuestionIndex].answers.size) { index ->
-                selectedAnswers.contains(index) && questions[currentQuestionIndex].answers[index].isCorrect
+                selectedAnswers.contains(index) &&
+                        questions[currentQuestionIndex].answers[index].isCorrect
             }.toMutableStateList()
         }
     }
@@ -100,11 +102,12 @@ fun LernmodusScreen(
                 )
             }
             else if (currentQuestionIndex < questions.size) {
-                ProgressIndicator(
-                    progressText = "${currentQuestionIndex + 1}/${questions.size}",
-                    modifier = Modifier.padding(vertical = 5.dp)
-                )
                 questions.getOrNull(currentQuestionIndex)?.let { question ->
+                    CategoryItem(selectedCategory)
+                    ProgressIndicator(
+                        progressText = "${currentQuestionIndex + 1}/${questions.size}",
+                        modifier = Modifier.padding(vertical = 5.dp)
+                    )
                     QuestionItem(question)
                     AnswersList(
                         answers = question.answers,
@@ -127,13 +130,16 @@ fun LernmodusScreen(
                             val selectedCorrectAnswers =
                                 selectedAnswers.map { question.answers[it] }
                             val isCorrect =
-                                correctAnswers.size == selectedCorrectAnswers.size && selectedCorrectAnswers.containsAll(
-                                    correctAnswers
-                                )
+                                correctAnswers.size ==
+                                        selectedCorrectAnswers.size &&
+                                        selectedCorrectAnswers.containsAll(correctAnswers)
 
                             for (i in question.answers.indices) {
                                 evaluationStatus[i] =
-                                    i in selectedAnswers && isCorrect || i !in selectedAnswers && !isCorrect
+                                    i in selectedAnswers &&
+                                    isCorrect ||
+                                    i !in selectedAnswers
+                                    && !isCorrect
                             }
 
                             if (isCorrect) {
@@ -219,15 +225,32 @@ fun AnswersList(
 }
 
 @Composable
+fun CategoryItem(category: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp, 16.dp)
+    ) {
+        Text(
+            text = category.uppercase(),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.secondary
+        )
+    }
+}
+
+@Composable
 fun QuestionItem(question: Question) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp, 0.dp)
+        ,
     ) {
         Text(
             text = question.content,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
         )
     }
 }

@@ -47,7 +47,7 @@ fun AccountScreen(
                 .fillMaxHeight()
         ) {
             ActionToolBar(
-                title = R.string.account_title,
+                title = R.string.account,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = R.drawable.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }

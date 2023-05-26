@@ -47,7 +47,7 @@ fun LeaderboardScreen(
                 .fillMaxHeight()
         ) {
             ActionToolBar(
-                title = R.string.leaderboard_title,
+                title = R.string.leaderboard,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = R.drawable.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }
