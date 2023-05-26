@@ -64,7 +64,7 @@ fun ElevatedCard(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.elevatedCardElevation(),
-        colors = CardDefaults.elevatedCardColors()
+        colors = CardDefaults.elevatedCardColors(),
     ) {
         val learnImage = painterResource(AppIcon.idea_144)
         val duelImage = painterResource(AppIcon.boxing_glove_144)
@@ -79,9 +79,9 @@ fun ElevatedCard(
                     painter = it,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(95.dp)
-                        .padding(top = 8.dp, end = 16.dp)
-                        .alpha(0.5f)
+                        .size(105.dp)
+                        .padding(top = 8.dp, end = 10.dp)
+                        .alpha(0.6f)
                         .align(Alignment.TopEnd),
                     alignment = Alignment.TopEnd
                 )
@@ -98,17 +98,35 @@ fun ElevatedCard(
                 ) {
                     Text(
                         text = stringResource(title),
-                        fontWeight = FontWeight.Light,
                         color = MaterialTheme.colorScheme.tertiary,
                         style = MaterialTheme.typography.headlineLarge
                     )
                 }
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Text(
                     text = stringResource(subtitle),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                if (title == AppText.lernmodus_title) {
+                    Text(
+                        text = stringResource(AppText.lernmodus_description),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                if (title == AppText.duellmodus_title) {
+                    Text(
+                        text = stringResource(AppText.duellmodus_description),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
                 Spacer(modifier = Modifier.weight(1f))
+
 
                 Button(
                     onClick = onButtonClick,

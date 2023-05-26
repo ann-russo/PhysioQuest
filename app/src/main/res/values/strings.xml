@@ -11,7 +11,7 @@
     <string name="cancel">Abbrechen</string>
     <string name="try_again">Try again</string>
     <string name="dropdown">Dropdown Menu</string>
-    <string name="welcome">Willkommen,</string>
+    <string name="welcome">Hallo,</string>
 
     <!-- LoginScreen -->
     <string name="sign_in">Anmelden</string>
@@ -33,8 +33,9 @@
 
     <!-- Lernmodus -->
     <string name="lernmodus_title">Lern-Modus</string>
-    <string name="lernmodus_subtitle">Spiele alleine und teste dein Wissen</string>
-    <string name="lernmodus_action">Spielen</string>
+    <string name="lernmodus_subtitle">Singleplayer</string>
+    <string name="lernmodus_description">Keine Zeiteinschränkung und freie Wahl der Kategorien</string>
+    <string name="lernmodus_action">Lernen</string>
     <string name="next_question">Zur nächsten Frage</string>
     <string name="submit">Antwort(en) einreichen</string>
     <string name="results">Dein Ergebnis:</string>
@@ -51,7 +52,8 @@
 
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>
-    <string name="duellmodus_subtitle">Fordere dich heraus gegen andere Spieler</string>
+    <string name="duellmodus_subtitle">Multiplayer</string>
+    <string name="duellmodus_description">Runden mit Zeiteinschränkung und zufälligen Kategorien für extra Herausforderung</string>
     <string name="duellmodus_action">Duell starten</string>
 
     <string name="home">Home</string>

@@ -37,7 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.SelectableAnswerOption
-import com.example.physioquest.common.util.card
+import com.example.physioquest.common.util.answerCard
 import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
@@ -195,7 +195,7 @@ fun AnswersList(
                         isEnabled = isEvaluationEnabled,
                         correctChoice = isSelected == isCorrect,
                         title = answer.content,
-                        modifier = Modifier.card(),
+                        modifier = Modifier.answerCard(),
                         onClick = { onAnswerSelected(index) }
                     )
                 }

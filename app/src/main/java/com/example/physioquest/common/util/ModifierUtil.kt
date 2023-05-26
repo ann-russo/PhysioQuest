@@ -42,7 +42,20 @@ fun Modifier.smallSpacer(): Modifier {
         .height(8.dp)
 }
 
+fun Modifier.bigSpacer(): Modifier {
+    return this
+        .fillMaxWidth()
+        .height(40.dp)
+}
+
 fun Modifier.card(): Modifier {
+    return this
+        .padding(16.dp, 0.dp, 16.dp, 8.dp)
+        .fillMaxWidth()
+        .height(220.dp)
+}
+
+fun Modifier.answerCard(): Modifier {
     return this
         .padding(16.dp, 0.dp, 16.dp, 8.dp)
         .fillMaxWidth()

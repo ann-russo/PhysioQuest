@@ -12,13 +12,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.BottomNavBar
 import com.example.physioquest.common.composable.ElevatedCard
+import com.example.physioquest.common.util.bigSpacer
 import com.example.physioquest.common.util.card
 import com.example.physioquest.common.util.smallSpacer
 import com.example.physioquest.common.util.toolbarActions
@@ -63,18 +65,26 @@ fun HomeScreen(
                 endActionIcon = AppIcon.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }
             )
+            Spacer(modifier = Modifier.smallSpacer())
 
             val currentUser = viewModel.user.value?.username
             Text(
-                text = stringResource(AppText.welcome) + " $currentUser!",
+                text = stringResource(AppText.welcome),
                 style = MaterialTheme.typography.bodyLarge,
+                color = Color.Gray,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                textAlign = TextAlign.Center
+                    .padding(horizontal = 16.dp)
             )
-            Spacer(modifier = Modifier.smallSpacer())
-            Spacer(modifier = Modifier.smallSpacer())
+            Text(
+                text = "$currentUser!",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.bigSpacer())
 
             ElevatedCard(
                 title = AppText.lernmodus_title,

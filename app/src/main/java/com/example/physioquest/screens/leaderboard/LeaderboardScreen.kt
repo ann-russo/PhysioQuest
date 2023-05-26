@@ -34,7 +34,7 @@ fun LeaderboardScreen(
                         "Leaderboard" -> {
                             viewModel.onLeaderboardClick(openScreen)
                         }
-                        "Account" -> {
+                        "Profil" -> {
                             viewModel.onAccountClick(openScreen)
                         }
                     }
