@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.DropdownMenu
@@ -45,13 +46,24 @@ fun ActionToolBar(
     @StringRes title: Int,
     @DrawableRes endActionIcon: Int,
     modifier: Modifier,
-    endAction: () -> Unit
+    endAction: () -> Unit,
+    onBackPressed: (() -> Unit)? = null
 ) {
     var dropDownMenuExpanded by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = { Text(stringResource(title)) },
         modifier = Modifier.background(toolbarColor()),
+        navigationIcon = {
+            if (onBackPressed != null) {
+                IconButton(onClick = onBackPressed) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        },
         actions = {
             TopAppBarMenu(
                 imageVector = Icons.Outlined.MoreVert,

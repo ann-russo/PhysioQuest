@@ -17,7 +17,7 @@
     <string name="sign_in">Anmelden</string>
     <string name="login_details">Melde dich an, um fortzufahren</string>
     <string name="forgot_password">Passwort vergessen?</string>
-    <string name="register_option">Account erstellen</string>
+    <string name="register_option">Konto anlegen</string>
     <string name="recovery_email_sent">Überprüfe dein Postfach für die Wiederherstellungs-E-Mail.</string>
     <string name="error_password_empty">Das Passwort kann nicht leer sein.</string>
     <string name="add">Hinzufügen</string>
@@ -53,11 +53,16 @@
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>
     <string name="duellmodus_subtitle">Multiplayer</string>
-    <string name="duellmodus_description">Runden mit Zeiteinschränkung und zufälligen Kategorien für extra Herausforderung</string>
+    <string name="duellmodus_description">30 Sekunden Zeiteinschränkung pro Frage und zufällige Kategorien</string>
     <string name="duellmodus_action">Duell starten</string>
 
     <string name="home">Home</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="account">Profil</string>
+
+    <string name="edit">Profil bearbeiten</string>
+    <string name="settings">Einstellungen</string>
+    <string name="stats">Statistik</string>
+    <string name="help">Problem melden</string>
 
 </resources>
