@@ -60,6 +60,12 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    fun deleteAccount() {
+        launchCatching {
+            accountService.deleteAccount()
+        }
+    }
+
     fun onSignOutClick(restartApp: (String) -> Unit) {
         launchCatching {
             accountService.signOut()

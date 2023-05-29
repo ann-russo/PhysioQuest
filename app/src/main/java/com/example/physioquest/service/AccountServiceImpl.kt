@@ -1,5 +1,7 @@
 package com.example.physioquest.service
 
+import com.example.physioquest.R
+import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -39,7 +41,17 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
     }
 
     override suspend fun deleteAccount() {
-        auth.currentUser?.delete()
+        auth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // User deletion successful
+                // Handle any additional logic or navigation here
+            } else {
+                // User deletion failed
+                val exception = task.exception
+                SnackbarManager.showMessage(R.string.error_account_delete)
+                // Handle the error appropriately
+            }
+        }
     }
 
     override suspend fun signOut() {

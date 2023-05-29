@@ -1,6 +1,8 @@
 package com.example.physioquest.screens.account
 
 import android.annotation.SuppressLint
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -17,10 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -59,11 +59,11 @@ fun AccountScreen(
     viewModel: AccountViewModel = hiltViewModel()
 ) {
     var isScreenVisible by remember { mutableStateOf(true) }
-
+    val username = viewModel.user.value?.username
     Scaffold(
         bottomBar = {
             BottomNavBar(
-                selectedScreen = "Account",
+                selectedScreen = stringResource(AppText.account),
                 onScreenSelected = { screen ->
                     when (screen) {
                         "Home" -> {
@@ -72,7 +72,7 @@ fun AccountScreen(
                         "Leaderboard" -> {
                             viewModel.onLeaderboardClick(openScreen)
                         }
-                        "Account" -> {
+                        "Profil" -> {
                             viewModel.onAccountClick(openScreen)
                         }
                     }
@@ -95,134 +95,92 @@ fun AccountScreen(
                     endActionIcon = AppIcon.ic_exit,
                     endAction = { viewModel.onSignOutClick(restartApp) }
                 )
-                val currentUser = viewModel.user.value?.username
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    LevelProgressCircle()
-                }
 
-                Text(
-                    text = "$currentUser",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    textAlign = TextAlign.Center
-                )
+                ProfileHeader("$username")
 
-                Text(
-                    text = "Beginner",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
                 AccountOptionItem(
-                    option = stringResource(AppText.edit),
+                    optionText = AppText.edit,
+                    optionIcon = AppIcon.edit_48px,
                     onClick = { /* Handle Edit Profile click */ }
                 )
                 AccountOptionItem(
-                    option = stringResource(AppText.settings),
+                    optionText = AppText.settings,
+                    optionIcon = AppIcon.settings_48px,
                     onClick = {
                         viewModel.onSettingsClick(openScreen)
                         isScreenVisible = false
                     }
                 )
                 AccountOptionItem(
-                    option = stringResource(AppText.stats),
+                    optionText = AppText.stats,
+                    optionIcon = AppIcon.analytics_48px,
                     onClick = { /* Handle Notifications click */ }
                 )
                 AccountOptionItem(
-                    option = stringResource(AppText.help),
+                    optionText = AppText.help,
+                    optionIcon = AppIcon.help_48px,
                     onClick = { /* Handle Support click */ }
                 )
 
                 Spacer(modifier = Modifier.height(95.dp))
                 Divider(modifier = Modifier.padding(horizontal = 30.dp))
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-                    TextButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        onClick = { viewModel.onSignOutClick(restartApp) }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ExitToApp,
-                            tint = MaterialTheme.colorScheme.tertiary,
-                            contentDescription = stringResource(AppText.logout),
-                            modifier = Modifier.size(22.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = stringResource(AppText.logout),
-                            color = MaterialTheme.colorScheme.tertiary,
-                            fontSize = 20.sp,
-                        )
-                    }
-                }
+                LogoutButton { viewModel.onSignOutClick(restartApp) }
             }
         }
     }
 }
+
+@Composable
+fun ProfileHeader(username: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(),
+        contentAlignment = Alignment.TopCenter
+    ) { LevelProgressCircle() }
+    Text(
+        text = username,
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.SemiBold,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        textAlign = TextAlign.Center
+    )
+    Text(
+        text = "Beginner",
+        style = MaterialTheme.typography.bodyLarge,
+        color = Color.Gray,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        textAlign = TextAlign.Center
+    )
+    Spacer(modifier = Modifier.height(20.dp))
+}
+
 @Composable
 fun AccountOptionItem(
-    option: String,
+    @StringRes optionText: Int,
+    @DrawableRes optionIcon: Int,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = {
-                onClick()
-            })
+            .clickable(onClick = { onClick() })
             .padding(horizontal = 30.dp, vertical = 12.dp)
             .height(56.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
-        val editIcon = Icons.Filled.Edit
-        val settingsIcon = Icons.Filled.Settings
-        val statsIcon = painterResource(AppIcon.analytics_48px)
-        val helpIcon = painterResource(AppIcon.help_48px)
-        when (option) {
-            stringResource(AppText.edit) -> Icon(
-                imageVector = editIcon,
-                contentDescription = stringResource(AppText.edit),
-                modifier = Modifier.size(22.dp)
-            )
-            stringResource(AppText.settings) -> Icon(
-                imageVector = settingsIcon,
-                contentDescription = stringResource(AppText.settings),
-                modifier = Modifier.size(22.dp)
-            )
-            stringResource(AppText.stats) -> Icon(
-                painter = statsIcon,
-                contentDescription = stringResource(AppText.stats),
-                modifier = Modifier.size(22.dp)
-            )
-            stringResource(AppText.help) -> Icon(
-                painter = helpIcon,
-                contentDescription = stringResource(AppText.help),
-                modifier = Modifier.size(22.dp)
-            )
-        }
+        Icon(
+            painter = painterResource(optionIcon),
+            contentDescription = stringResource(optionText),
+            modifier = Modifier.size(22.dp)
+        )
         Spacer(modifier = Modifier.width(30.dp))
         Text(
-            text = option,
+            text = stringResource(optionText),
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 20.sp,
             modifier = Modifier.weight(1f)
@@ -233,6 +191,36 @@ fun AccountOptionItem(
             tint = Color.Gray,
             modifier = Modifier.size(22.dp)
         )
+    }
+}
+
+@Composable
+fun LogoutButton(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        TextButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            onClick = { onClick() }
+        ) {
+            Icon(
+                imageVector = Icons.Default.ExitToApp,
+                tint = MaterialTheme.colorScheme.tertiary,
+                contentDescription = stringResource(AppText.logout),
+                modifier = Modifier.size(19.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = stringResource(AppText.logout),
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 18.sp,
+            )
+        }
     }
 }
 
@@ -258,7 +246,6 @@ fun LevelProgressCircle() {
                 style = Stroke(strokeWidth)
             )
         }
-
         Text(
             text = "1",
             style = MaterialTheme.typography.headlineLarge,

@@ -65,4 +65,6 @@
     <string name="stats">Statistik</string>
     <string name="help">Problem melden</string>
 
+    <string name="error_account_delete">Beim Löschen des Accounts ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
+
 </resources>

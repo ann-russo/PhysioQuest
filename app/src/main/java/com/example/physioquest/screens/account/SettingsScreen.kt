@@ -43,8 +43,6 @@ fun SettingsScreen(
                 })
         }
     ) {
-
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
