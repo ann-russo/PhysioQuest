@@ -33,9 +33,11 @@ fun SettingsScreen(
                         "Home" -> {
                             viewModel.onHomeClick(openScreen)
                         }
+
                         "Leaderboard" -> {
                             viewModel.onLeaderboardClick(openScreen)
                         }
+
                         "Account" -> {
                             viewModel.onAccountClick(openScreen)
                         }

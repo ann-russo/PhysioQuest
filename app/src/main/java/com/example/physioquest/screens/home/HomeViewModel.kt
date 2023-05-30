@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.ACCOUNT_SCREEN
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LEADERBOARD_SCREEN
-import com.example.physioquest.LERNMODUS_SCREEN
+import com.example.physioquest.LERNMODUS_ROUTE
 import com.example.physioquest.START_SCREEN
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
 
     fun onLernmodusClick(openScreen: (String) -> Unit) {
         launchCatching {
-            openScreen(LERNMODUS_SCREEN)
+            openScreen(LERNMODUS_ROUTE)
         }
     }
 

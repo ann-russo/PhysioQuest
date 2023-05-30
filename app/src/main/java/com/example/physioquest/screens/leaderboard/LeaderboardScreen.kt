@@ -31,9 +31,11 @@ fun LeaderboardScreen(
                         "Home" -> {
                             viewModel.onHomeClick(openScreen)
                         }
+
                         "Leaderboard" -> {
                             viewModel.onLeaderboardClick(openScreen)
                         }
+
                         "Profil" -> {
                             viewModel.onAccountClick(openScreen)
                         }

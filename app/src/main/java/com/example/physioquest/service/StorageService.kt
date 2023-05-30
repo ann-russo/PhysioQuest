@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface StorageService {
     val questions: Flow<List<Question>>
     suspend fun getQuestions(questionId: String): Question?
+    suspend fun getQuestionsForCategory(category: String): List<Question>
     suspend fun addQuestions(question: Question)
 }

@@ -27,7 +27,8 @@ import com.example.physioquest.screens.account.AccountScreen
 import com.example.physioquest.screens.account.SettingsScreen
 import com.example.physioquest.screens.home.HomeScreen
 import com.example.physioquest.screens.leaderboard.LeaderboardScreen
-import com.example.physioquest.screens.lernmodus.LernmodusScreen
+import com.example.physioquest.screens.lernmodus.LernmodusRoute
+import com.example.physioquest.screens.lernmodus.ResultsScreen
 import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
@@ -117,9 +118,18 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         )
     }
 
-    composable(LERNMODUS_SCREEN) {
-        LernmodusScreen(
-            restartApp = { route -> appState.clearAndNavigate(route) },
+    composable(LERNMODUS_ROUTE) {
+        LernmodusRoute(
+            onQuizComplete = { appState.navigate("ResultsScreen/$it") },
+            openScreen = { route -> appState.navigate(route) },
+            onNavUp = { appState.popUp() },
+        )
+    }
+
+    composable(LERNMODUS_RESULTS) {
+        val result = it.arguments?.getString("result")?.toDoubleOrNull()
+        ResultsScreen(
+            result = result ?: 0.0,
             openScreen = { route -> appState.navigate(route) }
         )
     }

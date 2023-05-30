@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountService: AccountService
-): PhysioQuestViewModel() {
+) : PhysioQuestViewModel() {
 
     private val _user: MutableState<User?> = mutableStateOf(null)
     val user: State<User?> = _user

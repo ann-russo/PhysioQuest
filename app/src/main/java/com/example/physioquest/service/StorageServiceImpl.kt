@@ -4,6 +4,7 @@ import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -41,6 +42,10 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
 
     override suspend fun getQuestions(questionId: String): Question? {
         TODO()
+    }
+
+    override suspend fun getQuestionsForCategory(category: String): List<Question> {
+        return questions.firstOrNull()?.filter { it.category == category } ?: emptyList()
     }
 
     override suspend fun addQuestions(question: Question) {

@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LeaderboardViewModel @Inject constructor(
     private val accountService: AccountService
-): PhysioQuestViewModel() {
+) : PhysioQuestViewModel() {
     fun onHomeClick(openScreen: (String) -> Unit) {
         launchCatching {
             openScreen(HOME_SCREEN)

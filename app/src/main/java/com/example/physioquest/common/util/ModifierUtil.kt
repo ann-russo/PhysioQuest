@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +28,6 @@ fun Modifier.textButton(): Modifier {
 fun Modifier.cardButton(): Modifier {
     return this
         .padding(16.dp, 10.dp, 0.dp, 0.dp)
-        .width(130.dp)
 }
 
 fun Modifier.toolbarActions(): Modifier {

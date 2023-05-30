@@ -135,6 +135,7 @@ fun BottomNavBar(
                             modifier = Modifier.size(26.dp),
                             contentDescription = item
                         )
+
                         "Profil" -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
                     }
                 },

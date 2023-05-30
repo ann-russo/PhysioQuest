@@ -37,8 +37,8 @@ import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.R.string as AppText
 
 @Composable
-fun ResultsScreen(correct: Int, total: Int, openScreen: (String) -> Unit) {
-    val progress = correct.toFloat() / total.toFloat()
+fun ResultsScreen(result: Double, openScreen: (String) -> Unit) {
+    val progress = result.toFloat() / 3
     val angle = remember { Animatable(0f) }
 
     LaunchedEffect(progress) {
@@ -66,7 +66,7 @@ fun ResultsScreen(correct: Int, total: Int, openScreen: (String) -> Unit) {
                 .padding(vertical = 16.dp)
         )
         Text(
-            text = "$correct/$total " + stringResource(AppText.questions_correct),
+            text = "$progress/100% " + stringResource(AppText.questions_correct),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .wrapContentWidth()
