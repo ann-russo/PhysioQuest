@@ -38,14 +38,16 @@
     <string name="lernmodus_action">Lernen</string>
     <string name="next_question">Zur nächsten Frage</string>
     <string name="submit">Antwort(en) einreichen</string>
+    <string name="done">Abschließen</string>
     <string name="results">Dein Ergebnis:</string>
     <string name="questions_correct">Fragen richtig beantwortet</string>
     <string name="finish">Lern-Modus beenden</string>
 
     <!-- Categories Names -->
+    <string name="categories">Verfügbare Kategorien</string>
     <string name="general">Allgemein</string>
     <string name="foot">Fuss</string>
-    <string name="arm">Ellbogen/Hand</string>
+    <string name="arm">Ellbogen und Hand</string>
     <string name="hips">Hüfte</string>
     <string name="knees">Knie</string>
     <string name="shoulder">Schulter</string>
