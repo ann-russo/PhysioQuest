@@ -90,6 +90,11 @@ class LernmodusViewModel @Inject constructor(
         return questions.map { it.category }.distinct()
     }
 
+    fun countQuestionsForCategory(category: String): Int {
+        return questions.count { it.category == category }
+    }
+
+
     fun onCategorySelected(category: String) {
         _selectedCategory.value = category
         loadQuestionsForCategory(category)
