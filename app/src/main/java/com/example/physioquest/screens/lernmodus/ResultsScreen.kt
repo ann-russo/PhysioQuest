@@ -38,7 +38,9 @@ import com.example.physioquest.R.string as AppText
 
 @Composable
 fun ResultsScreen(result: Double, openScreen: (String) -> Unit) {
-    val progress = result.toFloat() / 3
+    val progress = (result / 100).toFloat()
+    val percentage = (result).toInt()
+
     val angle = remember { Animatable(0f) }
 
     LaunchedEffect(progress) {
@@ -66,7 +68,7 @@ fun ResultsScreen(result: Double, openScreen: (String) -> Unit) {
                 .padding(vertical = 16.dp)
         )
         Text(
-            text = "$progress/100% " + stringResource(AppText.questions_correct),
+            text = "$percentage/100% " + stringResource(AppText.questions_correct),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .wrapContentWidth()
@@ -125,9 +127,10 @@ fun MedalBadge(angle: Float) {
                 style = Stroke(strokeWidth)
             )
         }
+        val percentage = ((sweepAngle / 360f) * 100).toInt()
 
         Text(
-            text = "${(sweepAngle / 360f * 100).toInt()}%",
+            text = "$percentage%",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
         )

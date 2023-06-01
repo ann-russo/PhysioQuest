@@ -63,9 +63,15 @@
     <string name="account">Profil</string>
 
     <string name="edit">Profil bearbeiten</string>
+
     <string name="settings">Einstellungen</string>
+    <string name="delete_account">Account löschen</string>
+    <string name="delete_description">Dein Konto wird sofort gelöscht und kann nicht wiederhergestellt werden. Alle Daten gehen unwiderruflich verloren.</string>
+    <string name="delete_confirm">Löschen</string>
+
     <string name="stats">Statistik</string>
     <string name="help">Problem melden</string>
+
 
     <string name="error_account_delete">Beim Löschen des Accounts ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
 

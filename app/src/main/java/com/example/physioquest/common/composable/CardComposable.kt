@@ -84,7 +84,7 @@ fun ElevatedCard(
                     modifier = Modifier
                         .size(105.dp)
                         .padding(top = 8.dp, end = 10.dp)
-                        .alpha(0.6f)
+                        .alpha(0.9f)
                         .align(Alignment.TopEnd),
                     alignment = Alignment.TopEnd
                 )
@@ -100,8 +100,10 @@ fun ElevatedCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
+
                         text = stringResource(title),
                         color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.headlineLarge
                     )
                 }

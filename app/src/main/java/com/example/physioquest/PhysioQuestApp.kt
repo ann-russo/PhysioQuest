@@ -23,8 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.physioquest.common.snackbar.SnackbarManager
-import com.example.physioquest.screens.account.AccountScreen
-import com.example.physioquest.screens.account.SettingsScreen
+import com.example.physioquest.screens.account.AccountRoute
 import com.example.physioquest.screens.home.HomeScreen
 import com.example.physioquest.screens.leaderboard.LeaderboardScreen
 import com.example.physioquest.screens.lernmodus.LernmodusRoute
@@ -141,18 +140,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         )
     }
 
-    composable(ACCOUNT_SCREEN) {
-        AccountScreen(
+    composable(ACCOUNT_ROUTE) {
+        AccountRoute(
             restartApp = { route -> appState.clearAndNavigate(route) },
             openScreen = { route -> appState.navigate(route) }
-        )
-    }
-
-    composable(SETTINGS_SCREEN) {
-        SettingsScreen(
-            restartApp = { route -> appState.clearAndNavigate(route) },
-            openScreen = { route -> appState.navigate(route) },
-            goBack = { appState.popUp() }
         )
     }
 }

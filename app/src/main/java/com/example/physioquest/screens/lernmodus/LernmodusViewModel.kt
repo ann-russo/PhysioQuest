@@ -23,8 +23,7 @@ class LernmodusViewModel @Inject constructor(
     private val storageService: StorageService
 ) : PhysioQuestViewModel() {
 
-    var questions by mutableStateOf(emptyList<Question>())
-        private set
+    private var questions by mutableStateOf(emptyList<Question>())
 
     private var _currentQuestionIndex = MutableStateFlow(0)
     private var currentQuestionIndex: StateFlow<Int> = _currentQuestionIndex
@@ -138,7 +137,7 @@ class LernmodusViewModel @Inject constructor(
 
     fun evaluateCurrentQuestion() {
         _isEvaluateEnabled.value = false
-        val question = currentQuestion ?: return
+        /*val question = currentQuestion ?: return
         val correctAnswers = question.answers.filter { it.isCorrect }
         val selectedCorrectAnswers = selectedAnswers.map { question.answers[it] }
         val isCorrect =
@@ -155,7 +154,40 @@ class LernmodusViewModel @Inject constructor(
         if (isCorrect) {
             numCorrectAnswers++
             _result.value++
+        }*/
+        val question = currentQuestion ?: return
+        val correctAnswers = question.answers.filter { it.isCorrect }
+        val selectedCorrectAnswers = selectedAnswers.map { question.answers[it] }
+        val selectedIncorrectAnswers = selectedAnswers.map { question.answers[it] }
+            .filterNot { it.isCorrect }
+
+        val isCorrect =
+            correctAnswers.size == selectedCorrectAnswers.size &&
+                    selectedCorrectAnswers.containsAll(correctAnswers)
+
+        val numSelectedCorrectAnswers = selectedCorrectAnswers.size
+        val numCorrect = correctAnswers.size
+        val numIncorrect = selectedIncorrectAnswers.size
+
+        val score = when {
+            isCorrect -> 1.0 // All correct answers selected
+            numSelectedCorrectAnswers > 0 -> numSelectedCorrectAnswers.toDouble() / numCorrect // Partial points based on correct answers selected
+            else -> 0.0 // No correct answers selected
         }
+
+        for (i in question.answers.indices) {
+            _evaluationStatus[i] =
+                i in selectedAnswers &&
+                        isCorrect ||
+                        i !in selectedAnswers
+                        && !isCorrect
+        }
+
+        if (isCorrect) {
+            numCorrectAnswers++
+        }
+
+        _result.value += score
     }
 
     fun onClosePressed(openScreen: (String) -> Unit) {
@@ -171,7 +203,7 @@ class LernmodusViewModel @Inject constructor(
     }
 
     fun calculatePercentage(): Double {
-        return _result.value * 100 // Calculate the percentage directly
+        return _result.value * 100
     }
 
     private fun changeQuestion(newQuestionIndex: Int) {

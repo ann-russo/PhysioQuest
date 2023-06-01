@@ -9,5 +9,4 @@ const val LERNMODUS_ROUTE = "LernmodusRoute"
 const val LERNMODUS_RESULTS = "ResultsScreen/{result}"
 
 const val LEADERBOARD_SCREEN = "LeaderboardScreen"
-const val ACCOUNT_SCREEN = "AccountScreen"
-const val SETTINGS_SCREEN = "SettingsScreen"
+const val ACCOUNT_ROUTE = "AccountRoute"

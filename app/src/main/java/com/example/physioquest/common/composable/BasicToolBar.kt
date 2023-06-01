@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -43,7 +44,8 @@ fun BasicToolBar(@StringRes title: Int) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActionToolBar(
-    @StringRes title: Int,
+    @StringRes title: Int? = null,
+    titleAsString: String? = null,
     @DrawableRes endActionIcon: Int,
     modifier: Modifier,
     endAction: () -> Unit,
@@ -52,7 +54,13 @@ fun ActionToolBar(
     var dropDownMenuExpanded by remember { mutableStateOf(false) }
 
     TopAppBar(
-        title = { Text(stringResource(title)) },
+        title = {
+            if (title != null) {
+                Text(stringResource(title))
+            } else if (titleAsString != null) {
+                Text(text = titleAsString)
+            }
+        },
         modifier = Modifier.background(toolbarColor()),
         navigationIcon = {
             if (onBackPressed != null) {
@@ -81,15 +89,17 @@ fun ActionToolBar(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            stringResource(AppText.logout),
-                            style = MaterialTheme.typography.bodyLarge
+                            text = stringResource(AppText.logout),
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontSize = 16.sp
                         )
                     },
                     onClick = endAction,
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(endActionIcon),
-                            contentDescription = stringResource(AppText.logout)
+                            painter = painterResource(AppIcon.logout),
+                            contentDescription = stringResource(AppText.logout),
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 )

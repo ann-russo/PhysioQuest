@@ -1,6 +1,6 @@
 package com.example.physioquest.screens.leaderboard
 
-import com.example.physioquest.ACCOUNT_SCREEN
+import com.example.physioquest.ACCOUNT_ROUTE
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LEADERBOARD_SCREEN
 import com.example.physioquest.START_SCREEN
@@ -27,7 +27,7 @@ class LeaderboardViewModel @Inject constructor(
 
     fun onAccountClick(openScreen: (String) -> Unit) {
         launchCatching {
-            openScreen(ACCOUNT_SCREEN)
+            openScreen(ACCOUNT_ROUTE)
         }
     }
 
