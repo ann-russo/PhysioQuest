@@ -51,22 +51,30 @@ fun LernmodusContent(
 ) {
     Scaffold(
         topBar = {
-            LernmodusTopAppBar(
-                questionIndex = surveyScreenData.questionIndex,
-                totalQuestionsCount = surveyScreenData.questionCount,
-                onClosePressed = onClosePressed
-            )
+            if (surveyScreenData.selectedCategory == null) {
+                CategoryTopAppBar(
+                    onClosePressed = onClosePressed
+                )
+            } else {
+                LernmodusTopAppBar(
+                    questionIndex = surveyScreenData.questionIndex,
+                    totalQuestionsCount = surveyScreenData.questionCount,
+                    onClosePressed = onClosePressed
+                )
+            }
         },
         content = content,
         bottomBar = {
-            LernmodusBottomBar(
-                isEvaluationEnabled = isEvaluationEnabled,
-                selectedAnswers = surveyScreenData.selectedAnswers,
-                onEvaluateClicked = onEvaluateClicked,
-                onNextClicked = onNextClicked,
-                isLastQuestion = isLastQuestion,
-                onQuizComplete = onQuizComplete
-            )
+            if (surveyScreenData.selectedCategory != null) {
+                LernmodusBottomBar(
+                    isEvaluationEnabled = isEvaluationEnabled,
+                    selectedAnswers = surveyScreenData.selectedAnswers,
+                    onEvaluateClicked = onEvaluateClicked,
+                    onNextClicked = onNextClicked,
+                    isLastQuestion = isLastQuestion,
+                    onQuizComplete = onQuizComplete
+                )
+            }
         }
     )
 }

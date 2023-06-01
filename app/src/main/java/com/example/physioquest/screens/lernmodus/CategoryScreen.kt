@@ -1,12 +1,14 @@
 package com.example.physioquest.screens.lernmodus
 
 import android.annotation.SuppressLint
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +17,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CategoryScreen(
@@ -45,13 +51,19 @@ fun CategoryScreen(
         modifier = modifier
     ) {
         items(categories) { category ->
-            CategoryCard(category = category, onCategorySelected = onCategorySelected)
+            CategoryCard(
+                category = category,
+                onCategorySelected = onCategorySelected
+            )
         }
     }
 }
 
 @Composable
-fun CategoryCard(category: String, onCategorySelected: (String) -> Unit) {
+fun CategoryCard(
+    category: String,
+    onCategorySelected: (String) -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -99,5 +111,43 @@ fun CategoryCard(category: String, onCategorySelected: (String) -> Unit) {
                 )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategoryTopAppBar(
+    onClosePressed: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        CenterAlignedTopAppBar(
+            title = { TopAppBarTitle(title = AppText.categories) },
+            actions = {
+                IconButton(
+                    onClick = onClosePressed,
+                    modifier = Modifier.padding(4.dp)
+                ) {
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = stringResource(AppText.cancel),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun TopAppBarTitle(
+    @StringRes title: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
+        Text(
+            text = stringResource(title),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
