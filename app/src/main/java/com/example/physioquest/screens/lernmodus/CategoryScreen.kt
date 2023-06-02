@@ -83,7 +83,7 @@ fun CategoryCard(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.outlinedCardElevation(),
         colors = CardDefaults.outlinedCardColors(Color.White),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary.copy(alpha = 0.4f)),
     ) {
         val footImage = ImageVector.vectorResource(AppIcon.medical4)
         val legImage = ImageVector.vectorResource(AppIcon.medical2)
