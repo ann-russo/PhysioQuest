@@ -10,6 +10,9 @@ interface AccountService {
 
     suspend fun authenticate(email: String, password: String)
     suspend fun createAccount(nickname: String, email: String, password: String)
+    suspend fun updateNickname(newNickname: String)
+    suspend fun updateEmail(newEmail: String)
+    suspend fun updatePassword(newPassword: String)
     suspend fun deleteAccount()
     suspend fun signOut()
 }

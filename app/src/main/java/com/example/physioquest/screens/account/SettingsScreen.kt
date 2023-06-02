@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R.drawable as AppIcon
@@ -47,6 +49,7 @@ fun SettingsScreen(
         exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
     ) {
         AlertDialog(
+            containerColor = Color.White,
             onDismissRequest = {
                 showDialog.value = false
             },
@@ -63,7 +66,10 @@ fun SettingsScreen(
                         showDialog.value = false
                     }
                 ) {
-                    Text(stringResource(AppText.delete_confirm))
+                    Text(
+                        text = stringResource(AppText.delete_confirm),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             },
             dismissButton = {

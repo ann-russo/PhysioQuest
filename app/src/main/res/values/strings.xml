@@ -63,6 +63,8 @@
     <string name="account">Profil</string>
 
     <string name="edit">Profil bearbeiten</string>
+    <string name="edit_username">Nicknamen ändern</string>
+    <string name="edit_email">E-Mail-Adresse ändern</string>
 
     <string name="settings">Einstellungen</string>
     <string name="delete_account">Account löschen</string>
@@ -72,7 +74,14 @@
     <string name="stats">Statistik</string>
     <string name="help">Problem melden</string>
 
+    <string name="success_update_nickname">Dein Benutzername wurde erfolgreich aktualisiert.</string>
+    <string name="success_update_email">Eine Bestätigungs-E-Mail wurde an die neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse wird nach deiner Bestätigung auf die neue Adresse aktualisiert.</string>
+    <string name="success_update_pwd">Dein Passwort wurde erfolgreich aktualisiert.</string>
 
+    <string name="pwd_differ">Die Passwörter stimmen nicht überein.</string>
+    <string name="error_update_pwd">Beim Ändern deines Passworts ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
+    <string name="error_update_email">Beim Ändern deiner E-Mail-Adresse ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
+    <string name="error_update_nickname">Beim Ändern des Benutzernamens ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
     <string name="error_account_delete">Beim Löschen des Accounts ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
 
 </resources>

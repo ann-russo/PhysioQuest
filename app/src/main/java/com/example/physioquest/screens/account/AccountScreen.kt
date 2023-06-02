@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -45,7 +44,6 @@ import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountContent(
     data: AccountScreenData,
@@ -264,7 +262,7 @@ fun LevelProgressCircle() {
             drawArc(
                 color = color,
                 startAngle = -90f,
-                sweepAngle = 180f,
+                sweepAngle = 210f,
                 useCenter = false,
                 style = Stroke(strokeWidth)
             )

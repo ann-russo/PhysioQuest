@@ -5,6 +5,7 @@ import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -37,6 +38,34 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         auth.createUserWithEmailAndPassword(email, password).await().user?.let { firebaseUser ->
             val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
             firebaseUser.updateProfile(profileUpdates).await()
+        }
+    }
+
+    override suspend fun updateNickname(newNickname: String) {
+        val profileUpdates = userProfileChangeRequest { displayName = newNickname }
+        try {
+            auth.currentUser?.updateProfile(profileUpdates)?.await()
+            SnackbarManager.showMessage(R.string.success_update_nickname)
+        } catch (e: Exception) {
+            SnackbarManager.showMessage(R.string.error_update_nickname)
+        }
+    }
+
+    override suspend fun updateEmail(newEmail: String) {
+        try {
+            auth.currentUser?.verifyBeforeUpdateEmail(newEmail)?.await()
+            SnackbarManager.showMessage(R.string.success_update_nickname)
+        } catch (e: Exception) {
+            SnackbarManager.showMessage(R.string.success_update_nickname)
+        }
+    }
+
+    override suspend fun updatePassword(newPassword: String) {
+        try {
+            auth.currentUser?.updatePassword(newPassword)?.await()
+            SnackbarManager.showMessage(R.string.success_update_nickname)
+        } catch (e: Exception) {
+            SnackbarManager.showMessage(R.string.success_update_nickname)
         }
     }
 

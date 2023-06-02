@@ -1,17 +1,15 @@
 package com.example.physioquest.screens.account
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AccountRoute(
     restartApp: (String) -> Unit,
@@ -51,7 +49,7 @@ fun AccountRoute(
                 slideInHorizontally(
                     animationSpec = tween(400),
                     initialOffsetX = initialOffset
-                ) with slideOutHorizontally(
+                ) togetherWith slideOutHorizontally(
                     animationSpec = tween(400),
                     targetOffsetX = targetOffset
                 )
