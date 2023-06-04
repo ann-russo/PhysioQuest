@@ -40,6 +40,10 @@ class RegistrationViewModel @Inject constructor(private val accountService: Acco
         uiState.value = uiState.value.copy(password = newValue)
     }
 
+    fun isUsernameValid(username: String): Boolean {
+        return username.isValidUsername()
+    }
+
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         if (username.isBlank() && email.isBlank() && password.isBlank()) {
             SnackbarManager.showMessage(AppText.error_fields_empty)

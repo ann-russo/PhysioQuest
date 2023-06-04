@@ -1,7 +1,6 @@
 package com.example.physioquest.screens.account
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
@@ -24,9 +23,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SettingsScreen(
+    restartApp: (String) -> Unit,
     modifier: Modifier,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
@@ -62,7 +61,7 @@ fun SettingsScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.deleteAccount()
+                        viewModel.deleteAccount(restartApp)
                         showDialog.value = false
                     }
                 ) {

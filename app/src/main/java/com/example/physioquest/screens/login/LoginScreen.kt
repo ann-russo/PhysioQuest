@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.common.composable.BasicButton
@@ -44,8 +45,22 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        EmailField(uiState.email, viewModel::onEmailChange, Modifier.fieldModifier())
-        PasswordField(uiState.password, viewModel::onPasswordChange, Modifier.fieldModifier())
+        EmailField(
+            value = uiState.email,
+            onNewValue = viewModel::onEmailChange,
+            label = stringResource(AppText.email),
+            isError = false,
+            errorText = null,
+            Modifier.fieldModifier()
+        )
+        PasswordField(
+            value = uiState.password,
+            onNewValue = viewModel::onPasswordChange,
+            label = stringResource(AppText.password),
+            isError = false,
+            errorText = null,
+            Modifier.fieldModifier()
+        )
 
         BasicButton(
             AppText.sign_in,

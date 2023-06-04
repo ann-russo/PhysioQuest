@@ -1,9 +1,12 @@
 package com.example.physioquest.service
 
+import android.util.Log
 import com.example.physioquest.R
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.model.User
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
@@ -34,6 +37,20 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         auth.signInWithEmailAndPassword(email, password).await()
     }
 
+    override suspend fun reAuthenticate(email: String, password: String): Boolean {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val credential = EmailAuthProvider.getCredential(email, password)
+            return try {
+                currentUser.reauthenticate(credential)
+                true
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                false
+            }
+        }
+        return false
+    }
+
     override suspend fun createAccount(nickname: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).await().user?.let { firebaseUser ->
             val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
@@ -47,6 +64,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
             auth.currentUser?.updateProfile(profileUpdates)?.await()
             SnackbarManager.showMessage(R.string.success_update_nickname)
         } catch (e: Exception) {
+            Log.d("updateNickname exception", e.toString())
             SnackbarManager.showMessage(R.string.error_update_nickname)
         }
     }
@@ -54,31 +72,31 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
     override suspend fun updateEmail(newEmail: String) {
         try {
             auth.currentUser?.verifyBeforeUpdateEmail(newEmail)?.await()
-            SnackbarManager.showMessage(R.string.success_update_nickname)
+            SnackbarManager.showMessage(R.string.success_update_email)
         } catch (e: Exception) {
-            SnackbarManager.showMessage(R.string.success_update_nickname)
+            Log.d("updateEmail exception", e.toString())
+            SnackbarManager.showMessage(R.string.error_update_email)
         }
     }
 
     override suspend fun updatePassword(newPassword: String) {
         try {
             auth.currentUser?.updatePassword(newPassword)?.await()
-            SnackbarManager.showMessage(R.string.success_update_nickname)
+            SnackbarManager.showMessage(R.string.success_update_pwd)
         } catch (e: Exception) {
-            SnackbarManager.showMessage(R.string.success_update_nickname)
+            Log.d("updatePassword exception", e.toString())
+            SnackbarManager.showMessage(R.string.error_update_pwd)
         }
     }
 
     override suspend fun deleteAccount() {
         auth.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // User deletion successful
-                // Handle any additional logic or navigation here
+                auth.signOut()
             } else {
-                // User deletion failed
                 val exception = task.exception
+                Log.d("deleteAccount exception", exception.toString())
                 SnackbarManager.showMessage(R.string.error_account_delete)
-                // Handle the error appropriately
             }
         }
     }

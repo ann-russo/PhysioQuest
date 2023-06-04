@@ -4,10 +4,15 @@
     <string name="email">E-Mail-Adresse</string>
     <string name="password">Passwort</string>
     <string name="username">Benutzername</string>
-    <string name="logout">Ausloggen</string>
+
+    <string name="error_empty_field">Dies ist ein Pflichtfeld</string>
     <string name="error_generic">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
     <string name="error_email_generic">Bitte gib eine gültige E-Mail-Adresse ein.</string>
     <string name="error_email_fh">Bitte benutze deine E-Mail-Adresse der FH-Campus Wien.</string>
+    <string name="error_wrong_pwd">Das Passwort scheint nicht zu funktionieren. Bitte versuche es noch einmal.</string>
+
+    <string name="logout">Ausloggen</string>
+    <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
     <string name="try_again">Try again</string>
     <string name="dropdown">Dropdown Menu</string>
@@ -58,30 +63,49 @@
     <string name="duellmodus_description">30 Sekunden Zeiteinschränkung pro Frage und zufällige Kategorien</string>
     <string name="duellmodus_action">Duell starten</string>
 
+    <!-- Home -->
     <string name="home">Home</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="account">Profil</string>
 
+    <!-- Account Settings -->
     <string name="edit">Profil bearbeiten</string>
-    <string name="edit_username">Nicknamen ändern</string>
-    <string name="edit_email">E-Mail-Adresse ändern</string>
-
     <string name="settings">Einstellungen</string>
+    <string name="stats">Statistik</string>
+    <string name="help">Problem melden</string>
+
+    <!-- Deletion -->
     <string name="delete_account">Account löschen</string>
     <string name="delete_description">Dein Konto wird sofort gelöscht und kann nicht wiederhergestellt werden. Alle Daten gehen unwiderruflich verloren.</string>
     <string name="delete_confirm">Löschen</string>
 
-    <string name="stats">Statistik</string>
-    <string name="help">Problem melden</string>
+    <!-- Update data -->
+    <string name="edit_pwd">Passwort ändern</string>
+    <string name="edit_username">Benutzernamen ändern</string>
+    <string name="edit_email">E-Mail-Adresse ändern</string>
+
+    <string name="edit_email_actual">Aktuelle E-Mail-Adresse</string>
+    <string name="edit_email_new">Neue E-Mail-Adresse</string>
+    <string name="edit_email_confirm">Neue E-Mail-Adresse bestätigen</string>
+    <string name="error_emails_match">Die E-Mail-Adressen stimmen nicht überein.</string>
+
+
+    <string name="edit_username_actual">Aktueller Benutzername</string>
+    <string name="edit_username_new">Neuer Benutzername</string>
+
+    <string name="edit_pwd_placeholder">************</string>
+    <string name="edit_pwd_new">Neues Passwort</string>
+    <string name="edit_pwd_confirm">Neues Passwort bestätigen</string>
+    <string name="error_pwd_match">Die Passwörter stimmen nicht überein.</string>
 
     <string name="success_update_nickname">Dein Benutzername wurde erfolgreich aktualisiert.</string>
     <string name="success_update_email">Eine Bestätigungs-E-Mail wurde an die neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse wird nach deiner Bestätigung auf die neue Adresse aktualisiert.</string>
     <string name="success_update_pwd">Dein Passwort wurde erfolgreich aktualisiert.</string>
 
     <string name="pwd_differ">Die Passwörter stimmen nicht überein.</string>
-    <string name="error_update_pwd">Beim Ändern deines Passworts ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
-    <string name="error_update_email">Beim Ändern deiner E-Mail-Adresse ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
-    <string name="error_update_nickname">Beim Ändern des Benutzernamens ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
-    <string name="error_account_delete">Beim Löschen des Accounts ist ein Fehler aufgetreten. Bitte versuche es später erneut.</string>
+    <string name="error_update_pwd">Beim Ändern deines Passworts ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
+    <string name="error_update_email">Beim Ändern deiner E-Mail-Adresse ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
+    <string name="error_update_nickname">Beim Ändern des Benutzernamens ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
+    <string name="error_account_delete">Beim Löschen des Accounts ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
 
 </resources>

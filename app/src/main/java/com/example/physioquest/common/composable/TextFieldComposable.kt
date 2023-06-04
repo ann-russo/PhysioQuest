@@ -1,12 +1,10 @@
 package com.example.physioquest.common.composable
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -26,41 +24,76 @@ import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
 @Composable
-fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    OutlinedTextField(
-        label = { Text(stringResource(AppText.email)) },
-        singleLine = true,
-        modifier = modifier,
-        value = value,
-        onValueChange = { onNewValue(it) },
-        leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun UsernameField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    OutlinedTextField(
-        label = { Text(stringResource(AppText.username)) },
-        singleLine = true,
-        modifier = modifier,
-        value = value,
-        onValueChange = { onNewValue(it) },
-        leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "Username") }
-    )
-}
-
-@Composable
-fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    PasswordField(value, AppText.password, onNewValue, modifier)
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PasswordField(
+fun EmailField(
     value: String,
-    @StringRes placeholder: Int,
     onNewValue: (String) -> Unit,
+    label: String,
+    isError: Boolean,
+    errorText: Int?,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        label = { Text(label) },
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        placeholder = { Text(stringResource(AppText.email)) },
+        isError = isError,
+        supportingText = {
+            if (isError && errorText != null) {
+                Text(stringResource(errorText))
+            }
+        },
+        onValueChange = { onNewValue(it) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = label
+            )
+        }
+    )
+}
+
+@Composable
+fun UsernameField(
+    value: String,
+    onNewValue: (String) -> Unit,
+    label: String,
+    isError: Boolean,
+    errorText: Int?,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        label = { Text(label) },
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        placeholder = { Text(stringResource(AppText.username)) },
+        isError = isError,
+        supportingText = {
+            if (isError && errorText != null) {
+                Text(stringResource(errorText))
+            } else {
+                Text(stringResource(AppText.error_username_length))
+            }
+        },
+        onValueChange = { onNewValue(it) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = label
+            )
+        }
+    )
+}
+
+@Composable
+fun PasswordField(
+    value: String,
+    onNewValue: (String) -> Unit,
+    label: String,
+    isError: Boolean,
+    errorText: Int?,
     modifier: Modifier = Modifier
 ) {
     var isVisible by remember { mutableStateOf(false) }
@@ -73,10 +106,17 @@ private fun PasswordField(
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     OutlinedTextField(
-        label = { Text(stringResource(placeholder)) },
+        label = { Text(label) },
         modifier = modifier,
         value = value,
+        placeholder = { Text(stringResource(AppText.password)) },
         onValueChange = { onNewValue(it) },
+        isError = isError,
+        supportingText = {
+            if (isError && errorText != null) {
+                Text(stringResource(errorText))
+            }
+        },
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
         trailingIcon = {
             IconButton(onClick = { isVisible = !isVisible }) {
