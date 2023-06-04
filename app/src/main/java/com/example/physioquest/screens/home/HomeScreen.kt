@@ -82,7 +82,7 @@ fun HomeScreen(
                     subtitle = AppText.duellmodus_subtitle,
                     actionText = AppText.duellmodus_action,
                     modifier = Modifier.card(),
-                    onButtonClick = { /*TODO*/ }
+                    onButtonClick = { viewModel.onDuellmodusClick(openScreen) }
                 )
             }
         },

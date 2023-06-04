@@ -62,6 +62,7 @@
     <string name="duellmodus_subtitle">Multiplayer</string>
     <string name="duellmodus_description">30 Sekunden Zeiteinschränkung pro Frage und zufällige Kategorien</string>
     <string name="duellmodus_action">Duell starten</string>
+    <string name="find_opponent">Suche nach Gegner</string>
 
     <!-- Home -->
     <string name="home">Home</string>
@@ -88,7 +89,6 @@
     <string name="edit_email_new">Neue E-Mail-Adresse</string>
     <string name="edit_email_confirm">Neue E-Mail-Adresse bestätigen</string>
     <string name="error_emails_match">Die E-Mail-Adressen stimmen nicht überein.</string>
-
 
     <string name="edit_username_actual">Aktueller Benutzername</string>
     <string name="edit_username_new">Neuer Benutzername</string>

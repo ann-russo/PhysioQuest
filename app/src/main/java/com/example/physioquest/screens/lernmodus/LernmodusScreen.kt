@@ -1,6 +1,5 @@
 package com.example.physioquest.screens.lernmodus
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,25 +10,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.physioquest.common.composable.CenteredTopAppBar
+import com.example.physioquest.common.composable.QuizTopAppBar
 import com.example.physioquest.common.composable.SelectableAnswerOption
 import com.example.physioquest.common.util.answerCard
 import com.example.physioquest.model.Answer
@@ -37,7 +29,6 @@ import com.example.physioquest.model.Question
 import com.example.physioquest.R.string as AppText
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LernmodusContent(
     surveyScreenData: LernmodusScreenData,
@@ -52,11 +43,12 @@ fun LernmodusContent(
     Scaffold(
         topBar = {
             if (surveyScreenData.selectedCategory == null) {
-                CategoryTopAppBar(
+                CenteredTopAppBar(
+                    title = AppText.categories,
                     onClosePressed = onClosePressed
                 )
             } else {
-                LernmodusTopAppBar(
+                QuizTopAppBar(
                     questionIndex = surveyScreenData.questionIndex,
                     totalQuestionsCount = surveyScreenData.questionCount,
                     onClosePressed = onClosePressed
@@ -165,70 +157,6 @@ fun QuestionItem(questionContent: String) {
             text = questionContent,
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LernmodusTopAppBar(
-    questionIndex: Int,
-    totalQuestionsCount: Int,
-    onClosePressed: () -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-
-        CenterAlignedTopAppBar(
-            title = {
-                TopAppBarTitle(
-                    questionIndex = questionIndex,
-                    totalQuestionsCount = totalQuestionsCount,
-                )
-            },
-            actions = {
-                IconButton(
-                    onClick = onClosePressed,
-                    modifier = Modifier.padding(4.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.Close,
-                        contentDescription = "close",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        )
-
-        val animatedProgress by animateFloatAsState(
-            targetValue = (questionIndex + 1) / totalQuestionsCount.toFloat(),
-            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-        )
-        LinearProgressIndicator(
-            progress = animatedProgress,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-        )
-    }
-}
-
-@Composable
-private fun TopAppBarTitle(
-    questionIndex: Int,
-    totalQuestionsCount: Int,
-    modifier: Modifier = Modifier
-) {
-    Row(modifier = modifier) {
-        Text(
-            text = (questionIndex + 1).toString(),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = " von $totalQuestionsCount",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
     }
 }

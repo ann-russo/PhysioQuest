@@ -16,7 +16,7 @@ fun AccountRoute(
     openScreen: (String) -> Unit,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
-    val data = viewModel.surveyScreenData
+    val data = viewModel.accountScreenData
 
     AccountContent(
         data = data,

@@ -69,9 +69,9 @@ class AccountViewModel @Inject constructor(
     private val _currentTitle = mutableStateOf("Profil")
     private val _currentDestination = mutableStateOf(AccountDestination.PROFIL)
 
-    private var _surveyScreenData = mutableStateOf(createAccountScreenData())
-    val surveyScreenData: AccountScreenData
-        get() = _surveyScreenData.value
+    private var _accountScreenData = mutableStateOf(createAccountScreenData())
+    val accountScreenData: AccountScreenData
+        get() = _accountScreenData.value
 
     init {
         launchCatching {
@@ -104,31 +104,31 @@ class AccountViewModel @Inject constructor(
     fun onEditClick() {
         _currentDestination.value = AccountDestination.EDIT
         _currentTitle.value = "Profil bearbeiten"
-        _surveyScreenData.value = createAccountScreenData()
+        _accountScreenData.value = createAccountScreenData()
     }
 
     fun onStatisticClick() {
         _currentDestination.value = AccountDestination.STATISTIK
         _currentTitle.value = "Statistik"
-        _surveyScreenData.value = createAccountScreenData()
+        _accountScreenData.value = createAccountScreenData()
     }
 
     fun onSettingsClick() {
         _currentDestination.value = AccountDestination.EINSTELLUNGEN
         _currentTitle.value = "Einstellungen"
-        _surveyScreenData.value = createAccountScreenData()
+        _accountScreenData.value = createAccountScreenData()
     }
 
     fun onHelpClick() {
         _currentDestination.value = AccountDestination.HELP
         _currentTitle.value = "App Info"
-        _surveyScreenData.value = createAccountScreenData()
+        _accountScreenData.value = createAccountScreenData()
     }
 
     fun goBack() {
         _currentDestination.value = AccountDestination.PROFIL
         _currentTitle.value = "Profil"
-        _surveyScreenData.value = createAccountScreenData()
+        _accountScreenData.value = createAccountScreenData()
     }
 
     fun deleteAccount(restartApp: (String) -> Unit) {

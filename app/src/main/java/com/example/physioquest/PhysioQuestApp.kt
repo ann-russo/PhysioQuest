@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.screens.account.AccountRoute
+import com.example.physioquest.screens.duellmodus.DuellmodusRoute
 import com.example.physioquest.screens.home.HomeScreen
 import com.example.physioquest.screens.leaderboard.LeaderboardScreen
 import com.example.physioquest.screens.lernmodus.LernmodusRoute
@@ -137,6 +138,13 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         LeaderboardScreen(
             restartApp = { route -> appState.clearAndNavigate(route) },
             openScreen = { route -> appState.navigate(route) }
+        )
+    }
+
+    composable(DUELLMODUS_ROUTE) {
+        DuellmodusRoute(
+            openScreen = { route -> appState.navigate(route) },
+            onNavUp = { appState.popUp() }
         )
     }
 

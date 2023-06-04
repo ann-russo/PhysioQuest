@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.ACCOUNT_ROUTE
+import com.example.physioquest.DUELLMODUS_ROUTE
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LEADERBOARD_SCREEN
 import com.example.physioquest.LERNMODUS_ROUTE
@@ -40,6 +41,12 @@ class HomeViewModel @Inject constructor(
     fun onLernmodusClick(openScreen: (String) -> Unit) {
         launchCatching {
             openScreen(LERNMODUS_ROUTE)
+        }
+    }
+
+    fun onDuellmodusClick(openScreen: (String) -> Unit) {
+        launchCatching {
+            openScreen(DUELLMODUS_ROUTE)
         }
     }
 
