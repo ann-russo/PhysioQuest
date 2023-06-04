@@ -76,7 +76,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
     implementation "androidx.compose.runtime:runtime:1.4.3"
-
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.31.3-beta"
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.5.0')

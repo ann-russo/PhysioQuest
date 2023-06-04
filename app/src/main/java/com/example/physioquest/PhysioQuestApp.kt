@@ -1,6 +1,9 @@
 package com.example.physioquest
 
 import android.content.res.Resources
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -19,9 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.screens.account.AccountRoute
 import com.example.physioquest.screens.duellmodus.DuellmodusRoute
@@ -33,10 +33,14 @@ import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
 import com.example.physioquest.ui.theme.PhysioQuestTheme
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 @ExperimentalMaterial3Api
+@OptIn(ExperimentalAnimationApi::class)
 fun PhysioQuestApp() {
     PhysioQuestTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
@@ -56,7 +60,7 @@ fun PhysioQuestApp() {
                     )
                 }
             ) { paddingValues ->
-                NavHost(
+                AnimatedNavHost(
                     navController = appState.navController,
                     startDestination = START_SCREEN,
                     modifier = Modifier.padding(paddingValues)
@@ -68,10 +72,11 @@ fun PhysioQuestApp() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberAppState(
     snackbarHostState: SnackbarHostState,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberAnimatedNavController(),
     snackbarManager: SnackbarManager = SnackbarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -93,6 +98,7 @@ fun resources(): Resources {
     return LocalContext.current.resources
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
     composable(START_SCREEN) {
         StartScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
@@ -118,7 +124,53 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         )
     }
 
-    composable(LERNMODUS_ROUTE) {
+    composable(
+        route = LERNMODUS_ROUTE,
+        enterTransition = {
+            when (initialState.destination.route) {
+                HOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                HOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        }
+    ) {
         LernmodusRoute(
             onQuizComplete = { appState.navigate("ResultsScreen/$it") },
             openScreen = { route -> appState.navigate(route) },
@@ -141,7 +193,53 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         )
     }
 
-    composable(DUELLMODUS_ROUTE) {
+    composable(
+        route = DUELLMODUS_ROUTE,
+        enterTransition = {
+            when (initialState.destination.route) {
+                HOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                HOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        }
+    ) {
         DuellmodusRoute(
             openScreen = { route -> appState.navigate(route) },
             onNavUp = { appState.popUp() }
