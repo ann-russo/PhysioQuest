@@ -36,6 +36,56 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     Scaffold(
+        topBar = {
+            ActionToolBar(
+                title = AppText.app_name,
+                modifier = Modifier.toolbarActions(),
+                endActionIcon = AppIcon.ic_exit,
+                endAction = { viewModel.onSignOutClick(restartApp) }
+            )
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(paddingValues)
+            ) {
+                val currentUser = viewModel.user.value?.username
+                Text(
+                    text = stringResource(AppText.welcome),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+                Text(
+                    text = "$currentUser!",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.bigSpacer())
+                ElevatedCard(
+                    title = AppText.lernmodus_title,
+                    subtitle = AppText.lernmodus_subtitle,
+                    actionText = AppText.lernmodus_action,
+                    modifier = Modifier.card(),
+                    onButtonClick = { viewModel.onLernmodusClick(openScreen) }
+                )
+                Spacer(modifier = Modifier.smallSpacer())
+                ElevatedCard(
+                    title = AppText.duellmodus_title,
+                    subtitle = AppText.duellmodus_subtitle,
+                    actionText = AppText.duellmodus_action,
+                    modifier = Modifier.card(),
+                    onButtonClick = { /*TODO*/ }
+                )
+            }
+        },
         bottomBar = {
             BottomNavBar(
                 selectedScreen = stringResource(AppText.home),
@@ -53,58 +103,8 @@ fun HomeScreen(
                             viewModel.onAccountClick(openScreen)
                         }
                     }
-                })
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            ActionToolBar(
-                title = AppText.app_name,
-                modifier = Modifier.toolbarActions(),
-                endActionIcon = AppIcon.ic_exit,
-                endAction = { viewModel.onSignOutClick(restartApp) }
-            )
-            Spacer(modifier = Modifier.smallSpacer())
-
-            val currentUser = viewModel.user.value?.username
-            Text(
-                text = stringResource(AppText.welcome),
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
-            Text(
-                text = "$currentUser!",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
-            Spacer(modifier = Modifier.bigSpacer())
-
-            ElevatedCard(
-                title = AppText.lernmodus_title,
-                subtitle = AppText.lernmodus_subtitle,
-                actionText = AppText.lernmodus_action,
-                modifier = Modifier.card(),
-                onButtonClick = { viewModel.onLernmodusClick(openScreen) }
-            )
-
-            Spacer(modifier = Modifier.smallSpacer())
-
-            ElevatedCard(
-                title = AppText.duellmodus_title,
-                subtitle = AppText.duellmodus_subtitle,
-                actionText = AppText.duellmodus_action,
-                modifier = Modifier.card(),
-                onButtonClick = { /*TODO*/ }
+                }
             )
         }
-    }
+    )
 }
