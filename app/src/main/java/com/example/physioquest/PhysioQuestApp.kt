@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.screens.account.AccountRoute
 import com.example.physioquest.screens.duellmodus.DuellmodusRoute
@@ -32,7 +33,6 @@ import com.example.physioquest.screens.lernmodus.ResultsScreen
 import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
-import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -178,7 +178,53 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         )
     }
 
-    composable(LERNMODUS_RESULTS) {
+    composable(
+        route = LERNMODUS_RESULTS,
+        enterTransition = {
+            when (initialState.destination.route) {
+                LERNMODUS_ROUTE ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                LERNMODUS_ROUTE ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(700)
+                    )
+
+                else -> null
+            }
+        }
+    ) {
         val result = it.arguments?.getString("result")?.toDoubleOrNull()
         ResultsScreen(
             result = result ?: 0.0,
