@@ -37,7 +37,8 @@ fun RegistrationScreen(
             CenteredTopAppBar(
                 title = AppText.register_option,
                 onClosePressed = { viewModel.onClosePressed(openScreen) }
-            ) }
+            )
+        }
     ) { paddingValues ->
         val uiState by viewModel.uiState
         Column(
@@ -52,31 +53,42 @@ fun RegistrationScreen(
                 value = uiState.username,
                 onNewValue = viewModel::onUsernameChange,
                 label = stringResource(AppText.username),
-                isError = viewModel.isUsernameValid(uiState.username),
-                errorText = null,
+                isError = viewModel.usernameErrorState.value,
+                errorText = viewModel.usernameErrorMessage,
+                supportingText = AppText.hint_username_length,
                 Modifier.fieldModifier()
             )
             EmailField(
                 value = uiState.email,
                 onNewValue = viewModel::onEmailChange,
                 label = stringResource(AppText.email),
-                isError = false,
-                errorText = null,
+                isError = viewModel.emailErrorState.value,
+                errorText = viewModel.emailErrorMessage,
+                supportingText = AppText.hint_email_fh,
                 Modifier.fieldModifier()
             )
             PasswordField(
                 value = uiState.password,
                 onNewValue = viewModel::onPasswordChange,
                 label = stringResource(AppText.password),
-                isError = false,
-                errorText = null,
+                isError = viewModel.passwordErrorState.value,
+                errorText = viewModel.passwordErrorMessage,
+                supportingText = AppText.hint_password,
                 Modifier.fieldModifier()
             )
 
             BasicButton(
                 AppText.sign_up,
                 Modifier.basicButton()
-            ) { viewModel.onSignUpClick(openAndPopUp) }
+            ) {
+                viewModel.isFieldEmpty()
+                if (!viewModel.emailErrorState.value &&
+                    !viewModel.passwordErrorState.value &&
+                    !viewModel.usernameErrorState.value
+                ) {
+                    viewModel.onSignUpClick(openAndPopUp)
+                }
+            }
 
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,

@@ -75,7 +75,7 @@ class AccountViewModel @Inject constructor(
 
     init {
         launchCatching {
-            accountService.currentUser.collect { user  ->
+            accountService.currentUser.collect { user ->
                 _user.value = user
                 _username.value = user.username
                 _email.value = user.email
@@ -221,7 +221,7 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    fun validateNewConfirmPassword(newPassword: String,confirmPassword: String) {
+    fun validateNewConfirmPassword(newPassword: String, confirmPassword: String) {
         if (newPassword != confirmPassword) {
             confirmPasswordErrorState.value = true
             _confirmPasswordErrorMessage.value = AppText.error_pwd_match
@@ -229,7 +229,11 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    fun checkEmptyPasswordFields(currentPassword: String, newPassword: String, confirmPassword: String) {
+    fun checkEmptyPasswordFields(
+        currentPassword: String,
+        newPassword: String,
+        confirmPassword: String
+    ) {
         if (currentPassword.isBlank()) {
             passwordErrorState.value = true
             _passwordErrorMessage.value = AppText.error_empty_field

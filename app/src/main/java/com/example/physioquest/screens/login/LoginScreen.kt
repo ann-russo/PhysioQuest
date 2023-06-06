@@ -20,7 +20,7 @@ import com.example.physioquest.common.composable.CenteredTopAppBar
 import com.example.physioquest.common.composable.EmailField
 import com.example.physioquest.common.composable.PasswordField
 import com.example.physioquest.common.util.basicButton
-import com.example.physioquest.common.util.fieldModifier
+import com.example.physioquest.common.util.smallFieldModifier
 import com.example.physioquest.common.util.textButton
 import com.example.physioquest.R.string as AppText
 
@@ -31,14 +31,17 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState
+
     Scaffold(
         topBar = {
             CenteredTopAppBar(
                 title = AppText.sign_in,
                 onClosePressed = { viewModel.onClosePressed(openScreen) }
-            ) }
+            )
+        }
     ) { paddingValues ->
-        val uiState by viewModel.uiState
+
         Column(
             modifier = modifier
                 .padding(paddingValues)
@@ -51,23 +54,30 @@ fun LoginScreen(
                 value = uiState.email,
                 onNewValue = viewModel::onEmailChange,
                 label = stringResource(AppText.email),
-                isError = false,
-                errorText = null,
-                Modifier.fieldModifier()
+                isError = viewModel.emailErrorState.value,
+                errorText = viewModel.emailErrorMessage,
+                supportingText = null,
+                Modifier.smallFieldModifier()
             )
             PasswordField(
                 value = uiState.password,
                 onNewValue = viewModel::onPasswordChange,
                 label = stringResource(AppText.password),
-                isError = false,
-                errorText = null,
-                Modifier.fieldModifier()
+                isError = viewModel.passwordErrorState.value,
+                errorText = viewModel.passwordErrorMessage,
+                supportingText = null,
+                Modifier.smallFieldModifier()
             )
 
             BasicButton(
                 AppText.sign_in,
                 Modifier.basicButton()
-            ) { viewModel.onSignInClick(openAndPopUp) }
+            ) {
+                viewModel.isFieldEmpty()
+                if (!viewModel.emailErrorState.value && !viewModel.passwordErrorState.value) {
+                    viewModel.onSignInClick(openAndPopUp)
+                }
+            }
 
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,

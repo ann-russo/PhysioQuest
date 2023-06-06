@@ -7,8 +7,8 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.physioquest.R.drawable as AppIcon
-import com.example.physioquest.R.string as AppText
 
 @Composable
 fun EmailField(
@@ -30,18 +29,20 @@ fun EmailField(
     label: String,
     isError: Boolean,
     errorText: Int?,
+    supportingText: Int?,
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
+    TextField(
         label = { Text(label) },
         singleLine = true,
         modifier = modifier,
         value = value,
-        placeholder = { Text(stringResource(AppText.email)) },
         isError = isError,
         supportingText = {
             if (isError && errorText != null) {
                 Text(stringResource(errorText))
+            } else if (supportingText != null) {
+                Text(stringResource(supportingText))
             }
         },
         onValueChange = { onNewValue(it) },
@@ -61,20 +62,20 @@ fun UsernameField(
     label: String,
     isError: Boolean,
     errorText: Int?,
+    supportingText: Int?,
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
+    TextField(
         label = { Text(label) },
         singleLine = true,
         modifier = modifier,
         value = value,
-        placeholder = { Text(stringResource(AppText.username)) },
         isError = isError,
         supportingText = {
             if (isError && errorText != null) {
                 Text(stringResource(errorText))
-            } else {
-                Text(stringResource(AppText.error_username_length))
+            } else if (supportingText != null) {
+                Text(stringResource(supportingText))
             }
         },
         onValueChange = { onNewValue(it) },
@@ -94,6 +95,7 @@ fun PasswordField(
     label: String,
     isError: Boolean,
     errorText: Int?,
+    supportingText: Int?,
     modifier: Modifier = Modifier
 ) {
     var isVisible by remember { mutableStateOf(false) }
@@ -105,16 +107,17 @@ fun PasswordField(
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
-    OutlinedTextField(
+    TextField(
         label = { Text(label) },
         modifier = modifier,
         value = value,
-        placeholder = { Text(stringResource(AppText.password)) },
         onValueChange = { onNewValue(it) },
         isError = isError,
         supportingText = {
             if (isError && errorText != null) {
                 Text(stringResource(errorText))
+            } else if (supportingText != null) {
+                Text(stringResource(supportingText))
             }
         },
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },

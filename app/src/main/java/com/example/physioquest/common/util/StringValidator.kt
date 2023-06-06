@@ -3,7 +3,7 @@ package com.example.physioquest.common.util
 import android.util.Patterns
 import java.util.regex.Pattern
 
-private const val MIN_PASS_LENGTH = 6
+private const val MIN_PASS_LENGTH = 8
 private const val MIN_USERNAME_LENGTH = 6
 private const val MAX_USERNAME_LENGTH = 20
 private const val PASS_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$"

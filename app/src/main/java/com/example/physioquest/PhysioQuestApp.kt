@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.screens.account.AccountRoute
 import com.example.physioquest.screens.duellmodus.DuellmodusRoute
@@ -34,6 +33,7 @@ import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
 import com.example.physioquest.screens.welcome.WelcomeScreen
+import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -104,7 +104,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
     composable(START_SCREEN) {
         StartScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
-    
+
     composable(WELCOME_SCREEN) {
         WelcomeScreen(
             openAndPopUp = { route, popUp ->

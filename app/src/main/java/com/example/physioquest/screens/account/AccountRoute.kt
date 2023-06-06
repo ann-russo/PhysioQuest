@@ -66,7 +66,8 @@ fun AccountRoute(
                 AccountDestination.EINSTELLUNGEN -> {
                     SettingsScreen(
                         restartApp = restartApp,
-                        modifier = modifier)
+                        modifier = modifier
+                    )
                 }
 
                 AccountDestination.EDIT -> {

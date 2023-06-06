@@ -50,9 +50,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.common.composable.EmailField
 import com.example.physioquest.common.composable.PasswordField
 import com.example.physioquest.common.composable.UsernameField
+import kotlinx.coroutines.launch
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
-import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -177,6 +177,7 @@ fun EditScreen(
                         }
                     )
                 }
+
                 else -> null
             }
         }
@@ -223,10 +224,12 @@ fun ChangeUsernameContent(
                 onNewValue = {
                     newUsernameState.value = it
                     viewModel.usernameErrorState.value = false
-                    viewModel.validateUsername(newUsernameState.value) },
+                    viewModel.validateUsername(newUsernameState.value)
+                },
                 label = stringResource(AppText.edit_username_new),
                 isError = viewModel.usernameErrorState.value,
                 errorText = viewModel.usernameErrorMessage,
+                supportingText = AppText.hint_username_length,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -271,10 +274,12 @@ fun ChangeEmailContent(
                 onNewValue = {
                     newEmailState.value = it
                     viewModel.emailErrorState.value = false
-                    viewModel.validateNewEmail(newEmailState.value) },
+                    viewModel.validateNewEmail(newEmailState.value)
+                },
                 label = stringResource(AppText.edit_email_new),
                 isError = viewModel.emailErrorState.value,
                 errorText = viewModel.emailErrorMessage,
+                supportingText = AppText.hint_email_fh,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -283,10 +288,15 @@ fun ChangeEmailContent(
                 onNewValue = {
                     newEmailConfirmState.value = it
                     viewModel.confirmEmailErrorState.value = false
-                    viewModel.validateNewConfirmEmail(newEmailState.value, newEmailConfirmState.value) },
+                    viewModel.validateNewConfirmEmail(
+                        newEmailState.value,
+                        newEmailConfirmState.value
+                    )
+                },
                 label = stringResource(AppText.edit_email_confirm),
                 isError = viewModel.confirmEmailErrorState.value,
                 errorText = viewModel.confirmEmailErrorMessage,
+                supportingText = null,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -294,10 +304,12 @@ fun ChangeEmailContent(
                 value = currentPasswordState.value,
                 onNewValue = {
                     currentPasswordState.value = it
-                    viewModel.passwordErrorState.value = false },
+                    viewModel.passwordErrorState.value = false
+                },
                 label = stringResource(AppText.password),
                 isError = viewModel.passwordErrorState.value,
                 errorText = viewModel.passwordErrorMessage,
+                supportingText = null,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -341,10 +353,12 @@ fun ChangePasswordContent(
                 value = currentPasswordState.value,
                 onNewValue = {
                     currentPasswordState.value = it
-                    viewModel.passwordErrorState.value = false },
+                    viewModel.passwordErrorState.value = false
+                },
                 label = stringResource(AppText.password),
                 isError = viewModel.passwordErrorState.value,
                 errorText = viewModel.passwordErrorMessage,
+                supportingText = AppText.hint_password_current,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -353,10 +367,12 @@ fun ChangePasswordContent(
                 onNewValue = {
                     newPasswordState.value = it
                     viewModel.newPasswordErrorState.value = false
-                    viewModel.validateNewPassword(newPasswordState.value) },
+                    viewModel.validateNewPassword(newPasswordState.value)
+                },
                 label = stringResource(AppText.edit_pwd_new),
                 isError = viewModel.newPasswordErrorState.value,
                 errorText = viewModel.newPasswordErrorMessage,
+                supportingText = AppText.hint_password,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -365,10 +381,15 @@ fun ChangePasswordContent(
                 onNewValue = {
                     newPasswordConfirmState.value = it
                     viewModel.confirmPasswordErrorState.value = false
-                    viewModel.validateNewConfirmPassword(newPasswordState.value, newPasswordConfirmState.value) },
+                    viewModel.validateNewConfirmPassword(
+                        newPasswordState.value,
+                        newPasswordConfirmState.value
+                    )
+                },
                 label = stringResource(AppText.edit_pwd_confirm),
                 isError = viewModel.confirmPasswordErrorState.value,
                 errorText = viewModel.confirmPasswordErrorMessage,
+                supportingText = null,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))

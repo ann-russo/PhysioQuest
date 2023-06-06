@@ -2,8 +2,8 @@ package com.example.physioquest.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -76,14 +76,14 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun PhysioQuestTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable() () -> Unit
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
 ) {
-  val colors = if (!useDarkTheme) {
-    LightColors
-  } else {
-    DarkColors
-  }
+    val colors = if (!useDarkTheme) {
+        LightColors
+    } else {
+        DarkColors
+    }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(systemUiController, useDarkTheme) {
         systemUiController.setSystemBarsColor(
@@ -98,10 +98,8 @@ fun PhysioQuestTheme(
         onDispose { }
     }
 
-
-
-  MaterialTheme(
-    colorScheme = colors,
-    content = content
-  )
+    MaterialTheme(
+        colorScheme = colors,
+        content = content
+    )
 }

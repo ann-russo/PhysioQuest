@@ -11,6 +11,11 @@
     <string name="error_email_fh">Bitte benutze deine E-Mail-Adresse der FH-Campus Wien.</string>
     <string name="error_wrong_pwd">Das Passwort scheint nicht zu funktionieren. Bitte versuche es noch einmal.</string>
 
+    <string name="hint_email_fh">Nur E-Mail-Adressen der FH Campus Wien zugelassen</string>
+    <string name="hint_username_length">Zwischen 6 und 20 Zeichen lang</string>
+    <string name="hint_password">Mind. 8 Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen</string>
+    <string name="hint_password_current">Dein aktuelles Passwort</string>
+
     <string name="logout">Ausloggen</string>
     <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
