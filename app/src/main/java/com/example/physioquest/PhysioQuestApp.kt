@@ -43,7 +43,7 @@ import kotlinx.coroutines.CoroutineScope
 @ExperimentalMaterial3Api
 @OptIn(ExperimentalAnimationApi::class)
 fun PhysioQuestApp() {
-    PhysioQuestTheme {
+    PhysioQuestTheme(navigationBarColor = null) {
         Surface(color = MaterialTheme.colorScheme.background) {
             val snackbarHostState = remember { SnackbarHostState() }
             val appState = rememberAppState(snackbarHostState = snackbarHostState)

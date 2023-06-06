@@ -38,6 +38,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.physioquest.ui.theme.PhysioQuestTheme
+import com.example.physioquest.ui.theme.md_theme_light_inverseOnSurface
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -244,26 +246,29 @@ fun BottomNavBar(
 ) {
     val items = listOf("Home", "Leaderboard", "Profil")
     val selectedItem = items.indexOf(selectedScreen)
+    val navBarColor = md_theme_light_inverseOnSurface
 
-    NavigationBar {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = {
-                    when (item) {
-                        "Home" -> Icon(Icons.Filled.Home, contentDescription = item)
-                        "Leaderboard" -> Icon(
-                            painterResource(AppIcon.leaderboard),
-                            modifier = Modifier.size(26.dp),
-                            contentDescription = item
-                        )
+    PhysioQuestTheme(navigationBarColor = navBarColor) {
+        NavigationBar {
+            items.forEachIndexed { index, item ->
+                NavigationBarItem(
+                    icon = {
+                        when (item) {
+                            "Home" -> Icon(Icons.Filled.Home, contentDescription = item)
+                            "Leaderboard" -> Icon(
+                                painterResource(AppIcon.leaderboard),
+                                modifier = Modifier.size(26.dp),
+                                contentDescription = item
+                            )
 
-                        "Profil" -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
-                    }
-                },
-                label = { Text(item) },
-                selected = selectedItem == index,
-                onClick = { onScreenSelected(item) }
-            )
+                            "Profil" -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
+                        }
+                    },
+                    label = { Text(item) },
+                    selected = selectedItem == index,
+                    onClick = { onScreenSelected(item) }
+                )
+            }
         }
     }
 }

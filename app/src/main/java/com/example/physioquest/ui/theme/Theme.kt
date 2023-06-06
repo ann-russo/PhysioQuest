@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
@@ -77,6 +78,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun PhysioQuestTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
+    navigationBarColor: Color?,
     content: @Composable() () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
@@ -91,7 +93,7 @@ fun PhysioQuestTheme(
             darkIcons = !useDarkTheme
         )
         systemUiController.setNavigationBarColor(
-            color = colors.surface,
+            color = navigationBarColor ?: colors.surface,
             darkIcons = !useDarkTheme
         )
 
