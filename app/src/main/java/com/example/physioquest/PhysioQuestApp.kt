@@ -33,6 +33,7 @@ import com.example.physioquest.screens.lernmodus.ResultsScreen
 import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
+import com.example.physioquest.screens.welcome.WelcomeScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -103,18 +104,123 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
     composable(START_SCREEN) {
         StartScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
-
-    composable(LOGIN_SCREEN) {
-        LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    
+    composable(WELCOME_SCREEN) {
+        WelcomeScreen(
+            openAndPopUp = { route, popUp ->
+                appState.navigateAndPopUp(route, popUp)
+            }
+        )
     }
 
-    composable(REGISTRATION_SCREEN) {
-        RegistrationScreen(openAndPopUp = { route, popUp ->
-            appState.navigateAndPopUp(
-                route,
-                popUp
-            )
-        })
+    composable(
+        route = LOGIN_SCREEN,
+        enterTransition = {
+            when (initialState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        }
+    ) {
+        LoginScreen(
+            openScreen = { route -> appState.navigate(route) },
+            openAndPopUp = { route, popUp ->
+                appState.navigateAndPopUp(route, popUp)
+            }
+        )
+    }
+
+    composable(
+        route = REGISTRATION_SCREEN,
+        enterTransition = {
+            when (initialState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                WELCOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        }
+    ) {
+        RegistrationScreen(
+            openScreen = { route -> appState.navigate(route) },
+            openAndPopUp = { route, popUp ->
+                appState.navigateAndPopUp(route, popUp)
+            }
+        )
     }
 
     composable(HOME_SCREEN) {

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LOGIN_SCREEN
 import com.example.physioquest.REGISTRATION_SCREEN
+import com.example.physioquest.WELCOME_SCREEN
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.common.util.isAllowedEmail
 import com.example.physioquest.common.util.isValidEmail
@@ -83,6 +84,12 @@ class RegistrationViewModel @Inject constructor(private val accountService: Acco
         launchCatching {
             accountService.createAccount(username, email, password)
             openAndPopUp(HOME_SCREEN, REGISTRATION_SCREEN)
+        }
+    }
+
+    fun onClosePressed(openScreen: (String) -> Unit) {
+        launchCatching {
+            openScreen(WELCOME_SCREEN)
         }
     }
 
