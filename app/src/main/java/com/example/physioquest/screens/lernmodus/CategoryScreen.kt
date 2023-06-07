@@ -51,11 +51,13 @@ fun CategoryScreen(
         modifier = modifier
     ) {
         items(categories) { category ->
-            CategoryCard(
-                category = category,
-                questionCount = viewModel.countQuestionsForCategory(category),
-                onCategorySelected = onCategorySelected
-            )
+            viewModel.questionCounts[category]?.let {
+                CategoryCard(
+                    category = category,
+                    questionCount = it,
+                    onCategorySelected = onCategorySelected
+                )
+            }
         }
     }
 }

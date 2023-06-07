@@ -59,7 +59,7 @@ fun LernmodusRoute(
             when {
                 targetState.selectedCategory == null -> {
                     CategoryScreen(
-                        categories = viewModel.getCategories(),
+                        categories = viewModel.categories,
                         onCategorySelected = { category ->
                             viewModel.onCategorySelected(category)
                         },

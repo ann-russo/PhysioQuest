@@ -238,7 +238,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Up,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -249,7 +249,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Down,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -260,7 +260,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Up,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -271,7 +271,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Down,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -294,7 +294,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 LERNMODUS_ROUTE ->
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Up,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -305,7 +305,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Down,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -316,7 +316,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 LERNMODUS_ROUTE ->
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Up,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -327,7 +327,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Down,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -359,7 +359,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Up,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -370,7 +370,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Down,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -381,7 +381,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Up,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
@@ -392,7 +392,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
                 HOME_SCREEN ->
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Down,
-                        animationSpec = tween(700)
+                        animationSpec = tween(400)
                     )
 
                 else -> null
