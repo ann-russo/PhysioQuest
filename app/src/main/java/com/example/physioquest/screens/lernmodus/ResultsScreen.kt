@@ -42,7 +42,11 @@ fun ResultsScreen(
     result: QuizResult,
     openScreen: (String) -> Unit
 ) {
-    val progress = result.scorePercent.toFloat()
+    val points = String.format("%.2f", result.scorePoints)
+    val percent = String.format("%.2f", result.scorePercent)
+    val total = result.totalPoints
+
+    val progress = percent.toFloat()
     val angle = remember { Animatable(0f) }
 
     LaunchedEffect(progress) {
@@ -50,7 +54,7 @@ fun ResultsScreen(
             targetValue = progress,
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessLow
+                stiffness = Spring.StiffnessVeryLow
             )
         )
     }
@@ -70,7 +74,7 @@ fun ResultsScreen(
                 .padding(vertical = 16.dp)
         )
         Text(
-            text = "${result.scorePoints} Punkte erreicht",
+            text = "$points von $total Punkten erreicht",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .wrapContentWidth()
@@ -121,7 +125,7 @@ fun MedalBadge(angle: Float) {
             )
 
             drawArc(
-                color = Color.Green,
+                color = Color(0xff9cd67d),
                 startAngle = -90f,
                 sweepAngle = sweepAngle,
                 useCenter = false,

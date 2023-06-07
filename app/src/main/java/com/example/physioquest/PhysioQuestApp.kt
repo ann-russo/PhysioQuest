@@ -281,7 +281,7 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         LernmodusRoute(
             onQuizComplete = { result ->
                 appState
-                    .navigate("ResultsScreen/${result.scorePoints}/${result.scorePercent}") },
+                    .navigate("ResultsScreen/${result.scorePoints}/${result.scorePercent}/${result.totalPoints}") },
             openScreen = { route -> appState.navigate(route) },
             onNavUp = { appState.popUp() },
         )
@@ -337,7 +337,8 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         val result = it.arguments?.let { bundle ->
             val points = bundle.getString("points")?.toDoubleOrNull() ?: 0.0
             val percentage = bundle.getString("percentage")?.toDoubleOrNull() ?: 0.0
-            QuizResult(points, percentage)
+            val total = bundle.getString("total")?.toIntOrNull() ?: 0
+            QuizResult(points, percentage, total)
         }
         ResultsScreen(
             result = result ?: QuizResult(),

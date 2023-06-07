@@ -187,6 +187,7 @@ class LernmodusViewModel @Inject constructor(
         val quizResult = QuizResult()
         quizResult.scorePoints = _result.value
         quizResult.scorePercent = (_result.value / questions.size) * 100
+        quizResult.totalPoints = questions.size
         Log.d("getQuizResult", "result points: ${quizResult.scorePoints}")
         Log.d("getQuizResult", "result percent: ${quizResult.scorePercent}")
         return quizResult

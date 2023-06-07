@@ -10,6 +10,6 @@ const val LEADERBOARD_SCREEN = "LeaderboardScreen"
 const val ACCOUNT_ROUTE = "AccountRoute"
 
 const val LERNMODUS_ROUTE = "LernmodusRoute"
-const val LERNMODUS_RESULTS = "ResultsScreen/{points}/{percentage}"
+const val LERNMODUS_RESULTS = "ResultsScreen/{points}/{percentage}/{total}"
 
 const val DUELLMODUS_ROUTE = "DuellmodusRoute"
