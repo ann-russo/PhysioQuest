@@ -12,11 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.physioquest.model.QuizResult
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LernmodusRoute(
-    onQuizComplete: (result: Double) -> Unit,
+    onQuizComplete: (result: QuizResult) -> Unit,
     openScreen: (String) -> Unit,
     onNavUp: () -> Unit,
     viewModel: LernmodusViewModel = hiltViewModel()
@@ -34,7 +35,7 @@ fun LernmodusRoute(
         onNextClicked = { viewModel.onNextClicked() },
         onClosePressed = { viewModel.onClosePressed(openScreen) },
         isLastQuestion = viewModel.isLastQuestion,
-        onQuizComplete = { onQuizComplete(viewModel.calculatePercentage()) }
+        onQuizComplete = { onQuizComplete(viewModel.getQuizResult()) }
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)

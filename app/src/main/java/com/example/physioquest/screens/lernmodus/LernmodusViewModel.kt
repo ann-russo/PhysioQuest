@@ -1,5 +1,6 @@
 package com.example.physioquest.screens.lernmodus
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -7,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.example.physioquest.HOME_SCREEN
+import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
+import com.example.physioquest.model.QuizResult
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -137,13 +140,12 @@ class LernmodusViewModel @Inject constructor(
 
     fun evaluateCurrentQuestion() {
         _isEvaluateEnabled.value = false
-        /*val question = currentQuestion ?: return
+        val question = currentQuestion ?: return
         val correctAnswers = question.answers.filter { it.isCorrect }
         val selectedCorrectAnswers = selectedAnswers.map { question.answers[it] }
         val isCorrect =
             correctAnswers.size == selectedCorrectAnswers.size &&
                     selectedCorrectAnswers.containsAll(correctAnswers)
-
         for (i in question.answers.indices) {
             _evaluationStatus[i] =
                 i in selectedAnswers &&
@@ -151,10 +153,11 @@ class LernmodusViewModel @Inject constructor(
                         i !in selectedAnswers
                         && !isCorrect
         }
-        if (isCorrect) {
-            numCorrectAnswers++
-            _result.value++
-        }*/
+
+        val points = calculateScore(selectedCorrectAnswers, correctAnswers)
+        _result.value += points
+
+        /*
         val question = currentQuestion ?: return
         val correctAnswers = question.answers.filter { it.isCorrect }
         val selectedCorrectAnswers = selectedAnswers.map { question.answers[it] }
@@ -182,12 +185,27 @@ class LernmodusViewModel @Inject constructor(
                         i !in selectedAnswers
                         && !isCorrect
         }
-
         if (isCorrect) {
             numCorrectAnswers++
         }
-
         _result.value += score
+
+         */
+    }
+
+    private fun calculateScore(selectedAnswers: List<Answer>, correctAnswers: List<Answer>): Double {
+        val totalPoints = 1.0 // Total points assigned to the question
+        val numAnswerChoices = 4 // Total number of answer choices
+
+        val numCorrectSelected = selectedAnswers.count { it.isCorrect }
+        val numIncorrectSelected = selectedAnswers.count { !it.isCorrect }
+
+        val pointsPerCorrectAnswer = totalPoints / correctAnswers.size.toDouble()
+        val pointsPerIncorrectAnswer = totalPoints / (numAnswerChoices - correctAnswers.size).toDouble()
+
+        val score = (numCorrectSelected * pointsPerCorrectAnswer) - (numIncorrectSelected * pointsPerIncorrectAnswer)
+
+        return if (score >= 0) score else 0.0
     }
 
     fun onClosePressed(openScreen: (String) -> Unit) {
@@ -202,8 +220,13 @@ class LernmodusViewModel @Inject constructor(
         changeQuestion(currentQuestionIndex.value + 1)
     }
 
-    fun calculatePercentage(): Double {
-        return _result.value * 100
+    fun getQuizResult(): QuizResult {
+        val quizResult = QuizResult()
+        quizResult.scorePoints = _result.value
+        quizResult.scorePercent = (_result.value / questions.size) * 100
+        Log.d("getQuizResult", "result points: ${quizResult.scorePoints}")
+        Log.d("getQuizResult", "result percent: ${quizResult.scorePercent}")
+        return quizResult
     }
 
     private fun changeQuestion(newQuestionIndex: Int) {

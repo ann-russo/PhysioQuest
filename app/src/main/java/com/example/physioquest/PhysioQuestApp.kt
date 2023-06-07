@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.example.physioquest.common.snackbar.SnackbarManager
+import com.example.physioquest.model.QuizResult
 import com.example.physioquest.screens.account.AccountRoute
 import com.example.physioquest.screens.duellmodus.DuellmodusRoute
 import com.example.physioquest.screens.home.HomeScreen
@@ -278,7 +279,9 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         }
     ) {
         LernmodusRoute(
-            onQuizComplete = { appState.navigate("ResultsScreen/$it") },
+            onQuizComplete = { result ->
+                appState
+                    .navigate("ResultsScreen/${result.scorePoints}/${result.scorePercent}") },
             openScreen = { route -> appState.navigate(route) },
             onNavUp = { appState.popUp() },
         )
@@ -331,9 +334,13 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             }
         }
     ) {
-        val result = it.arguments?.getString("result")?.toDoubleOrNull()
+        val result = it.arguments?.let { bundle ->
+            val points = bundle.getString("points")?.toDoubleOrNull() ?: 0.0
+            val percentage = bundle.getString("percentage")?.toDoubleOrNull() ?: 0.0
+            QuizResult(points, percentage)
+        }
         ResultsScreen(
-            result = result ?: 0.0,
+            result = result ?: QuizResult(),
             openScreen = { route -> appState.navigate(route) }
         )
     }

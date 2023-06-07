@@ -34,18 +34,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.physioquest.HOME_SCREEN
+import com.example.physioquest.model.QuizResult
 import com.example.physioquest.R.string as AppText
 
 @Composable
-fun ResultsScreen(result: Double, openScreen: (String) -> Unit) {
-    val progress = (result / 100).toFloat()
-    val percentage = (result).toInt()
-
+fun ResultsScreen(
+    result: QuizResult,
+    openScreen: (String) -> Unit
+) {
+    val progress = result.scorePercent.toFloat()
     val angle = remember { Animatable(0f) }
 
     LaunchedEffect(progress) {
         angle.animateTo(
-            targetValue = progress * 360f,
+            targetValue = progress,
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
                 stiffness = Spring.StiffnessLow
@@ -68,7 +70,7 @@ fun ResultsScreen(result: Double, openScreen: (String) -> Unit) {
                 .padding(vertical = 16.dp)
         )
         Text(
-            text = "$percentage/100% " + stringResource(AppText.questions_correct),
+            text = "${result.scorePoints} Punkte erreicht",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .wrapContentWidth()
@@ -103,8 +105,7 @@ fun ResultsScreen(result: Double, openScreen: (String) -> Unit) {
 
 @Composable
 fun MedalBadge(angle: Float) {
-    val sweepAngle by animateFloatAsState(targetValue = angle)
-
+    val sweepAngle by animateFloatAsState(targetValue = angle * 3.6f)
     Box(
         modifier = Modifier.size(200.dp),
         contentAlignment = Alignment.Center
@@ -127,10 +128,11 @@ fun MedalBadge(angle: Float) {
                 style = Stroke(strokeWidth)
             )
         }
-        val percentage = ((sweepAngle / 360f) * 100).toInt()
+
+        val percentage = String.format("%.2f", angle)
 
         Text(
-            text = "$percentage%",
+            text = "${percentage}%",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
         )
