@@ -16,10 +16,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.physioquest.common.composable.AnimatedDialog
 import com.example.physioquest.common.composable.CenteredTopAppBar
 import com.example.physioquest.common.composable.QuizTopAppBar
 import com.example.physioquest.common.composable.SelectableAnswerOption
@@ -40,6 +43,7 @@ fun LernmodusContent(
     onQuizComplete: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val showDialog = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             if (surveyScreenData.selectedCategory == null) {
@@ -51,7 +55,17 @@ fun LernmodusContent(
                 QuizTopAppBar(
                     questionIndex = surveyScreenData.questionIndex,
                     totalQuestionsCount = surveyScreenData.questionCount,
-                    onClosePressed = onClosePressed
+                    onClosePressed = { showDialog.value = true }
+                )
+                AnimatedDialog(
+                    visible = showDialog.value,
+                    onClose = { showDialog.value = false },
+                    onConfirm = {
+                        onClosePressed()
+                        showDialog.value = false },
+                    title = AppText.lernmodus_cancel,
+                    content = AppText.lernmodus_cancel_desc,
+                    actionButton = AppText.lernmodus_cancel_confirm
                 )
             }
         },
@@ -193,7 +207,7 @@ fun LernmodusBottomBar(
                     enabled = selectedAnswers.isNotEmpty(),
                     onClick = onQuizComplete
                 ) {
-                    Text("Abschließen".uppercase())
+                    Text(stringResource(AppText.done).uppercase())
                 }
             else {
                 Button(
