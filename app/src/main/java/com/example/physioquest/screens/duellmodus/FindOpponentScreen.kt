@@ -18,14 +18,16 @@ fun FindOpponentScreen(
     Scaffold(
         topBar = {
             CenteredTopAppBar(
-                title = AppText.find_opponent,
+                title = AppText.duellmodus_title,
                 onClosePressed = onClosePressed
             )
         },
         content = { paddingValues ->
             val modifier = Modifier.padding(paddingValues)
+            val randomOpponent = viewModel.opponent
+
             Column(modifier = modifier) {
-                Text(text = "Test")
+                Text(text = "Dein Gegner ist: ${randomOpponent?.username}")
             }
         },
     )

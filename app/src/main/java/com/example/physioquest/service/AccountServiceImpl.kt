@@ -9,13 +9,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : AccountService {
+class AccountServiceImpl @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
+) : AccountService {
     override val currentUserId: String
         get() = auth.currentUser?.uid.orEmpty()
 
@@ -55,6 +59,20 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         auth.createUserWithEmailAndPassword(email, password).await().user?.let { firebaseUser ->
             val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
             firebaseUser.updateProfile(profileUpdates).await()
+            val userData = User(
+                id = firebaseUser.uid,
+                email = firebaseUser.email ?: "",
+                username = firebaseUser.displayName ?: ""
+            )
+            firestore.collection(USERS_COLLECTION)
+                .document(firebaseUser.uid)
+                .set(userData)
+                .addOnSuccessListener {
+                    Log.d("AccountService", "Added user ${userData.id} to Firestore")
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("AccountService", exception.toString())
+                }
         }
     }
 
@@ -103,5 +121,9 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
 
     override suspend fun signOut() {
         auth.signOut()
+    }
+
+    companion object {
+        private const val USERS_COLLECTION = "users"
     }
 }

@@ -2,12 +2,15 @@ package com.example.physioquest.service
 
 import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
+import com.example.physioquest.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlin.coroutines.resumeWithException
 
 class StorageServiceImpl
 @Inject
@@ -48,13 +51,29 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
         return questions.firstOrNull()?.filter { it.category == category } ?: emptyList()
     }
 
-    override suspend fun addQuestions(question: Question) {
-        firestore.collection(QUESTIONS_COLLECTION).add(question).await()
+    override suspend fun getUsersFromDatabase(): List<User> = suspendCancellableCoroutine { continuation ->
+        firestore.collection(USERS_COLLECTION)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val users = mutableListOf<User>()
+                for (document in querySnapshot.documents) {
+                    val user = document.toObject(User::class.java)
+                    if (user != null) {
+                        users.add(user)
+                    }
+                }
+                continuation.resumeWith(Result.success(users))
+            }
+            .addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
     }
+
 
     companion object {
         private const val QUESTIONS_COLLECTION = "questions"
         private const val ANSWERS_ARRAY = "answers"
+        private const val USERS_COLLECTION = "users"
     }
 }
 
