@@ -1,6 +1,7 @@
-package com.example.physioquest.screens.lernmodus
+package com.example.physioquest.screens.quiz.lernmodus
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.model.QuizResult
+import com.example.physioquest.screens.lernmodus.LernmodusViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -58,6 +60,7 @@ fun LernmodusRoute(
         ) { targetState ->
             when {
                 targetState.selectedCategory == null -> {
+                    Log.d("LernmodusRoute", "categories size: ${viewModel.categories.size}")
                     CategoryScreen(
                         categories = viewModel.categories,
                         onCategorySelected = { category ->
@@ -88,14 +91,8 @@ private fun getTransitionDirection(
     targetIndex: Int
 ): AnimatedContentTransitionScope.SlideDirection {
     return if (targetIndex > initialIndex || initialIndex == 0) {
-        // Going forwards in the survey: Set the initial offset to start
-        // at the size of the content so it slides in from right to left, and
-        // slides out from the left of the screen to -fullWidth
         AnimatedContentTransitionScope.SlideDirection.Left
     } else {
-        // Going back to the previous question in the set, we do the same
-        // transition as above, but with different offsets - the inverse of
-        // above, negative fullWidth to enter, and fullWidth to exit.
         AnimatedContentTransitionScope.SlideDirection.Right
     }
 }

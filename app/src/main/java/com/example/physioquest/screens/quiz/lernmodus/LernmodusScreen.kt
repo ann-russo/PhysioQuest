@@ -1,5 +1,6 @@
-package com.example.physioquest.screens.lernmodus
+package com.example.physioquest.screens.quiz.lernmodus
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.physioquest.common.composable.AnimatedDialog
@@ -29,6 +31,8 @@ import com.example.physioquest.common.composable.SelectableAnswerOption
 import com.example.physioquest.common.util.answerCard
 import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
+import com.example.physioquest.screens.lernmodus.LernmodusScreenData
+import com.example.physioquest.ui.theme.slightlyDeemphasizedAlpha
 import com.example.physioquest.R.string as AppText
 
 
@@ -62,7 +66,8 @@ fun LernmodusContent(
                     onClose = { showDialog.value = false },
                     onConfirm = {
                         onClosePressed()
-                        showDialog.value = false },
+                        showDialog.value = false
+                    },
                     title = AppText.lernmodus_cancel,
                     content = AppText.lernmodus_cancel_desc,
                     actionButton = AppText.lernmodus_cancel_confirm
@@ -118,7 +123,7 @@ fun AnswerItemsList(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(horizontal = 5.dp, vertical = 20.dp)
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
@@ -165,12 +170,21 @@ fun QuestionItem(questionContent: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 0.dp),
+            .padding(20.dp, 0.dp),
     ) {
         Text(
             text = questionContent,
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = slightlyDeemphasizedAlpha),
+            fontWeight = FontWeight.W500,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    shape = MaterialTheme.shapes.small
+                )
+                .padding(vertical = 24.dp, horizontal = 16.dp)
         )
     }
 }

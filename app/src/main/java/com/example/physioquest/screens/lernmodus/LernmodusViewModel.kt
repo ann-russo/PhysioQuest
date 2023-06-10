@@ -17,7 +17,6 @@ import com.example.physioquest.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,11 +71,7 @@ class LernmodusViewModel @Inject constructor(
 
     private fun loadQuestions() {
         launchCatching {
-            storageService.questions
-                .onStart { _isLoading.value = true }
-                .collect {
-                    questions = it
-                }
+            questions = storageService.getQuestions()
             _categories.clear()
             _questionCounts.clear()
             _selectedAnswers.clear()

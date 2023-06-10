@@ -63,7 +63,7 @@ fun Modifier.card(): Modifier {
 
 fun Modifier.answerCard(): Modifier {
     return this
-        .padding(16.dp, 0.dp, 16.dp, 8.dp)
+        .padding(16.dp, 0.dp, 16.dp, 16.dp)
         .fillMaxWidth()
         .height(IntrinsicSize.Max)
 }

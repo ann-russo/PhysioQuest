@@ -34,7 +34,8 @@ fun SettingsScreen(
             onClose = { showDialog.value = false },
             onConfirm = {
                 viewModel.deleteAccount(restartApp)
-                showDialog.value = false },
+                showDialog.value = false
+            },
             title = AppText.delete_account,
             content = AppText.delete_description,
             actionButton = AppText.delete_confirm

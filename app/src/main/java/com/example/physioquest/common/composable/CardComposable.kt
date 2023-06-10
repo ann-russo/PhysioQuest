@@ -169,21 +169,21 @@ fun SelectableAnswerOption(
             isEnabled && isSelected -> MaterialTheme.colorScheme.primary
             !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
             !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
-            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         },
     titleSize: TextUnit = MaterialTheme.typography.titleMedium.fontSize,
     titleWeight: FontWeight = FontWeight.Normal,
     subtitle: String? = null,
     subtitleColor: Color =
         if (isEnabled && isSelected) MaterialTheme.colorScheme.onSurface
-        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
     borderWidth: Dp = 1.dp,
     borderColor: Color =
         when {
             isEnabled && isSelected -> MaterialTheme.colorScheme.primary
             !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
             !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
-            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
         },
     borderShape: Shape = RoundedCornerShape(size = 10.dp),
     icon: Painter =
@@ -290,7 +290,7 @@ fun SelectableAnswerOption(
                             isEnabled && isSelected -> MaterialTheme.colorScheme.primary
                             !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
                             !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
-                            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                         }
                     )
                 )

@@ -5,10 +5,12 @@ import com.google.firebase.firestore.DocumentId
 
 class Duel(
     @DocumentId val id: String = "",
-    val initUser: User,
-    val opponentUser: User,
-    val startTimestamp: Timestamp,
-    val finishTimestamp: Timestamp,
-    val randomQuestionsList: List<Question> = listOf(),
-    val winnerUser: User
+    var initUser: User,
+    var opponentUser: User,
+    var initUserFinished: Boolean,
+    var opponentUserFinished: Boolean,
+    var startTimestamp: Timestamp,
+    var finishTimestamp: Timestamp,
+    var randomQuestionsList: List<Question> = listOf(),
+    var winnerUser: User
 )

@@ -25,12 +25,12 @@ import androidx.navigation.NavHostController
 import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.model.QuizResult
 import com.example.physioquest.screens.account.AccountRoute
-import com.example.physioquest.screens.duellmodus.DuellmodusRoute
 import com.example.physioquest.screens.home.HomeScreen
 import com.example.physioquest.screens.leaderboard.LeaderboardScreen
-import com.example.physioquest.screens.lernmodus.LernmodusRoute
-import com.example.physioquest.screens.lernmodus.ResultsScreen
 import com.example.physioquest.screens.login.LoginScreen
+import com.example.physioquest.screens.quiz.duellmodus.DuellmodusRoute
+import com.example.physioquest.screens.quiz.lernmodus.LernmodusRoute
+import com.example.physioquest.screens.quiz.lernmodus.ResultsScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
 import com.example.physioquest.screens.start.StartScreen
 import com.example.physioquest.screens.welcome.WelcomeScreen
@@ -281,7 +281,13 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         LernmodusRoute(
             onQuizComplete = { result ->
                 appState
-                    .navigate("ResultsScreen/${result.scorePoints}/${result.scorePercent}/${result.totalPoints}") },
+                    .navigate(
+                        "ResultsScreen/" +
+                                "${result.scorePoints}/" +
+                                "${result.scorePercent}/" +
+                                "${result.totalPoints}"
+                    )
+            },
             openScreen = { route -> appState.navigate(route) },
             onNavUp = { appState.popUp() },
         )

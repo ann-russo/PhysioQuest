@@ -1,6 +1,7 @@
-package com.example.physioquest.screens.lernmodus
+package com.example.physioquest.screens.quiz.lernmodus
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,6 +35,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.physioquest.screens.lernmodus.LernmodusViewModel
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -51,6 +53,7 @@ fun CategoryScreen(
         modifier = modifier
     ) {
         items(categories) { category ->
+            Log.d("CategoryScreen", "questionCounts size: ${viewModel.questionCounts.size}")
             viewModel.questionCounts[category]?.let {
                 CategoryCard(
                     category = category,
