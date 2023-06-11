@@ -1,5 +1,7 @@
 package com.example.physioquest.service.module
 
+import com.example.physioquest.screens.quiz.QuizRepository
+import com.example.physioquest.screens.quiz.QuizRepositoryImpl
 import com.example.physioquest.service.AccountService
 import com.example.physioquest.service.AccountServiceImpl
 import com.example.physioquest.service.StorageService
@@ -17,4 +19,7 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun provideStorageService(impl: StorageServiceImpl): StorageService
+
+    @Binds
+    abstract fun provideQuizRepository(impl: QuizRepositoryImpl): QuizRepository
 }

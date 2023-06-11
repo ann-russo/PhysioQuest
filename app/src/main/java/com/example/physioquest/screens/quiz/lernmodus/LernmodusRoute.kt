@@ -1,7 +1,6 @@
 package com.example.physioquest.screens.quiz.lernmodus
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.model.QuizResult
-import com.example.physioquest.screens.lernmodus.LernmodusViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -60,7 +58,6 @@ fun LernmodusRoute(
         ) { targetState ->
             when {
                 targetState.selectedCategory == null -> {
-                    Log.d("LernmodusRoute", "categories size: ${viewModel.categories.size}")
                     CategoryScreen(
                         categories = viewModel.categories,
                         onCategorySelected = { category ->

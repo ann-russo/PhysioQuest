@@ -1,6 +1,5 @@
-package com.example.physioquest.screens.lernmodus
+package com.example.physioquest.screens.quiz.lernmodus
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -183,8 +182,6 @@ class LernmodusViewModel @Inject constructor(
         quizResult.scorePoints = _result.value
         quizResult.scorePercent = (_result.value / questions.size) * 100
         quizResult.totalPoints = questions.size
-        Log.d("getQuizResult", "result points: ${quizResult.scorePoints}")
-        Log.d("getQuizResult", "result percent: ${quizResult.scorePercent}")
         return quizResult
     }
 

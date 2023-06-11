@@ -31,10 +31,8 @@ import com.example.physioquest.common.composable.SelectableAnswerOption
 import com.example.physioquest.common.util.answerCard
 import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
-import com.example.physioquest.screens.lernmodus.LernmodusScreenData
 import com.example.physioquest.ui.theme.slightlyDeemphasizedAlpha
 import com.example.physioquest.R.string as AppText
-
 
 @Composable
 fun LernmodusContent(

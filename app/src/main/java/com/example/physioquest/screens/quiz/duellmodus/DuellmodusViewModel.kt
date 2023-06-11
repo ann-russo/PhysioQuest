@@ -1,31 +1,55 @@
 package com.example.physioquest.screens.quiz.duellmodus
 
-import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.model.Duel
 import com.example.physioquest.model.Question
+import com.example.physioquest.model.QuizResult
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
+import com.example.physioquest.screens.quiz.QuizRepository
 import com.example.physioquest.service.AccountService
 import com.example.physioquest.service.StorageService
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class DuellmodusViewModel @Inject constructor(
     private val accountService: AccountService,
-    private val storageService: StorageService
+    private val storageService: StorageService,
+    private val quizRepository: QuizRepository
 ) : PhysioQuestViewModel() {
 
+    private val questions: List<Question>
+        get() = quizRepository.questions
+    private val currentQuestionIndex: StateFlow<Int>
+        get() = quizRepository.currentQuestionIndex
+    private val currentQuestion: Question?
+        get() = quizRepository.currentQuestion
+    private var selectedAnswers: MutableList<Int>
+        get() = quizRepository.selectedAnswers
+        set(value) {
+            quizRepository.selectedAnswers.clear()
+            quizRepository.selectedAnswers.addAll(value)
+        }
+    var isEvaluateEnabled: Boolean
+        get() = quizRepository.isEvaluateEnabled
+        set(value) {
+            quizRepository.isEvaluateEnabled = value
+        }
+    var isLastQuestion: Boolean
+        get() = quizRepository.isLastQuestion
+        set(value) {
+            quizRepository.isLastQuestion = value
+        }
+    val result: MutableStateFlow<Double>
+        get() = quizRepository.result
+
     private var currentDuel: Duel? = null
-    private var questions by mutableStateOf(emptyList<Question>())
-
-    private val _currentDestination = mutableStateOf(DuellmodusDestination.FIND_OPPONENT)
-
+    private val currentDestination = mutableStateOf(DuellmodusDestination.FIND_OPPONENT)
     private var _surveyScreenData = mutableStateOf(createDuellmodusScreenData())
     val surveyScreenData: DuellmodusScreenData
         get() = _surveyScreenData.value
@@ -49,7 +73,6 @@ class DuellmodusViewModel @Inject constructor(
     }
 
     fun onClosePressed(openScreen: (String) -> Unit) {
-        _surveyScreenData.value.destination = null
         launchCatching {
             openScreen(HOME_SCREEN)
         }
@@ -64,15 +87,15 @@ class DuellmodusViewModel @Inject constructor(
 
     private fun selectRandomQuestions() {
         launchCatching {
-            questions = storageService.getRandomQuestions()
+            quizRepository.getRandomQuestions()
         }
-        Log.d("selectRandomQuestions", "questions size: ${questions.size}")
     }
 
     fun startDuel() {
         val currentUser = user ?: return
         val opponentUser = opponent ?: return
         val startTimestamp = Timestamp.now()
+
         currentDuel = Duel(
             initUser = currentUser,
             opponentUser = opponentUser,
@@ -83,16 +106,41 @@ class DuellmodusViewModel @Inject constructor(
             randomQuestionsList = questions,
             winnerUser = User()
         )
+        currentDestination.value = DuellmodusDestination.QUESTIONS
+        resetQuizState()
+    }
 
-        Log.d("startDuel", "questionsList: ${currentDuel!!.randomQuestionsList.size}")
-        _currentDestination.value = DuellmodusDestination.QUESTIONS
+    fun toggleAnswerSelection(answerIndex: Int) {
+        quizRepository.toggleAnswerSelection(answerIndex)
+    }
+
+    fun evaluateCurrentQuestion() {
+        quizRepository.evaluateCurrentQuestion()
+    }
+
+    fun onNextClicked() {
+        quizRepository.onNextClicked()
+        updateScreenData()
+    }
+
+    fun getQuizResult(): QuizResult {
+        return quizRepository.getQuizResult()
+    }
+
+    private fun resetQuizState() {
+        quizRepository.resetQuizState()
         updateScreenData()
     }
 
     private fun createDuellmodusScreenData(): DuellmodusScreenData {
         return DuellmodusScreenData(
-            destination = _currentDestination.value,
-            duel = currentDuel
+            destination = currentDestination.value,
+            duel = currentDuel,
+            questionIndex = currentQuestionIndex.value,
+            questionCount = questions.size,
+            selectedAnswers = selectedAnswers,
+            isEvaluationEnabled = isEvaluateEnabled,
+            quizQuestion = currentQuestion,
         )
     }
 
@@ -110,5 +158,10 @@ enum class DuellmodusDestination {
 
 data class DuellmodusScreenData(
     var destination: DuellmodusDestination?,
-    var duel: Duel?
+    var duel: Duel?,
+    val questionIndex: Int,
+    val questionCount: Int,
+    var selectedAnswers: List<Int>,
+    var isEvaluationEnabled: Boolean,
+    val quizQuestion: Question?,
 )

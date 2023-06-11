@@ -27,13 +27,13 @@ fun DuellmodusContent(
         topBar = {
             if (surveyScreenData.destination == DuellmodusDestination.FIND_OPPONENT) {
                 CenteredTopAppBar(
-                    title = R.string.categories,
+                    title = R.string.find_opponent,
                     onClosePressed = onClosePressed
                 )
             } else {
                 QuizTopAppBar(
-                    questionIndex = 0,
-                    totalQuestionsCount = 15,
+                    questionIndex = surveyScreenData.questionIndex,
+                    totalQuestionsCount = surveyScreenData.questionCount,
                     onClosePressed = { showDialog.value = true }
                 )
                 AnimatedDialog(
@@ -54,7 +54,7 @@ fun DuellmodusContent(
             if (surveyScreenData.destination == DuellmodusDestination.QUESTIONS) {
                 LernmodusBottomBar(
                     isEvaluationEnabled = isEvaluationEnabled,
-                    selectedAnswers = listOf(),
+                    selectedAnswers = surveyScreenData.selectedAnswers,
                     onEvaluateClicked = onEvaluateClicked,
                     onNextClicked = onNextClicked,
                     isLastQuestion = isLastQuestion,
