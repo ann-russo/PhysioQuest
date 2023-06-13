@@ -7,7 +7,7 @@ import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
-import com.example.physioquest.screens.quiz.QuizRepository
+import com.example.physioquest.screens.quiz.shared.QuizRepository
 import com.example.physioquest.service.AccountService
 import com.example.physioquest.service.StorageService
 import com.google.firebase.Timestamp

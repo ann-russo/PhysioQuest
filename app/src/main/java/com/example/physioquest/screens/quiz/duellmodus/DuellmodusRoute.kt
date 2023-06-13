@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.physioquest.screens.quiz.lernmodus.LernmodusQuestion
+import com.example.physioquest.screens.quiz.shared.QuizQuestion
 
 @Composable
 fun DuellmodusRoute(
@@ -26,7 +26,7 @@ fun DuellmodusRoute(
         onNavUp()
     }
 
-    DuellmodusContent(
+    DuellmodusScreen(
         surveyScreenData = screenData,
         isEvaluationEnabled = viewModel.isEvaluateEnabled,
         onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
@@ -68,7 +68,7 @@ fun DuellmodusRoute(
 
                 DuellmodusDestination.QUESTIONS -> {
                     if (targetState.quizQuestion != null) {
-                        LernmodusQuestion(
+                        QuizQuestion(
                             quizQuestion = targetState.quizQuestion,
                             selectedAnswers = targetState.selectedAnswers,
                             isEvaluationEnabled = viewModel.isEvaluateEnabled,

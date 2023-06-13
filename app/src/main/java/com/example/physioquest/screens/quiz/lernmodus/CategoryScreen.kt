@@ -1,6 +1,5 @@
 package com.example.physioquest.screens.quiz.lernmodus
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CategoryScreen(
     categories: List<String>,

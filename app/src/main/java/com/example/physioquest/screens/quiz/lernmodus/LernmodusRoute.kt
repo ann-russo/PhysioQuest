@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.model.QuizResult
+import com.example.physioquest.screens.quiz.shared.QuizQuestion
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -28,7 +29,7 @@ fun LernmodusRoute(
         onNavUp()
     }
 
-    LernmodusContent(
+    LernmodusScreen(
         surveyScreenData = surveyScreenData,
         isEvaluationEnabled = viewModel.isEvaluateEnabled,
         onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
@@ -68,7 +69,7 @@ fun LernmodusRoute(
                 }
 
                 targetState.quizQuestion != null -> {
-                    LernmodusQuestion(
+                    QuizQuestion(
                         quizQuestion = targetState.quizQuestion,
                         selectedAnswers = targetState.selectedAnswers,
                         isEvaluationEnabled = viewModel.isEvaluateEnabled,

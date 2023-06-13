@@ -9,10 +9,10 @@ import com.example.physioquest.R
 import com.example.physioquest.common.composable.AnimatedDialog
 import com.example.physioquest.common.composable.CenteredTopAppBar
 import com.example.physioquest.common.composable.QuizTopAppBar
-import com.example.physioquest.screens.quiz.lernmodus.LernmodusBottomBar
+import com.example.physioquest.screens.quiz.shared.QuizBottomBar
 
 @Composable
-fun DuellmodusContent(
+fun DuellmodusScreen(
     surveyScreenData: DuellmodusScreenData,
     isEvaluationEnabled: Boolean,
     onEvaluateClicked: () -> Unit,
@@ -52,7 +52,7 @@ fun DuellmodusContent(
         content = content,
         bottomBar = {
             if (surveyScreenData.destination == DuellmodusDestination.QUESTIONS) {
-                LernmodusBottomBar(
+                QuizBottomBar(
                     isEvaluationEnabled = isEvaluationEnabled,
                     selectedAnswers = surveyScreenData.selectedAnswers,
                     onEvaluateClicked = onEvaluateClicked,

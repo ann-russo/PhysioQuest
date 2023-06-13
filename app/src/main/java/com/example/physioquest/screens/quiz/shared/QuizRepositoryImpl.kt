@@ -1,4 +1,4 @@
-package com.example.physioquest.screens.quiz
+package com.example.physioquest.screens.quiz.shared
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf

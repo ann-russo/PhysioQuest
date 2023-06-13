@@ -1,7 +1,7 @@
 package com.example.physioquest.service.module
 
-import com.example.physioquest.screens.quiz.QuizRepository
-import com.example.physioquest.screens.quiz.QuizRepositoryImpl
+import com.example.physioquest.screens.quiz.shared.QuizRepository
+import com.example.physioquest.screens.quiz.shared.QuizRepositoryImpl
 import com.example.physioquest.service.AccountService
 import com.example.physioquest.service.AccountServiceImpl
 import com.example.physioquest.service.StorageService

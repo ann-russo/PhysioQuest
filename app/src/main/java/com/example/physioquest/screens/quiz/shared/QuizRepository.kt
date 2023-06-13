@@ -1,4 +1,4 @@
-package com.example.physioquest.screens.quiz
+package com.example.physioquest.screens.quiz.shared
 
 import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
