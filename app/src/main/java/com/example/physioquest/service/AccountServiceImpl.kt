@@ -77,10 +77,25 @@ class AccountServiceImpl @Inject constructor(
     }
 
     override suspend fun updateNickname(newNickname: String) {
-        val profileUpdates = userProfileChangeRequest { displayName = newNickname }
         try {
-            auth.currentUser?.updateProfile(profileUpdates)?.await()
-            SnackbarManager.showMessage(R.string.success_update_nickname)
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                val profileUpdates = userProfileChangeRequest { displayName = newNickname }
+                currentUser.updateProfile(profileUpdates).await()
+
+                val userDocRef = firestore.collection(USERS_COLLECTION).document(currentUser.uid)
+                userDocRef.update("username", newNickname)
+                    .addOnSuccessListener {
+                        Log.d("AccountService", "Updated nickname in Firestore")
+                        SnackbarManager.showMessage(R.string.success_update_nickname)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d("AccountService", "Failed to update nickname in Firestore: ${exception.message}")
+                        SnackbarManager.showMessage(R.string.error_update_nickname)
+                    }
+            } else {
+                Log.d("AccountService", "Current user is null")
+            }
         } catch (e: Exception) {
             Log.d("updateNickname exception", e.toString())
             SnackbarManager.showMessage(R.string.error_update_nickname)
@@ -89,8 +104,22 @@ class AccountServiceImpl @Inject constructor(
 
     override suspend fun updateEmail(newEmail: String) {
         try {
-            auth.currentUser?.verifyBeforeUpdateEmail(newEmail)?.await()
-            SnackbarManager.showMessage(R.string.success_update_email)
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                currentUser.verifyBeforeUpdateEmail(newEmail).await()
+                val userDocRef = firestore.collection(USERS_COLLECTION).document(currentUser.uid)
+                userDocRef.update("email", newEmail)
+                    .addOnSuccessListener {
+                        Log.d("AccountService", "Updated email in Firestore")
+                        SnackbarManager.showMessage(R.string.success_update_email)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d("AccountService", "Failed to update email in Firestore: ${exception.message}")
+                        SnackbarManager.showMessage(R.string.error_update_email)
+                    }
+            } else {
+                Log.d("AccountService", "Current user is null")
+            }
         } catch (e: Exception) {
             Log.d("updateEmail exception", e.toString())
             SnackbarManager.showMessage(R.string.error_update_email)
@@ -108,16 +137,23 @@ class AccountServiceImpl @Inject constructor(
     }
 
     override suspend fun deleteAccount() {
-        auth.currentUser?.delete()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userDocRef = firestore.collection(USERS_COLLECTION).document(currentUser.uid)
+            try {
+                userDocRef.delete().await()
+                currentUser.delete().await()
                 auth.signOut()
-            } else {
-                val exception = task.exception
-                Log.d("deleteAccount exception", exception.toString())
+            } catch (e: Exception) {
+                Log.d("deleteAccount exception", e.toString())
                 SnackbarManager.showMessage(R.string.error_account_delete)
             }
+        } else {
+            Log.d("deleteAccount", "Current user is null")
+            SnackbarManager.showMessage(R.string.error_account_delete)
         }
     }
+
 
     override suspend fun signOut() {
         auth.signOut()
