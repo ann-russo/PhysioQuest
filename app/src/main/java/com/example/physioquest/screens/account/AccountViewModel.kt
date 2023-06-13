@@ -159,6 +159,9 @@ class AccountViewModel @Inject constructor(
 
         launchCatching {
             accountService.updateNickname(newUsername)
+            accountService.currentUser.collect { user ->
+                _username.value = user.username
+            }
         }
     }
 
@@ -210,6 +213,9 @@ class AccountViewModel @Inject constructor(
     fun changeEmail(newEmail: String) {
         launchCatching {
             accountService.updateEmail(newEmail)
+            accountService.currentUser.collect { user ->
+                _email.value = user.email
+            }
         }
     }
 

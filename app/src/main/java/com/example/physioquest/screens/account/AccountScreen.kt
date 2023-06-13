@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +42,7 @@ import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.BottomNavBar
 import com.example.physioquest.common.util.toolbarActions
+import kotlinx.coroutines.flow.collect
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -94,14 +96,14 @@ fun AccountScreen(
     modifier: Modifier,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
-    val username = viewModel.user.value?.username
+    val username = viewModel.username.collectAsState()
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight(),
     ) {
-        ProfileHeader("$username")
+        ProfileHeader(username.value)
 
         AccountOptionItem(
             optionText = AppText.edit,
