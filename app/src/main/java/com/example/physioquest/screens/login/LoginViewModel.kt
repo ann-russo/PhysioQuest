@@ -5,9 +5,11 @@ import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LOGIN_SCREEN
 import com.example.physioquest.REGISTRATION_SCREEN
 import com.example.physioquest.WELCOME_SCREEN
+import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.common.util.isValidEmail
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.physioquest.R.string as AppText
@@ -65,8 +67,11 @@ class LoginViewModel @Inject constructor(private val accountService: AccountServ
 
     fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
-            accountService.authenticate(email, password)
-            openAndPopUp(HOME_SCREEN, LOGIN_SCREEN)
+            when (val authResult = accountService.authenticate(email, password)) {
+                is AuthResult.Success -> openAndPopUp(HOME_SCREEN, LOGIN_SCREEN)
+                is AuthResult.Failure -> SnackbarManager.showMessage(authResult.message)
+                else -> {}
+            }
         }
     }
 

@@ -1,16 +1,17 @@
 package com.example.physioquest.screens.registration
 
 import androidx.compose.runtime.mutableStateOf
-import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LOGIN_SCREEN
 import com.example.physioquest.REGISTRATION_SCREEN
 import com.example.physioquest.WELCOME_SCREEN
+import com.example.physioquest.common.snackbar.SnackbarManager
 import com.example.physioquest.common.util.isAllowedEmail
 import com.example.physioquest.common.util.isValidEmail
 import com.example.physioquest.common.util.isValidPassword
 import com.example.physioquest.common.util.isValidUsername
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.physioquest.R.string as AppText
@@ -104,8 +105,14 @@ class RegistrationViewModel @Inject constructor(private val accountService: Acco
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
-            accountService.createAccount(username, email, password)
-            openAndPopUp(HOME_SCREEN, REGISTRATION_SCREEN)
+            when (val authResult = accountService.createAccount(username, email, password)) {
+                is AuthResult.Info -> {
+                    openAndPopUp(WELCOME_SCREEN, LOGIN_SCREEN)
+                    SnackbarManager.showMessage(authResult.message)
+                }
+                is AuthResult.Failure -> SnackbarManager.showMessage(authResult.message)
+                else -> {}
+            }
         }
     }
 

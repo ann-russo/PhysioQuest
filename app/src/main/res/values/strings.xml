@@ -30,7 +30,8 @@
     <string name="register_option">Konto anlegen</string>
     <string name="recovery_email_sent">Überprüfe dein Postfach für die Wiederherstellungs-E-Mail.</string>
     <string name="error_password_empty">Das Passwort kann nicht leer sein.</string>
-    <string name="add">Hinzufügen</string>
+    <string name="error_login_wrong_email_pwd">Die eingegebene E-Mail-Adresse oder das Passwort war ungültig.</string>
+    <string name="error_login_unverified">Bestätige deine E-Mail-Adresse, um sich anmelden zu können.</string>
 
     <!-- RegistrationScreen -->
     <string name="register_details">Erstelle ein neues Konto</string>
@@ -39,6 +40,7 @@
     <string name="error_password_pattern">Gib eine Kombination aus mindestens 6 Klein- und Großbuchstaben, Zahlen und Sonderzeichen ein.</string>
     <string name="error_fields_empty">Bitte fülle alle Felder aus.</string>
     <string name="sign_up">Registrieren</string>
+    <string name="verify_email">Wir haben an die angegebene E-Mail-Adresse ein Verifizierungsmail geschickt. Bitte überprüfe dein Postfach.</string>
     <string name="login_option">Du hast bereits ein Konto?</string>
 
     <!-- Lernmodus -->
@@ -74,6 +76,8 @@
     <string name="duellmodus_description">30 Sekunden Zeiteinschränkung pro Frage und zufällige Kategorien</string>
     <string name="duellmodus_action">Duell starten</string>
     <string name="find_opponent">Suche nach Gegner</string>
+    <string name="unfinished_duel">Offenes Duell</string>
+    <string name="duel_start_error">Das Duell konnte nicht gestartet werden. Bitte versuche es später erneut.</string>
 
     <!-- Home -->
     <string name="home">Home</string>

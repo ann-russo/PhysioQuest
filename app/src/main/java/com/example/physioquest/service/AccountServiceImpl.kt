@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -37,8 +38,26 @@ class AccountServiceImpl @Inject constructor(
             awaitClose { auth.removeAuthStateListener(listener) }
         }
 
-    override suspend fun authenticate(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).await()
+    override suspend fun authenticate(email: String, password: String): AuthResult {
+        val result = CompletableDeferred<AuthResult>()
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val isEmailVerified = auth.currentUser!!.isEmailVerified
+                if (isEmailVerified) {
+                    // User is signed in and email is verified
+                    result.complete(AuthResult.Success)
+                } else {
+                    // User's email is not verified
+                    Log.d("AccountService", "User's email is not verified.")
+                    result.complete(AuthResult.Failure(R.string.error_login_unverified))
+                }
+            } else {
+                // Sign in failed
+                Log.d("AccountService", "Sign in failed.")
+                result.complete(AuthResult.Failure(R.string.error_login_wrong_email_pwd))
+            }
+        }
+        return result.await()
     }
 
     override suspend fun reAuthenticate(email: String, password: String): Boolean {
@@ -55,25 +74,40 @@ class AccountServiceImpl @Inject constructor(
         return false
     }
 
-    override suspend fun createAccount(nickname: String, email: String, password: String) {
+    override suspend fun createAccount(nickname: String, email: String, password: String): AuthResult {
+        val result = CompletableDeferred<AuthResult>()
+
         auth.createUserWithEmailAndPassword(email, password).await().user?.let { firebaseUser ->
             val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(nickname).build()
             firebaseUser.updateProfile(profileUpdates).await()
-            val userData = User(
-                id = firebaseUser.uid,
-                email = firebaseUser.email ?: "",
-                username = firebaseUser.displayName ?: ""
-            )
-            firestore.collection(USERS_COLLECTION)
-                .document(firebaseUser.uid)
-                .set(userData)
-                .addOnSuccessListener {
-                    Log.d("AccountService", "Added user ${userData.id} to Firestore")
+
+            firebaseUser.sendEmailVerification().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("AccountService", "Verification email sent.")
+                    result.complete(AuthResult.Info(R.string.verify_email))
+                    val userData = User(
+                        id = firebaseUser.uid,
+                        email = firebaseUser.email ?: "",
+                        username = firebaseUser.displayName ?: ""
+                    )
+                    firestore.collection(USERS_COLLECTION)
+                        .document(firebaseUser.uid)
+                        .set(userData)
+                        .addOnSuccessListener {
+                            Log.d("AccountService", "Added user ${userData.id} to Firestore")
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.d("AccountService", exception.toString())
+                        }
                 }
-                .addOnFailureListener { exception ->
-                    Log.d("AccountService", exception.toString())
+                else {
+                    // Failed to send verification email
+                    Log.d("AccountService", "Failed to send verification email.")
+                    result.complete(AuthResult.Failure(R.string.error_generic))
                 }
+            }
         }
+        return result.await()
     }
 
     override suspend fun updateNickname(newNickname: String) {
@@ -162,4 +196,10 @@ class AccountServiceImpl @Inject constructor(
     companion object {
         private const val USERS_COLLECTION = "users"
     }
+}
+
+sealed class AuthResult {
+    object Success : AuthResult()
+    data class Failure(val message: Int) : AuthResult()
+    data class Info(val message: Int) : AuthResult()
 }
