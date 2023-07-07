@@ -1,15 +1,21 @@
 package com.example.physioquest.screens.login
 
+import android.service.controls.ControlsProviderService.TAG
+import android.util.Log
+import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LOGIN_SCREEN
 import com.example.physioquest.REGISTRATION_SCREEN
 import com.example.physioquest.WELCOME_SCREEN
 import com.example.physioquest.common.snackbar.SnackbarManager
+import com.example.physioquest.common.snackbar.SnackbarMessage
 import com.example.physioquest.common.util.isValidEmail
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
 import com.example.physioquest.service.AuthResult
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.physioquest.R.string as AppText
@@ -87,7 +93,19 @@ class LoginViewModel @Inject constructor(private val accountService: AccountServ
     }
 
     fun onForgotPasswordClick() {
-        TODO()
+
+        SnackbarManager.showMessage("Schauen sie in ihrem Mailpostfach nach!")
+    }
+    fun onResetClick() {
+
+        val emailAddress = ""
+
+        Firebase.auth.sendPasswordResetEmail(emailAddress)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Email sent.")
+                }
+            }
     }
 
     private fun clearFieldsAndErrors() {

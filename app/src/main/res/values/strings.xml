@@ -33,6 +33,10 @@
     <string name="error_login_wrong_email_pwd">Die eingegebene E-Mail-Adresse oder das Passwort war ungültig.</string>
     <string name="error_login_unverified">Bestätige deine E-Mail-Adresse, um sich anmelden zu können.</string>
 
+    <!-- ForgotPasswordScreen -->
+    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="reset">Zurücksetzen</string>
+
     <!-- RegistrationScreen -->
     <string name="register_details">Erstelle ein neues Konto</string>
     <string name="error_username_empty">Der Benutzername kann nicht leer sein.</string>

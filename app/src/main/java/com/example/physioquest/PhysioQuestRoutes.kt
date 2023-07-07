@@ -3,6 +3,7 @@ package com.example.physioquest
 const val START_SCREEN = "StartScreen"
 const val WELCOME_SCREEN = "WelcomeScreen"
 const val LOGIN_SCREEN = "LoginScreen"
+const val FORGOT_PASSWORD_SCREEN = "ForgotPasswordScreen"
 const val REGISTRATION_SCREEN = "RegistrationScreen"
 
 const val HOME_SCREEN = "HomeScreen"

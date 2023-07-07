@@ -281,6 +281,7 @@ class AccountViewModel @Inject constructor(
             destination = _currentDestination.value
         )
     }
+
 }
 
 enum class AccountDestination {
