@@ -93,8 +93,21 @@ class LoginViewModel @Inject constructor(private val accountService: AccountServ
     }
 
     fun onForgotPasswordClick() {
-
-        SnackbarManager.showMessage("Schauen sie in ihrem Mailpostfach nach!")
+        val emailAddress = email
+        if (email.isBlank()) {
+            SnackbarManager.showMessage("Geben sie eine E-Mail Addresse ein")
+        }
+        else {
+            Firebase.auth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        SnackbarManager.showMessage("Sollte ein Konto mit dieser Email angelegt sein, haben wir Ihnen eine Email gesendet")
+                    }
+                    else {
+                        SnackbarManager.showMessage("Es gabe ein Problem beim versenden der Email, bitte überprüfen Sie die eingegebe E-Mail Adresse.")
+                    }
+                }
+        }
     }
     fun onResetClick() {
 
