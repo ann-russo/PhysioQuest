@@ -6,6 +6,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LOGIN_SCREEN
+import com.example.physioquest.R
 import com.example.physioquest.REGISTRATION_SCREEN
 import com.example.physioquest.WELCOME_SCREEN
 import com.example.physioquest.common.snackbar.SnackbarManager
@@ -95,18 +96,10 @@ class LoginViewModel @Inject constructor(private val accountService: AccountServ
     fun onForgotPasswordClick() {
         val emailAddress = email
         if (email.isBlank()) {
-            SnackbarManager.showMessage("Geben sie eine E-Mail Addresse ein")
+            SnackbarManager.showMessage(R.string.reset_email_needed)
         }
         else {
-            Firebase.auth.sendPasswordResetEmail(emailAddress)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        SnackbarManager.showMessage("Sollte ein Konto mit dieser Email angelegt sein, haben wir Ihnen eine Email gesendet")
-                    }
-                    else {
-                        SnackbarManager.showMessage("Es gabe ein Problem beim versenden der Email, bitte überprüfen Sie die eingegebe E-Mail Adresse.")
-                    }
-                }
+            launchCatching { accountService.resetPassword(emailAddress) }
         }
     }
     fun onResetClick() {

@@ -8,8 +8,10 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -191,6 +193,18 @@ class AccountServiceImpl @Inject constructor(
 
     override suspend fun signOut() {
         auth.signOut()
+    }
+
+    override suspend fun resetPassword(email: String) {
+        Firebase.auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    SnackbarManager.showMessage(R.string.reset_password)
+                }
+                else {
+                    SnackbarManager.showMessage(R.string.reset_password_error)
+                }
+            }
     }
 
     companion object {

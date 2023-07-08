@@ -34,8 +34,10 @@
     <string name="error_login_unverified">Bestätige deine E-Mail-Adresse, um sich anmelden zu können.</string>
 
     <!-- ForgotPasswordScreen -->
-    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="reset_password">Sollte ein Konto mit dieser Email angelegt sein, haben wir dieser eine Email gesendet</string>
     <string name="reset">Zurücksetzen</string>
+    <string name="reset_password_error">Es gab ein Problem beim versenden der Email, bitte überprüfe die eingegebe E-Mail Adresse.</string>
+    <string name="reset_email_needed">Geben sie eine E-Mail Addresse ein</string>
 
     <!-- RegistrationScreen -->
     <string name="register_details">Erstelle ein neues Konto</string>
