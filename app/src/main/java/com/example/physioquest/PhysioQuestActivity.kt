@@ -35,7 +35,8 @@ class PhysioQuestActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberAnimatedNavController()
-            duelIdFromNotification = remember { mutableStateOf(intent.extras?.getString("duelId")) }
+            val notificationType = intent.extras?.getString("type")
+            duelIdFromNotification = remember { mutableStateOf(if (notificationType == "duel_finished") intent.extras?.getString("duelId") else null) }
             PhysioQuestApp(navController, duelIdFromNotification)
         }
     }
@@ -43,7 +44,8 @@ class PhysioQuestActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
-        duelIdFromNotification.value = intent?.extras?.getString("duelId")
+        val notificationType = intent?.extras?.getString("type")
+        duelIdFromNotification.value = if (notificationType == "duel_finished") intent?.extras?.getString("duelId") else null
     }
 
     private fun createNotificationChannel() {

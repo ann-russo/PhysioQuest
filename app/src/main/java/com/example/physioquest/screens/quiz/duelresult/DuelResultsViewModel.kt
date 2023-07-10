@@ -54,4 +54,8 @@ class DuelResultsViewModel @Inject constructor(
     fun isCurrentUserWinner(): Boolean {
         return _currentUser.value.id == _duel.value.winnerUser.id
     }
+
+    fun isDraw(): Boolean {
+        return _duel.value.initUser.id != _duel.value.winnerUser.id && _duel.value.opponentUser.id != _duel.value.winnerUser.id
+    }
 }

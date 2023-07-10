@@ -102,8 +102,11 @@ fun DuelResultsScreen(
         Text(
             text = if (viewModel.isCurrentUserWinner()) {
                 context.getString(R.string.duel_result_current_won)
+            } else if (viewModel.isDraw()) {
+                context.getString(R.string.duel_result_draw)
             } else {
-                context.getString(R.string.duel_result_current_lost, viewModel.duel.winnerUser.username)
+                context.getString(R.string.duel_result_current_lost,
+                viewModel.duel.winnerUser.username)
             },
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
@@ -115,6 +118,8 @@ fun DuelResultsScreen(
         Text(
             text = if (viewModel.isCurrentUserWinner()) {
                 context.getString(R.string.duel_result_won_tip)
+            } else if (viewModel.isDraw()) {
+                context.getString(R.string.duel_result_draw_tip)
             } else {
                 context.getString(R.string.duel_result_lost_tip)
             },
