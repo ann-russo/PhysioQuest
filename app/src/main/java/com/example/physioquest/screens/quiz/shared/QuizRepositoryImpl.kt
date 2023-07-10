@@ -8,13 +8,15 @@ import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Duel
 import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
+import com.example.physioquest.service.LevelService
 import com.example.physioquest.service.StorageService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class QuizRepositoryImpl @Inject constructor(
-    private val storageService: StorageService
+    private val storageService: StorageService,
+    private val levelService: LevelService
     ): QuizRepository {
 
     override var questions: List<Question> by mutableStateOf(emptyList())
@@ -30,6 +32,7 @@ class QuizRepositoryImpl @Inject constructor(
     override var isLastQuestion: Boolean by mutableStateOf(false)
     override var isLoading: Boolean by mutableStateOf(true)
     override var result: MutableStateFlow<Double> = MutableStateFlow(0.0)
+    override var xpPoints: MutableStateFlow<Int> = MutableStateFlow(0)
 
     override suspend fun getRandomQuestions(): List<Question> {
         questions = storageService.getRandomQuestions()
@@ -99,6 +102,11 @@ class QuizRepositoryImpl @Inject constructor(
                         && !isCorrect
         }
         val points = calculateScore(selectedCorrectAnswers, correctAnswers)
+        if (points == 1.0) {
+            xpPoints.value += 10
+        } else if (points > 0.0 && points < 1.0) {
+            xpPoints.value += 5
+        }
         result.value += points
     }
 
@@ -133,6 +141,13 @@ class QuizRepositoryImpl @Inject constructor(
         quizResult.scorePoints = result.value
         quizResult.scorePercent = (result.value / questions.size) * 100
         quizResult.totalPoints = questions.size
+
+        var xpOnComplete = 30
+        if (quizResult.scorePoints == quizResult.totalPoints.toDouble()) {
+            xpOnComplete += 50
+        }
+        xpPoints.value += xpOnComplete
+
         return quizResult
     }
 }

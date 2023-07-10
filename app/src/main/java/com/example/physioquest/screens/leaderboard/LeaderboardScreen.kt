@@ -28,6 +28,8 @@ fun LeaderboardScreen(
         topBar = {
             ActionToolBar(
                 title = R.string.leaderboard,
+                level = viewModel.user.value.level,
+                xp = viewModel.user.value.xp,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = R.drawable.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }

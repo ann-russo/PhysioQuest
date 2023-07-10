@@ -1,9 +1,13 @@
 package com.example.physioquest.screens.leaderboard
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import com.example.physioquest.ACCOUNT_ROUTE
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.LEADERBOARD_SCREEN
 import com.example.physioquest.START_SCREEN
+import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +17,17 @@ import javax.inject.Inject
 class LeaderboardViewModel @Inject constructor(
     private val accountService: AccountService
 ) : PhysioQuestViewModel() {
+    private val _user: MutableState<User> = mutableStateOf(User())
+    val user: State<User> = _user
+
+    init {
+        launchCatching {
+            accountService.currentUser.collect { user ->
+                _user.value = user
+            }
+        }
+    }
+
     fun onHomeClick(openScreen: (String) -> Unit) {
         launchCatching {
             openScreen(HOME_SCREEN)

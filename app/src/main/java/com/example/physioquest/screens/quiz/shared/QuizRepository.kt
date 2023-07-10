@@ -17,6 +17,7 @@ interface QuizRepository {
     var isLastQuestion: Boolean
     var isLoading: Boolean
     var result: MutableStateFlow<Double>
+    var xpPoints: MutableStateFlow<Int>
 
     suspend fun getRandomQuestions(): List<Question>
     suspend fun findUnfinishedDuel(currentUserId: String): Duel?

@@ -37,19 +37,26 @@ class AccountServiceImpl @Inject constructor(
         get() = callbackFlow {
             val listener = FirebaseAuth.AuthStateListener { auth ->
                 auth.currentUser?.let { firebaseUser ->
-                    firebaseUser.email?.let { email ->
-                        firebaseUser.displayName?.let { username ->
-                            launch {
-                                val token = fetchTokenForUser(firebaseUser.uid)
-                                trySend(User(firebaseUser.uid, token, email, username))
-                            }
-                        }
-                    } ?: trySend(User())
-                }
+                    launch {
+                        val user = getUserData(firebaseUser.uid)
+                        trySend(user)
+                    }
+                } ?: trySend(User())
             }
             auth.addAuthStateListener(listener)
             awaitClose { auth.removeAuthStateListener(listener) }
         }
+
+    private suspend fun getUserData(userId: String): User {
+        val docRef = FirebaseFirestore.getInstance().collection("users").document(userId)
+        return try {
+            val snapshot = docRef.get().await()
+            snapshot.toObject(User::class.java) ?: User()
+        } catch (e: Exception) {
+            Log.d(TAG, e.toString())
+            User()
+        }
+    }
 
     private suspend fun fetchTokenForUser(uid: String): String {
         return withContext(Dispatchers.IO) {
@@ -134,7 +141,9 @@ class AccountServiceImpl @Inject constructor(
                             id = firebaseUser.uid,
                             token = token,
                             email = firebaseUser.email ?: "",
-                            username = firebaseUser.displayName ?: ""
+                            username = firebaseUser.displayName ?: "",
+                            level = 1,
+                            xp = 0
                         )
                         firestore.collection(USERS_COLLECTION)
                             .document(firebaseUser.uid)

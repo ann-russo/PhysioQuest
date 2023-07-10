@@ -13,6 +13,7 @@ import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.screens.quiz.shared.QuizRepository
 import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.LevelService
 import com.example.physioquest.service.StorageService
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,8 @@ import javax.inject.Inject
 class DuellmodusViewModel @Inject constructor(
     private val accountService: AccountService,
     private val storageService: StorageService,
-    private val quizRepository: QuizRepository
+    private val quizRepository: QuizRepository,
+    private val levelService: LevelService
 ) : PhysioQuestViewModel() {
 
     private val questions: List<Question>
@@ -52,6 +54,8 @@ class DuellmodusViewModel @Inject constructor(
     val result: MutableStateFlow<Double>
         get() = quizRepository.result
 
+    private val xpPoints: MutableStateFlow<Int>
+        get() = quizRepository.xpPoints
 
     var currentDuel: Duel = Duel()
     private val currentDestination = MutableLiveData<DuellmodusDestination>()
@@ -204,6 +208,12 @@ class DuellmodusViewModel @Inject constructor(
         resetQuizState()
     }
 
+    private fun addXp(points: Int) {
+        launchCatching {
+            levelService.awardXp(currentUser, points)
+        }
+    }
+
     fun toggleAnswerSelection(answerIndex: Int) {
         quizRepository.toggleAnswerSelection(answerIndex)
     }
@@ -219,6 +229,8 @@ class DuellmodusViewModel @Inject constructor(
 
     fun onFinishClicked() {
         val result = getQuizResult()
+        addXp(xpPoints.value)
+
         when (currentUser.id) {
             currentDuel.initUser.id -> {
                 // Current user is the initUser
@@ -273,6 +285,7 @@ class DuellmodusViewModel @Inject constructor(
 
     private fun getQuizResult(): QuizResult {
         val result = quizRepository.getQuizResult()
+
         result.userId = currentUser.id
         return result
     }

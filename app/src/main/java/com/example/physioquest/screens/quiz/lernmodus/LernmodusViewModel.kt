@@ -11,7 +11,10 @@ import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
+import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
+import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.LevelService
 import com.example.physioquest.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LernmodusViewModel @Inject constructor(
-    private val storageService: StorageService
+    private val storageService: StorageService,
+    private val levelService: LevelService,
+    private val accountService: AccountService
 ) : PhysioQuestViewModel() {
 
     private var questions by mutableStateOf(emptyList<Question>())
@@ -64,7 +69,16 @@ class LernmodusViewModel @Inject constructor(
 
     private var _result = MutableStateFlow(0.0)
 
+    private val _currentUser = mutableStateOf(User())
+    private val currentUser: User
+        get() = _currentUser.value
+
     init {
+        launchCatching {
+            accountService.currentUser.collect { user ->
+                _currentUser.value = user
+            }
+        }
         loadQuestions()
     }
 
@@ -142,7 +156,18 @@ class LernmodusViewModel @Inject constructor(
                         && !isCorrect
         }
         val points = calculateScore(selectedCorrectAnswers, correctAnswers)
+        if (points == 1.0) {
+            addXp(5)
+        } else if (points > 0.0 && points < 1.0) {
+            addXp(2)
+        }
         _result.value += points
+    }
+
+    private fun addXp(points: Int) {
+        launchCatching {
+            levelService.awardXp(currentUser, points)
+        }
     }
 
     private fun calculateScore(
@@ -183,6 +208,13 @@ class LernmodusViewModel @Inject constructor(
         quizResult.scorePercent = (_result.value / questions.size) * 100
         quizResult.totalPoints = questions.size
         quizResult.category = selectedCategory
+
+        var xpOnComplete = 10
+        if (quizResult.scorePoints == quizResult.totalPoints.toDouble()) {
+            xpOnComplete += 20
+        }
+        addXp(xpOnComplete)
+
         return quizResult
     }
 

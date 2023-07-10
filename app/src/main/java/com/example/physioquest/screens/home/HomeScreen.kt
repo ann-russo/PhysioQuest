@@ -37,10 +37,13 @@ fun HomeScreen(
     openScreen: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+
     Scaffold(
         topBar = {
             ActionToolBar(
                 title = AppText.app_name,
+                level = viewModel.user.value.level,
+                xp = viewModel.user.value.xp,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = AppIcon.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }
@@ -54,7 +57,7 @@ fun HomeScreen(
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
             ) {
-                val currentUser = viewModel.user.value?.username
+                val currentUser = viewModel.user.value.username
                 Text(
                     text = stringResource(AppText.welcome),
                     style = MaterialTheme.typography.bodyLarge,

@@ -20,8 +20,8 @@ class HomeViewModel @Inject constructor(
     private val accountService: AccountService
 ) :
     PhysioQuestViewModel() {
-    private val _user: MutableState<User?> = mutableStateOf(null)
-    val user: State<User?> = _user
+    private val _user: MutableState<User> = mutableStateOf(User())
+    val user: State<User> = _user
 
     init {
         launchCatching {

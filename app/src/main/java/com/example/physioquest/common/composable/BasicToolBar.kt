@@ -3,8 +3,10 @@ package com.example.physioquest.common.composable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,13 +33,18 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.physioquest.R
 import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.example.physioquest.ui.theme.md_theme_light_inverseOnSurface
 import com.example.physioquest.R.drawable as AppIcon
@@ -57,6 +64,8 @@ fun BasicToolBar(@StringRes title: Int) {
 fun ActionToolBar(
     @StringRes title: Int? = null,
     titleAsString: String? = null,
+    level: Int = 0,
+    xp: Int = 0,
     @DrawableRes endActionIcon: Int,
     modifier: Modifier,
     endAction: () -> Unit,
@@ -84,13 +93,13 @@ fun ActionToolBar(
             }
         },
         actions = {
+            SmallLevelProgressCircle(level, xp)
             TopAppBarMenu(
                 imageVector = Icons.Outlined.MoreVert,
                 description = stringResource(AppText.dropdown)
             ) {
                 dropDownMenuExpanded = true
             }
-
             DropdownMenu(
                 expanded = dropDownMenuExpanded,
                 onDismissRequest = {
@@ -270,5 +279,40 @@ fun BottomNavBar(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun SmallLevelProgressCircle(level: Int, xp: Int) {
+    val color = colorResource(R.color.teal_200)
+    val bgColor = MaterialTheme.colorScheme.secondaryContainer
+    val xpNeededForNextLevel = level * 100
+    val xpProgress = xp.toFloat() / xpNeededForNextLevel.toFloat()
+    val progressAngle = xpProgress * 360f
+
+    Box(
+        modifier = Modifier.size(40.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.size(30.dp)) {
+            val radius = size.minDimension / 2
+            val strokeWidth = 15f
+            drawCircle(
+                color = bgColor,
+                radius = radius,
+                style = Stroke(strokeWidth)
+            )
+            drawArc(
+                color = color,
+                startAngle = -90f,
+                sweepAngle = progressAngle,
+                useCenter = false,
+                style = Stroke(strokeWidth)
+            )
+        }
+        Text(
+            text = level.toString(),
+            fontWeight = FontWeight.Bold
+        )
     }
 }

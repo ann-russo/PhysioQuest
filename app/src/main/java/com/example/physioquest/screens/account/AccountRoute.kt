@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -17,9 +18,14 @@ fun AccountRoute(
     viewModel: AccountViewModel = hiltViewModel()
 ) {
     val data = viewModel.accountScreenData
+    val username = viewModel.username.collectAsState()
+    val xp = viewModel.xp.collectAsState()
+    val level = viewModel.level.collectAsState()
 
     AccountContent(
         data = data,
+        userLevel = level.value,
+        userXp = xp.value,
         onHomeClick = { viewModel.onHomeClick(openScreen) },
         onLeaderboardClick = { viewModel.onLeaderboardClick(openScreen) },
         onAccountClick = { viewModel.onAccountClick(openScreen) },
@@ -58,26 +64,25 @@ fun AccountRoute(
             when (targetState.destination) {
                 AccountDestination.PROFIL -> {
                     AccountScreen(
+                        username = username.value,
+                        userLevel = level.value,
+                        userXp = xp.value,
                         restartApp = restartApp,
                         modifier = modifier
                     )
                 }
-
                 AccountDestination.EINSTELLUNGEN -> {
                     SettingsScreen(
                         restartApp = restartApp,
                         modifier = modifier
                     )
                 }
-
                 AccountDestination.EDIT -> {
                     EditScreen(modifier = modifier)
                 }
-
                 AccountDestination.STATISTIK -> {
                     StatsScreen(modifier = modifier)
                 }
-
                 AccountDestination.HELP -> {
                     HelpScreen(modifier = modifier)
                 }

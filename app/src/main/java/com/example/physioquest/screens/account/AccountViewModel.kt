@@ -31,6 +31,12 @@ class AccountViewModel @Inject constructor(
     private val _username: MutableStateFlow<String> = MutableStateFlow("username")
     val username: StateFlow<String> = _username
 
+    private val _xp: MutableStateFlow<Int> = MutableStateFlow(0)
+    val xp: StateFlow<Int> = _xp
+
+    private val _level: MutableStateFlow<Int> = MutableStateFlow(1)
+    val level: StateFlow<Int> = _level
+
     private val _email: MutableState<String> = mutableStateOf("email")
     val email: State<String> = _email
 
@@ -79,6 +85,8 @@ class AccountViewModel @Inject constructor(
                 _user.value = user
                 _username.value = user.username
                 _email.value = user.email
+                _xp.value = user.xp
+                _level.value = user.level
             }
         }
     }
@@ -121,7 +129,7 @@ class AccountViewModel @Inject constructor(
 
     fun onHelpClick() {
         _currentDestination.value = AccountDestination.HELP
-        _currentTitle.value = "App Info"
+        _currentTitle.value = "Problem melden"
         _accountScreenData.value = createAccountScreenData()
     }
 

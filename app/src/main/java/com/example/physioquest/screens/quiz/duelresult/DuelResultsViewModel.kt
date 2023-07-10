@@ -8,6 +8,7 @@ import com.example.physioquest.model.QuizResult
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.LevelService
 import com.example.physioquest.service.StorageService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class DuelResultsViewModel @Inject constructor(
     private val accountService: AccountService,
     private val storageService: StorageService,
+    private val levelService: LevelService
 ) : PhysioQuestViewModel() {
 
     private val _initUserResult = mutableStateOf(QuizResult())
@@ -47,6 +49,16 @@ class DuelResultsViewModel @Inject constructor(
                 _duel.value = fetchedDuel
                 _initUserResult.value = fetchedDuel.initUserResult
                 _opponentUserResult.value = fetchedDuel.opponentUserResult
+                awardWinnerXP()
+            }
+        }
+    }
+
+    private fun awardWinnerXP() {
+        if (isCurrentUserWinner()) {
+            val updatedUser = _currentUser.value
+            launchCatching {
+                levelService.awardXp(updatedUser, 20)
             }
         }
     }

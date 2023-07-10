@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,7 +28,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,8 +35,10 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,6 +52,8 @@ import com.example.physioquest.R.string as AppText
 @Composable
 fun AccountContent(
     data: AccountScreenData,
+    userLevel: Int,
+    userXp: Int,
     onHomeClick: () -> Unit,
     onLeaderboardClick: () -> Unit,
     onAccountClick: () -> Unit,
@@ -61,6 +65,8 @@ fun AccountContent(
         topBar = {
             ActionToolBar(
                 titleAsString = data.title,
+                level = userLevel,
+                xp = userXp,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = AppIcon.ic_exit,
                 endAction = { onSignOutClick() },
@@ -93,20 +99,24 @@ fun AccountContent(
 
 @Composable
 fun AccountScreen(
+    username: String,
+    userLevel: Int,
+    userXp: Int,
     restartApp: (String) -> Unit,
     modifier: Modifier,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
-    val username = viewModel.username.collectAsState()
-
     Column(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
     ) {
-        ProfileHeader(username.value)
-
+        ProfileHeader(
+            username,
+            userLevel,
+            userXp
+        )
         AccountOptionItem(
             optionText = AppText.edit,
             optionIcon = AppIcon.edit_48px,
@@ -136,31 +146,59 @@ fun AccountScreen(
 }
 
 @Composable
-fun ProfileHeader(username: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth(),
-        contentAlignment = Alignment.TopCenter
-    ) { LevelProgressCircle() }
-    Text(
-        text = username,
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        textAlign = TextAlign.Center
-    )
-    Text(
-        text = "Beginner",
-        style = MaterialTheme.typography.bodyLarge,
-        color = Color.Gray,
+fun ProfileHeader(
+    username: String,
+    level: Int,
+    xp: Int
+) {
+    Surface(
+        color = Color.White,
+        shape = RoundedCornerShape(20.dp),
+        shadowElevation = 10.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        textAlign = TextAlign.Center
-    )
-    Spacer(modifier = Modifier.height(20.dp))
+            .padding(horizontal = 20.dp, vertical = 40.dp)
+            .height(150.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            LevelProgressCircle(level, xp)
+            Spacer(modifier = Modifier.width(20.dp))
+            Column {
+                Text(
+                    text = username,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    text = "Beginner",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Gray
+                )
+                val remainingXp = (level+1)*100 - xp
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Normal, color = Color.Gray)) {
+                            append("Noch ")
+                        }
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = Color.Gray)) {
+                            append("$remainingXp XP")
+                        }
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Normal, color = Color.Gray)) {
+                            append(" bis Level ")
+                        }
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = Color.Gray)) {
+                            append("${level+1}")
+                        }
+                    },
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+
+            }
+        }
+    }
 }
 
 @Composable
@@ -249,36 +287,46 @@ fun LogoutOptionItem(
     }
 }
 
-
 @Composable
-fun LevelProgressCircle() {
+fun LevelProgressCircle(level: Int, xp: Int) {
     val color = colorResource(R.color.teal_200)
+    val bgColor = MaterialTheme.colorScheme.secondaryContainer
+    val xpNeededForNextLevel = level * 100
+    val xpProgress = xp.toFloat() / xpNeededForNextLevel.toFloat()
+    val progressAngle = xpProgress * 360f
+
     Box(
         modifier = Modifier.size(120.dp),
         contentAlignment = Alignment.Center
     ) {
         Canvas(modifier = Modifier.size(100.dp)) {
             val radius = size.minDimension / 2
-            val strokeWidth = 15f
+            val strokeWidth = 25f
             drawCircle(
-                color = Color.Gray,
+                color = bgColor,
                 radius = radius,
                 style = Stroke(strokeWidth)
             )
             drawArc(
                 color = color,
                 startAngle = -90f,
-                sweepAngle = 210f,
+                sweepAngle = progressAngle,
                 useCenter = false,
                 style = Stroke(strokeWidth)
             )
         }
-        Text(
-            text = "20",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
+        Column(verticalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = "$level",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "$xp XP",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
     }
 }
-
-

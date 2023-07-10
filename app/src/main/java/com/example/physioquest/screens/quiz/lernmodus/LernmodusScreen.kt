@@ -76,7 +76,4 @@ fun LernmodusScreen(
             }
         )
     }
-
-
-
 }
