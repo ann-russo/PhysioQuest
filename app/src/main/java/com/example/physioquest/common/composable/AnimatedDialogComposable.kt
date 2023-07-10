@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.physioquest.R
 
@@ -31,7 +30,6 @@ fun AnimatedDialog(
         exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
     ) {
         AlertDialog(
-            containerColor = Color.White,
             onDismissRequest = { onClose() },
             title = {
                 Text(stringResource(title))

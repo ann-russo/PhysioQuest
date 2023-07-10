@@ -186,8 +186,6 @@ fun EditScreen(
             sheetState = sheetState,
             shape = BottomSheetDefaults.ExpandedShape,
             scrimColor = BottomSheetDefaults.ScrimColor,
-            containerColor = Color.White,
-            contentColor = contentColorFor(Color.White),
             tonalElevation = BottomSheetDefaults.Elevation,
             modifier = Modifier.height(500.dp),
             onDismissRequest = { scope.launch { sheetState.hide() } },
@@ -412,7 +410,7 @@ fun EditOptionItem(
     onClick: () -> Unit
 ) {
     Surface(
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -429,6 +427,7 @@ fun EditOptionItem(
             Icon(
                 painter = painterResource(optionIcon),
                 contentDescription = stringResource(optionText),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -438,6 +437,7 @@ fun EditOptionItem(
                 Text(
                     text = stringResource(optionText),
                     style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
                 )
@@ -445,6 +445,7 @@ fun EditOptionItem(
                 Text(
                     text = currentData,
                     style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp
                 )
             }
