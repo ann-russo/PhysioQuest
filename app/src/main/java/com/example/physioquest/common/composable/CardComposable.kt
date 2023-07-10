@@ -100,7 +100,6 @@ fun ElevatedCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-
                         text = stringResource(title),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.Normal,
@@ -289,6 +288,7 @@ fun SelectableAnswerOption(
                         when {
                             isEnabled && isSelected -> MaterialTheme.colorScheme.primary
                             !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
+                            !isEnabled && !isSelected && !correctChoice -> Color(0xFF26BB5D)
                             !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
                             else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                         }

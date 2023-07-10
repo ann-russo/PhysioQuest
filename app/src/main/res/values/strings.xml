@@ -4,6 +4,7 @@
     <string name="email">E-Mail-Adresse</string>
     <string name="password">Passwort</string>
     <string name="username">Benutzername</string>
+    <string name="coming_soon">Demnächst verfügbar!</string>
 
     <string name="error_empty_field">Dies ist ein Pflichtfeld</string>
     <string name="error_generic">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
@@ -34,10 +35,10 @@
     <string name="error_login_unverified">Bestätige deine E-Mail-Adresse, um sich anmelden zu können.</string>
 
     <!-- ForgotPasswordScreen -->
-    <string name="reset_password">Sollte ein Konto mit dieser Email angelegt sein, haben wir dieser eine Email gesendet</string>
+    <string name="reset_password">Sollte ein Konto mit dieser E-Mail-Adresse angelegt sein, haben wir an diese eine E-Mail gesendet.</string>
     <string name="reset">Zurücksetzen</string>
-    <string name="reset_password_error">Es gab ein Problem beim versenden der Email, bitte überprüfe die eingegebe E-Mail Adresse.</string>
-    <string name="reset_email_needed">Geben sie eine E-Mail Addresse ein</string>
+    <string name="reset_password_error">Beim Versenden der E-Mail ist ein Fehler aufgetreten. Bitte überprüfe die eingegebene E-Mail-Adresse.</string>
+    <string name="reset_email_needed">Gib eine E-Mail-Adresse ein, um dein Passwort zurücksetzen zu können.</string>
 
     <!-- RegistrationScreen -->
     <string name="register_details">Erstelle ein neues Konto</string>
@@ -58,6 +59,8 @@
     <string name="submit">Antwort(en) einreichen</string>
     <string name="done">Abschließen</string>
     <string name="results">Dein Ergebnis</string>
+    <string name="results_category">Kategorie: %s</string>
+    <string name="results_points">%1$s / %2$s Punkte</string>
     <string name="questions_correct">Fragen richtig beantwortet</string>
     <string name="finish">Lern-Modus beenden</string>
 
@@ -79,11 +82,33 @@
     <!-- Duellmodus -->
     <string name="duellmodus_title">Duell-Modus</string>
     <string name="duellmodus_subtitle">Multiplayer</string>
-    <string name="duellmodus_description">30 Sekunden Zeiteinschränkung pro Frage und zufällige Kategorien</string>
-    <string name="duellmodus_action">Duell starten</string>
-    <string name="find_opponent">Suche nach Gegner</string>
+    <string name="duellmodus_description">30 Sekunden Zeiteinschränkung pro Frage\n15 zufällige Fragen aus allen Kategorien</string>
+    <string name="duellmodus_action">Zum Duell</string>
+
+    <string name="new_duel">Neues Duell starten</string>
+    <string name="new_duel_title">Finde heraus, wer besser vorbereitet ist!</string>
+    <string name="new_duel_opponent">Dein zugeloster Gegner ist</string>
+    <string name="new_duel_desc">
+        Nach dem Beantworten von Fragen musst du warten, bis dein Gegner auch gespielt hat, um die Ergebnisse zu sehen.
+        In dieser Zeit können keine neuen Duelle gestartet werden.
+    </string>
+    <string name="new_duel_start">Quiz-Duell beginnen</string>
+
     <string name="unfinished_duel">Offenes Duell</string>
+    <string name="unfinished_duel_title">Du wurdest herausgefordert!</string>
+    <string name="unfinished_duel_subtitle">hat gegen dich ein Duell gespielt!</string>
+    <string name="unfinished_duel_desc">Spiele dieses Quiz-Duell zu Ende, um ein neues Duell gegen einen zufälligen Spieler beginnen zu können.</string>
+    <string name="unfinished_duel_start">Am Quiz-Duell teilnehmen</string>
+
     <string name="duel_start_error">Das Duell konnte nicht gestartet werden. Bitte versuche es später erneut.</string>
+
+    <string name="wait_for_opponent">Offenes Duell</string>
+    <string name="wait_for_opponent_name">Warten auf</string>
+    <string name="wait_for_opponent_title">%s hat deine Duell-Herausforderung noch nicht entgegengenommen…</string>
+    <string name="wait_for_opponent_desc">Der Gewinner wird ermittelt, sobald dein Gegner auch alle Fragen des Duells beantwortet hat.</string>
+
+    <string name="duel_result">Duell-Ergebnis</string>
+    <string name="duel_finish">Duell beenden</string>
 
     <!-- Home -->
     <string name="home">Home</string>
@@ -128,5 +153,8 @@
     <string name="error_update_email">Beim Ändern deiner E-Mail-Adresse ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
     <string name="error_update_nickname">Beim Ändern des Benutzernamens ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
     <string name="error_account_delete">Beim Löschen des Accounts ist ein Fehler aufgetreten. Bitte logge dich aus und ein und versuche es erneut.</string>
+
+    <string name="channel_name">Duel Finished Notifications</string>
+    <string name="channel_description">Notifications about finished duels in PhysioQuest</string>
 
 </resources>

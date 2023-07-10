@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -42,7 +44,6 @@ import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.BottomNavBar
 import com.example.physioquest.common.util.toolbarActions
-import kotlinx.coroutines.flow.collect
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -101,7 +102,8 @@ fun AccountScreen(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
     ) {
         ProfileHeader(username.value)
 
@@ -168,7 +170,7 @@ fun AccountOptionItem(
     onClick: () -> Unit
 ) {
     Surface(
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -185,14 +187,16 @@ fun AccountOptionItem(
             Icon(
                 painter = painterResource(optionIcon),
                 contentDescription = stringResource(optionText),
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = stringResource(optionText),
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 16.sp,
-                modifier = Modifier.weight(1.2f)
+                modifier = Modifier.weight(1.2f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
@@ -213,7 +217,7 @@ fun LogoutOptionItem(
     onClick: () -> Unit
 ) {
     Surface(
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -270,7 +274,7 @@ fun LevelProgressCircle() {
             )
         }
         Text(
-            text = "1",
+            text = "20",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
         )

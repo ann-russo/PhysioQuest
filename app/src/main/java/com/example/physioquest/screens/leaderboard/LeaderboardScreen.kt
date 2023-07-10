@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
@@ -15,7 +18,6 @@ import com.example.physioquest.common.composable.BottomNavBar
 import com.example.physioquest.common.util.toolbarActions
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaderboardScreen(
     restartApp: (String) -> Unit,
@@ -23,6 +25,25 @@ fun LeaderboardScreen(
     viewModel: LeaderboardViewModel = hiltViewModel()
 ) {
     Scaffold(
+        topBar = {
+            ActionToolBar(
+                title = R.string.leaderboard,
+                modifier = Modifier.toolbarActions(),
+                endActionIcon = R.drawable.ic_exit,
+                endAction = { viewModel.onSignOutClick(restartApp) }
+            )
+        },
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(it)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(stringResource(R.string.coming_soon))
+            }
+        },
         bottomBar = {
             BottomNavBar(
                 selectedScreen = "Leaderboard",
@@ -42,18 +63,5 @@ fun LeaderboardScreen(
                     }
                 })
         }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            ActionToolBar(
-                title = R.string.leaderboard,
-                modifier = Modifier.toolbarActions(),
-                endActionIcon = R.drawable.ic_exit,
-                endAction = { viewModel.onSignOutClick(restartApp) }
-            )
-        }
-    }
+    )
 }
