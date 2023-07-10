@@ -1,6 +1,5 @@
 package com.example.physioquest.screens.quiz.duellmodus
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -9,6 +8,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +17,7 @@ import com.example.physioquest.screens.quiz.shared.QuizQuestion
 
 @Composable
 fun DuellmodusRoute(
+    onQuizComplete: (duelId: String) -> Unit,
     openScreen: (String) -> Unit,
     onNavUp: () -> Unit,
     viewModel: DuellmodusViewModel = hiltViewModel()
@@ -26,6 +28,11 @@ fun DuellmodusRoute(
         onNavUp()
     }
 
+    val navigateToResultsScreen by viewModel.navigateToResultsScreen.observeAsState()
+    navigateToResultsScreen?.getContentIfNotHandled()?.let { duel ->
+        onQuizComplete(duel.id)
+    }
+
     DuellmodusScreen(
         surveyScreenData = screenData,
         isEvaluationEnabled = viewModel.isEvaluateEnabled,
@@ -33,11 +40,12 @@ fun DuellmodusRoute(
         onNextClicked = { viewModel.onNextClicked() },
         onClosePressed = { viewModel.onClosePressed(openScreen) },
         isLastQuestion = viewModel.isLastQuestion,
-        onQuizComplete = { viewModel.getQuizResult() }
+        onQuizComplete = { viewModel.onFinishClicked() },
+        onStartUnfinishedDuel = { viewModel.startUnfinishedDuel() },
+        onStartNewDuel = { viewModel.startNewDuel() }
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)
-
         AnimatedContent(
             targetState = screenData,
             transitionSpec = {
@@ -56,16 +64,22 @@ fun DuellmodusRoute(
             }
         ) { targetState ->
             when (targetState.destination) {
-                DuellmodusDestination.FIND_OPPONENT -> {
-                    viewModel.opponent?.let {
-                        FindOpponentScreen(
-                            opponent = it.username,
-                            onStartPressed = { viewModel.startDuel() },
-                            modifier = modifier
-                        )
-                    }
-                }
 
+                DuellmodusDestination.LOADING -> {
+                    LoadingScreen(modifier = modifier)
+                }
+                DuellmodusDestination.UNFINISHED_DUEL -> {
+                    UnfinishedDuelScreen(
+                        opponent = viewModel.getOpponentName(),
+                        modifier = modifier
+                    )
+                }
+                DuellmodusDestination.NEW_DUEL -> {
+                    StartNewDuelScreen(
+                        opponent = viewModel.duelOpponentUser.username,
+                        modifier = modifier
+                    )
+                }
                 DuellmodusDestination.QUESTIONS -> {
                     if (targetState.quizQuestion != null) {
                         QuizQuestion(
@@ -78,9 +92,17 @@ fun DuellmodusRoute(
                         )
                     }
                 }
-
+                DuellmodusDestination.WAIT_FOR_RESULT -> {
+                    WaitForOpponentFinish(
+                        opponent = viewModel.duelOpponentUser.username,
+                        modifier = modifier
+                    )
+                }
+                DuellmodusDestination.RESULT -> {
+                    onQuizComplete(viewModel.currentDuel.id)
+                }
                 else -> {
-                    Log.d("Duellmodusroute", "in else branch")
+                    null
                 }
             }
         }

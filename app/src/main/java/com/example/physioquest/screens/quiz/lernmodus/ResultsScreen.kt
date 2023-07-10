@@ -86,16 +86,18 @@ fun ResultsScreen(
             )
             Divider(modifier = Modifier.weight(1f))
         }
-        Text(
-            text = "Kategorie",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-            modifier = Modifier
-                .wrapContentWidth()
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 20.dp),
-            textAlign = TextAlign.Center
-        )
+        result.category?.let {
+            Text(
+                text = stringResource(AppText.results_category, it),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 20.dp),
+                textAlign = TextAlign.Center
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -104,7 +106,7 @@ fun ResultsScreen(
             contentAlignment = Alignment.Center
         ) { MedalBadge(angle.value) }
         Text(
-            text = "$points / $total Punkte",
+            text = stringResource(AppText.results_points, points, total),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .wrapContentWidth()

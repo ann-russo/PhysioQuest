@@ -1,6 +1,7 @@
 package com.example.physioquest.screens.quiz.shared
 
 import com.example.physioquest.model.Answer
+import com.example.physioquest.model.Duel
 import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ interface QuizRepository {
     var result: MutableStateFlow<Double>
 
     suspend fun getRandomQuestions(): List<Question>
+    suspend fun findUnfinishedDuel(currentUserId: String): Duel?
     fun resetQuizState()
     fun toggleAnswerSelection(answerIndex: Int)
     fun evaluateCurrentQuestion()

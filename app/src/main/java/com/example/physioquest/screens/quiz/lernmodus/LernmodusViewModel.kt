@@ -182,6 +182,7 @@ class LernmodusViewModel @Inject constructor(
         quizResult.scorePoints = _result.value
         quizResult.scorePercent = (_result.value / questions.size) * 100
         quizResult.totalPoints = questions.size
+        quizResult.category = selectedCategory
         return quizResult
     }
 

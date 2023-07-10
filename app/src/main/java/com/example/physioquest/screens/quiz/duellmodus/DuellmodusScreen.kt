@@ -10,6 +10,7 @@ import com.example.physioquest.common.composable.AnimatedDialog
 import com.example.physioquest.common.composable.CenteredTopAppBar
 import com.example.physioquest.common.composable.QuizTopAppBar
 import com.example.physioquest.screens.quiz.shared.QuizBottomBar
+ import com.example.physioquest.screens.quiz.shared.SimpleBottomBar
 
 @Composable
 fun DuellmodusScreen(
@@ -20,46 +21,81 @@ fun DuellmodusScreen(
     onClosePressed: () -> Unit,
     isLastQuestion: Boolean,
     onQuizComplete: () -> Unit,
+    onStartUnfinishedDuel: () -> Unit,
+    onStartNewDuel: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val showDialog = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
-            if (surveyScreenData.destination == DuellmodusDestination.FIND_OPPONENT) {
-                CenteredTopAppBar(
-                    title = R.string.find_opponent,
-                    onClosePressed = onClosePressed
-                )
-            } else {
-                QuizTopAppBar(
-                    questionIndex = surveyScreenData.questionIndex,
-                    totalQuestionsCount = surveyScreenData.questionCount,
-                    onClosePressed = { showDialog.value = true }
-                )
-                AnimatedDialog(
-                    visible = showDialog.value,
-                    onClose = { showDialog.value = false },
-                    onConfirm = {
-                        onClosePressed()
-                        showDialog.value = false
-                    },
-                    title = R.string.lernmodus_cancel,
-                    content = R.string.lernmodus_cancel_desc,
-                    actionButton = R.string.lernmodus_cancel_confirm
-                )
+            when (surveyScreenData.destination) {
+                DuellmodusDestination.NEW_DUEL -> {
+                    CenteredTopAppBar(
+                        title = R.string.new_duel,
+                        onClosePressed = onClosePressed
+                    )
+                }
+                DuellmodusDestination.UNFINISHED_DUEL -> {
+                    CenteredTopAppBar(
+                        title = R.string.unfinished_duel,
+                        onClosePressed = onClosePressed
+                    )
+                }
+                DuellmodusDestination.WAIT_FOR_RESULT -> {
+                    CenteredTopAppBar(
+                        title = R.string.wait_for_opponent,
+                        onClosePressed = onClosePressed
+                    )
+                }
+                DuellmodusDestination.QUESTIONS -> {
+                    QuizTopAppBar(
+                        questionIndex = surveyScreenData.questionIndex,
+                        totalQuestionsCount = surveyScreenData.questionCount,
+                        onClosePressed = { showDialog.value = true }
+                    )
+                    AnimatedDialog(
+                        visible = showDialog.value,
+                        onClose = { showDialog.value = false },
+                        onConfirm = {
+                            onClosePressed()
+                            showDialog.value = false
+                        },
+                        title = R.string.lernmodus_cancel,
+                        content = R.string.lernmodus_cancel_desc,
+                        actionButton = R.string.lernmodus_cancel_confirm
+                    )
+                }
+                else -> {
+                    null
+                }
             }
         },
         content = content,
         bottomBar = {
-            if (surveyScreenData.destination == DuellmodusDestination.QUESTIONS) {
-                QuizBottomBar(
-                    isEvaluationEnabled = isEvaluationEnabled,
-                    selectedAnswers = surveyScreenData.selectedAnswers,
-                    onEvaluateClicked = onEvaluateClicked,
-                    onNextClicked = onNextClicked,
-                    isLastQuestion = isLastQuestion,
-                    onQuizComplete = onQuizComplete
-                )
+            when (surveyScreenData.destination) {
+                DuellmodusDestination.UNFINISHED_DUEL -> {
+                    SimpleBottomBar(
+                        buttonText = R.string.unfinished_duel_start,
+                        onButtonClick = onStartUnfinishedDuel
+                    )
+                }
+                DuellmodusDestination.NEW_DUEL -> {
+                    SimpleBottomBar(
+                        buttonText = R.string.new_duel_start,
+                        onButtonClick = onStartNewDuel
+                    )
+                }
+                DuellmodusDestination.QUESTIONS -> {
+                    QuizBottomBar(
+                        isEvaluationEnabled = isEvaluationEnabled,
+                        selectedAnswers = surveyScreenData.selectedAnswers,
+                        onEvaluateClicked = onEvaluateClicked,
+                        onNextClicked = onNextClicked,
+                        isLastQuestion = isLastQuestion,
+                        onQuizComplete = onQuizComplete
+                    )
+                }
+                else -> {null}
             }
         }
     )

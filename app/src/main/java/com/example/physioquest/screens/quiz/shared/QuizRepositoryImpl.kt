@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.physioquest.model.Answer
+import com.example.physioquest.model.Duel
 import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
 import com.example.physioquest.service.StorageService
@@ -37,6 +38,20 @@ class QuizRepositoryImpl @Inject constructor(
         isLoading = false
 
         return questions
+    }
+
+    override suspend fun findUnfinishedDuel(currentUserId: String): Duel? {
+        val unfinishedDuel = storageService.findUnfinishedDuelByUserId(currentUserId)
+
+        return if (unfinishedDuel != null) {
+            questions = unfinishedDuel.randomQuestionsList
+            selectedAnswers.clear()
+            evaluationStatus.addAll(List(questions.size) { false })
+            isLoading = false
+            unfinishedDuel
+        } else {
+            null
+        }
     }
 
     override fun resetQuizState() {

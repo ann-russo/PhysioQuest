@@ -13,6 +13,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -29,6 +31,7 @@ import com.example.physioquest.screens.home.HomeScreen
 import com.example.physioquest.screens.leaderboard.LeaderboardScreen
 import com.example.physioquest.screens.login.LoginScreen
 import com.example.physioquest.screens.quiz.duellmodus.DuellmodusRoute
+import com.example.physioquest.screens.quiz.duelresult.DuelResultsScreen
 import com.example.physioquest.screens.quiz.lernmodus.LernmodusRoute
 import com.example.physioquest.screens.quiz.lernmodus.ResultsScreen
 import com.example.physioquest.screens.registration.RegistrationScreen
@@ -37,17 +40,29 @@ import com.example.physioquest.screens.welcome.WelcomeScreen
 import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Composable
 @ExperimentalMaterial3Api
 @OptIn(ExperimentalAnimationApi::class)
-fun PhysioQuestApp() {
+fun PhysioQuestApp(navController: NavHostController, duelIdFromNotification: MutableState<String?>) {
     PhysioQuestTheme(navigationBarColor = null) {
         Surface(color = MaterialTheme.colorScheme.background) {
             val snackbarHostState = remember { SnackbarHostState() }
-            val appState = rememberAppState(snackbarHostState = snackbarHostState)
+            val appState = rememberAppState(
+                snackbarHostState = snackbarHostState,
+                navController = navController
+            )
+
+            LaunchedEffect(duelIdFromNotification.value) {
+                duelIdFromNotification.value?.let { duelId ->
+                    appState.navController.navigate("DuelResultsScreen/$duelId")
+                }
+            }
+
             Scaffold(
                 snackbarHost = {
                     SnackbarHost(
@@ -74,11 +89,10 @@ fun PhysioQuestApp() {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberAppState(
     snackbarHostState: SnackbarHostState,
-    navController: NavHostController = rememberAnimatedNavController(),
+    navController: NavHostController,
     snackbarManager: SnackbarManager = SnackbarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -280,13 +294,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
     ) {
         LernmodusRoute(
             onQuizComplete = { result ->
+                val jsonResult = Json.encodeToString(result)
                 appState
                     .navigate(
-                        "ResultsScreen/" +
-                                "${result.scorePoints}/" +
-                                "${result.scorePercent}/" +
-                                "${result.totalPoints}"
-                    )
+                        "ResultsScreen/$jsonResult")
             },
             openScreen = { route -> appState.navigate(route) },
             onNavUp = { appState.popUp() },
@@ -340,14 +351,13 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             }
         }
     ) {
-        val result = it.arguments?.let { bundle ->
-            val points = bundle.getString("points")?.toDoubleOrNull() ?: 0.0
-            val percentage = bundle.getString("percentage")?.toDoubleOrNull() ?: 0.0
-            val total = bundle.getString("total")?.toIntOrNull() ?: 0
-            QuizResult(points, percentage, total)
-        }
+        val jsonString = it.arguments?.getString("result")
+        val result = jsonString?.let { json ->
+            Json.decodeFromString<QuizResult>(json)
+        } ?: QuizResult()
+
         ResultsScreen(
-            result = result ?: QuizResult(),
+            result = result,
             openScreen = { route -> appState.navigate(route) }
         )
     }
@@ -407,8 +417,66 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
         }
     ) {
         DuellmodusRoute(
+            onQuizComplete = { duelId ->
+                appState
+                    .navigate(
+                        "DuelResultsScreen/$duelId")
+            },
             openScreen = { route -> appState.navigate(route) },
             onNavUp = { appState.popUp() }
+        )
+    }
+
+    composable(
+        route = DUELLMODUS_RESULTS,
+        enterTransition = {
+            when (initialState.destination.route) {
+                DUELLMODUS_ROUTE ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        exitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        popEnterTransition = {
+            when (initialState.destination.route) {
+                DUELLMODUS_ROUTE ->
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Up,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        },
+        popExitTransition = {
+            when (targetState.destination.route) {
+                HOME_SCREEN ->
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Down,
+                        animationSpec = tween(400)
+                    )
+
+                else -> null
+            }
+        }
+    ) {
+        DuelResultsScreen(
+            duelId = it.arguments?.getString("duelId") ?: "",
+            openScreen = { route -> appState.navigate(route) }
         )
     }
 

@@ -58,3 +58,27 @@ fun QuizBottomBar(
         }
     }
 }
+
+@Composable
+fun SimpleBottomBar(
+    buttonText: Int,
+    onButtonClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shadowElevation = 7.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+        ) {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onButtonClick
+            ) {
+                Text(stringResource(buttonText).uppercase())
+            }
+        }
+    }
+}

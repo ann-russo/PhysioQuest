@@ -14,6 +14,7 @@ interface AccountService {
     suspend fun updateNickname(newNickname: String)
     suspend fun updateEmail(newEmail: String)
     suspend fun updatePassword(newPassword: String)
+    fun updateToken(token: String)
     suspend fun deleteAccount()
     suspend fun signOut()
     suspend fun resetPassword(email: String)
