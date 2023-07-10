@@ -108,6 +108,11 @@
     <string name="wait_for_opponent_desc">Der Gewinner wird ermittelt, sobald dein Gegner auch alle Fragen des Duells beantwortet hat.</string>
 
     <string name="duel_result">Duell-Ergebnis</string>
+    <string name="duel_result_current_won">Du hast das Duell gewonnen!</string>
+    <string name="duel_result_current_lost">%s hat das Duell gewonnen</string>
+    <string name="duel_result_won_tip">Super gemacht!</string>
+    <string name="duel_result_lost_tip">Das nächste Mal schaffst du es bestimmt!</string>
+    <string name="duel_result_total">von 15 Punkten</string>
     <string name="duel_finish">Duell beenden</string>
 
     <!-- Home -->

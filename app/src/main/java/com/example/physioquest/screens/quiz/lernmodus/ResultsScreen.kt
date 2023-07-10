@@ -2,9 +2,7 @@ package com.example.physioquest.screens.quiz.lernmodus
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,13 +25,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.physioquest.HOME_SCREEN
 import com.example.physioquest.R
+import com.example.physioquest.common.composable.MedalBadge
 import com.example.physioquest.model.QuizResult
 import com.example.physioquest.ui.theme.md_theme_light_onSurfaceVariant
 import com.example.physioquest.R.string as AppText
@@ -104,10 +99,14 @@ fun ResultsScreen(
                 .fillMaxWidth()
                 .weight(1f),
             contentAlignment = Alignment.Center
-        ) { MedalBadge(angle.value) }
+        ) {
+            MedalBadge(angle.value, 200.dp)
+        }
         Text(
             text = stringResource(AppText.results_points, points, total),
             style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier
                 .wrapContentWidth()
                 .align(Alignment.CenterHorizontally)
@@ -132,42 +131,5 @@ fun ResultsScreen(
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(stringResource(AppText.finish).uppercase())
         }
-    }
-}
-
-@Composable
-fun MedalBadge(angle: Float) {
-    val sweepAngle by animateFloatAsState(targetValue = angle * 3.6f)
-    Box(
-        modifier = Modifier.size(200.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Canvas(modifier = Modifier.size(160.dp)) {
-            val radius = size.minDimension / 2
-            val strokeWidth = 40f
-            val startColor = Color(0xFF9CD67D)
-            val endColor = Color(0xFF58A28F)
-
-            drawCircle(
-                color = Color.LightGray,
-                radius = radius,
-                style = Stroke(strokeWidth)
-            )
-
-            drawArc(
-                brush = Brush.verticalGradient(listOf(startColor, endColor)),
-                startAngle = -90f,
-                sweepAngle = sweepAngle,
-                useCenter = false,
-                style = Stroke(strokeWidth)
-            )
-        }
-
-        val percentage = String.format("%.2f", angle)
-        Text(
-            text = "${percentage}%",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-        )
     }
 }
