@@ -14,6 +14,7 @@ import com.example.physioquest.common.util.isValidUsername
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.LevelService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,8 @@ import com.example.physioquest.R.string as AppText
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    private val accountService: AccountService
+    private val accountService: AccountService,
+    private val levelService: LevelService
 ) : PhysioQuestViewModel() {
 
     private val _user: MutableState<User?> = mutableStateOf(null)
@@ -89,6 +91,10 @@ class AccountViewModel @Inject constructor(
                 _level.value = user.level
             }
         }
+    }
+
+    fun retrieveRankName(level: Int): Int {
+        return levelService.getRankName(level)
     }
 
     fun onHomeClick(openScreen: (String) -> Unit) {

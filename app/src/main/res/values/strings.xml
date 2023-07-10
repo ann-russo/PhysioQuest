@@ -128,6 +128,12 @@
     <string name="stats">Statistik</string>
     <string name="help">Problem melden</string>
 
+    <string name="rank_default">Durchschnittlich</string>
+    <string name="rank_beginner">Quiz-Anfänger</string>
+    <string name="rank_intermediate">Rätselmeister</string>
+    <string name="rank_superior">Wissenskrieger</string>
+    <string name="rank_extreme">Ultimativer Quiz-Herrscher</string>
+
     <!-- Deletion -->
     <string name="delete_account">Account löschen</string>
     <string name="delete_description">Dein Konto wird sofort gelöscht und kann nicht wiederhergestellt werden. Alle Daten gehen unwiderruflich verloren.</string>

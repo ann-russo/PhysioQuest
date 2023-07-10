@@ -9,6 +9,7 @@ import com.example.physioquest.model.Question
 import com.example.physioquest.model.User
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import kotlin.random.Random
 
 class StorageServiceImpl
@@ -98,6 +101,23 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
                 }
         }
 
+    override suspend fun getHighestXpUsers(): List<User> = suspendCoroutine { continuation ->
+        firestore.collection(USERS_COLLECTION)
+            .orderBy("xp", Query.Direction.DESCENDING)
+            .limit(10)
+            .get()
+            .addOnSuccessListener { documents ->
+                val users = documents.mapNotNull { document ->
+                    document.toObject(User::class.java)
+                }
+                Log.d(TAG, "top users size: ${users.size}")
+                continuation.resume(users)
+            }
+            .addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
+    }
+
     override suspend fun getRandomUserFromDatabase(currentUserId: String): User {
         var randomOpponent = User()
         val availableUsers = getUsersFromDatabase().filter { it.id != currentUserId }
@@ -143,6 +163,12 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
         val duelRef = firestore.collection(DUELS_COLLECTION).document(duel.id)
         duelRef.set(duel).await()
         Log.d(TAG, "Duel ${duel.id} updated successfully")
+    }
+
+    override suspend fun deleteDuel(duelId: String) {
+        val duelRef = firestore.collection(DUELS_COLLECTION).document(duelId)
+        duelRef.delete().await()
+        Log.d(TAG, "Duel $duelId deleted")
     }
 
     override suspend fun getUnfinishedDuels(): List<Duel> {

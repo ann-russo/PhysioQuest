@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
@@ -21,6 +22,7 @@ fun AccountRoute(
     val username = viewModel.username.collectAsState()
     val xp = viewModel.xp.collectAsState()
     val level = viewModel.level.collectAsState()
+    val rank = viewModel.retrieveRankName(level.value)
 
     AccountContent(
         data = data,
@@ -65,6 +67,7 @@ fun AccountRoute(
                 AccountDestination.PROFIL -> {
                     AccountScreen(
                         username = username.value,
+                        rank = stringResource(rank),
                         userLevel = level.value,
                         userXp = xp.value,
                         restartApp = restartApp,

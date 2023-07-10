@@ -100,6 +100,7 @@ fun AccountContent(
 @Composable
 fun AccountScreen(
     username: String,
+    rank: String,
     userLevel: Int,
     userXp: Int,
     restartApp: (String) -> Unit,
@@ -114,6 +115,7 @@ fun AccountScreen(
     ) {
         ProfileHeader(
             username,
+            rank,
             userLevel,
             userXp
         )
@@ -148,6 +150,7 @@ fun AccountScreen(
 @Composable
 fun ProfileHeader(
     username: String,
+    rank: String,
     level: Int,
     xp: Int
 ) {
@@ -173,7 +176,7 @@ fun ProfileHeader(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "Beginner",
+                    text = rank,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.Gray
                 )

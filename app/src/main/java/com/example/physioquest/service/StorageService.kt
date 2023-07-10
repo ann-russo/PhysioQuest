@@ -10,10 +10,12 @@ interface StorageService {
     suspend fun getQuestionsForCategory(category: String): List<Question>
     suspend fun getRandomQuestions(): List<Question>
     suspend fun getUsersFromDatabase(): List<User>
+    suspend fun getHighestXpUsers(): List<User>
     suspend fun getRandomUserFromDatabase(currentUserId: String): User
     suspend fun getDuel(duelId: String): Flow<Duel>
     suspend fun saveDuel(duel: Duel)
     suspend fun updateDuel(duel: Duel)
+    suspend fun deleteDuel(duelId: String)
     suspend fun getUnfinishedDuels(): List<Duel>
     suspend fun findUnfinishedDuelByOpponentUserId(userId: String): Duel?
     suspend fun findUnfinishedDuelByUserId(userId: String): Duel?
