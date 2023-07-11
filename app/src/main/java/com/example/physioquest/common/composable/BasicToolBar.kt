@@ -65,7 +65,7 @@ fun ActionToolBar(
     @StringRes title: Int? = null,
     titleAsString: String? = null,
     level: Int = 0,
-    xpProgress: Float = 0f,
+    xpProgress: Float,
     @DrawableRes endActionIcon: Int,
     modifier: Modifier,
     endAction: () -> Unit,

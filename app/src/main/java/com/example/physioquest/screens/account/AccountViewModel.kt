@@ -27,8 +27,8 @@ class AccountViewModel @Inject constructor(
     private val levelService: LevelService
 ) : PhysioQuestViewModel() {
 
-    private val _user: MutableState<User?> = mutableStateOf(null)
-    val user: State<User?> = _user
+    private val _user: MutableState<User> = mutableStateOf(User())
+    val user: State<User> = _user
 
     private val _username: MutableStateFlow<String> = MutableStateFlow("username")
     val username: StateFlow<String> = _username
@@ -102,7 +102,9 @@ class AccountViewModel @Inject constructor(
     }
 
     fun calculateXpProgress(): Float {
-        return getXpInCurrentLevel(_xp.value, _level.value).toFloat() / getXpForNextLevel(_level.value).toFloat()
+        val xpInCurrentLevel = levelService.calculateXpInCurrentLevel(user.value.xp, user.value.level)
+        val xpNeededForNextLevel = levelService.calculateXpForNextLevel(user.value.level)
+        return xpInCurrentLevel.toFloat() / xpNeededForNextLevel.toFloat()
     }
 
     fun retrieveRankName(level: Int): Int {
