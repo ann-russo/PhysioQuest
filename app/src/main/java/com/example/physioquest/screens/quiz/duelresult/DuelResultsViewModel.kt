@@ -49,12 +49,11 @@ class DuelResultsViewModel @Inject constructor(
                 _duel.value = fetchedDuel
                 _initUserResult.value = fetchedDuel.initUserResult
                 _opponentUserResult.value = fetchedDuel.opponentUserResult
-                awardWinnerXP()
             }
         }
     }
 
-    private fun awardWinnerXP() {
+    fun awardWinnerXP() {
         if (isCurrentUserWinner()) {
             val updatedUser = _currentUser.value
             launchCatching {

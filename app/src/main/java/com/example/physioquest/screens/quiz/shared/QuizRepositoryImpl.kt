@@ -1,5 +1,6 @@
 package com.example.physioquest.screens.quiz.shared
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,16 +9,14 @@ import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Duel
 import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
-import com.example.physioquest.service.LevelService
 import com.example.physioquest.service.StorageService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class QuizRepositoryImpl @Inject constructor(
-    private val storageService: StorageService,
-    private val levelService: LevelService
-    ): QuizRepository {
+    private val storageService: StorageService
+): QuizRepository {
 
     override var questions: List<Question> by mutableStateOf(emptyList())
     override var currentQuestionIndex: StateFlow<Int> = MutableStateFlow(0)
@@ -103,10 +102,11 @@ class QuizRepositoryImpl @Inject constructor(
         }
         val points = calculateScore(selectedCorrectAnswers, correctAnswers)
         if (points == 1.0) {
-            xpPoints.value += 10
-        } else if (points > 0.0 && points < 1.0) {
             xpPoints.value += 5
+        } else if (points > 0.0 && points < 1.0) {
+            xpPoints.value += 2
         }
+
         result.value += points
     }
 
@@ -142,11 +142,12 @@ class QuizRepositoryImpl @Inject constructor(
         quizResult.scorePercent = (result.value / questions.size) * 100
         quizResult.totalPoints = questions.size
 
-        var xpOnComplete = 30
+        var xpOnComplete = 20
         if (quizResult.scorePoints == quizResult.totalPoints.toDouble()) {
-            xpOnComplete += 50
+            xpOnComplete += 20
         }
         xpPoints.value += xpOnComplete
+        Log.d("QuizRepository", "Total XP on finish: ${xpPoints.value}")
 
         return quizResult
     }

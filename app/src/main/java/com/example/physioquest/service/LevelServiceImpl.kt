@@ -13,6 +13,7 @@ constructor() : LevelService {
         user.xp += xp
         user.level = calculateLevel(user.xp).coerceAtMost(20)
         updateXpAndLevel(user)
+        Log.d("LevelService", "Added $xp XP to user ${user.username}")
     }
 
     override suspend fun removeXp(user: User, xp: Int) {

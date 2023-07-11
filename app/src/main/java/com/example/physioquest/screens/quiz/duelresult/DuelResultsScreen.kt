@@ -188,7 +188,9 @@ fun DuelResultsScreen(
             contentDescription = null
         )
         Button(
-            onClick = { openScreen(HOME_SCREEN) },
+            onClick = {
+                viewModel.awardWinnerXP()
+                openScreen(HOME_SCREEN) },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
