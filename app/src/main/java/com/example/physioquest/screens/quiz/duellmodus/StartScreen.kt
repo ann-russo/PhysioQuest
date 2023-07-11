@@ -124,6 +124,14 @@ fun StartNewDuelScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val color = Color(0xffffd94a)
+        Icon(
+            painter = painterResource(R.drawable.swords_48px),
+            tint = color,
+            contentDescription = "Swords",
+            modifier = Modifier.size(110.dp)
+        )
+        Spacer(modifier = Modifier.height(30.dp))
         Text(
             text = stringResource(R.string.new_duel_title),
             color = MaterialTheme.colorScheme.secondary,
@@ -132,7 +140,6 @@ fun StartNewDuelScreen(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(40.dp))
-
         Surface(
             color = MaterialTheme.colorScheme.secondary,
             shape = RoundedCornerShape(15.dp),
@@ -191,7 +198,14 @@ fun WaitForOpponentFinish(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
+        val color = Color(0xffffd94a)
+        Icon(
+            painter = painterResource(R.drawable.schedule_48px),
+            tint = color,
+            contentDescription = "Wait",
+            modifier = Modifier.size(110.dp)
+        )
+        Spacer(modifier = Modifier.height(30.dp))
         Text(
             text = stringResource(R.string.wait_for_opponent_title, opponent),
             color = MaterialTheme.colorScheme.secondary,
