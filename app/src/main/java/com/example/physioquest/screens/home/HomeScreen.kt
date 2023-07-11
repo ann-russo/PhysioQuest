@@ -43,7 +43,7 @@ fun HomeScreen(
             ActionToolBar(
                 title = AppText.app_name,
                 level = viewModel.user.value.level,
-                xp = viewModel.user.value.xp,
+                xpProgress = viewModel.calculateXpProgress(),
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = AppIcon.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }

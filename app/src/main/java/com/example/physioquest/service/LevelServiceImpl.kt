@@ -11,37 +11,40 @@ constructor() : LevelService {
 
     override suspend fun awardXp(user: User, xp: Int) {
         user.xp += xp
-        user.level = calculateLevel(user.xp)
-        if (user.level > 20) {
-            user.level = 20
-        }
+        user.level = calculateLevel(user.xp).coerceAtMost(20)
         updateXpAndLevel(user)
     }
 
     override suspend fun removeXp(user: User, xp: Int) {
-        user.xp -= xp
-        if (user.xp < 0) {
-            user.xp = 0
-        }
-        user.level = calculateLevel(user.xp)
-        if (user.level > 20) {
-            user.level = 20
-        }
+        user.xp = (user.xp - xp).coerceAtLeast(0)
+        user.level = calculateLevel(user.xp).coerceAtMost(20)
         updateXpAndLevel(user)
     }
 
-    private fun calculateLevel(xp: Int): Int {
+    override fun calculateLevel(xp: Int): Int {
         var level = 1
-        while (level * 100 <= xp) {
+        while ((100 * (level + 1) * (level + 1) / 2) <= xp) {
             level++
         }
-        // If the XP is exactly a multiple of 100, the level will be one too high. So, we subtract one.
-        level--
-        // Ensure the level never goes below 1.
+        // Ensure the level never goes below 1 or above 20.
         if (level < 1) {
             level = 1
+        } else if (level > 20) {
+            level = 20
         }
         return level
+    }
+
+    override fun calculateXpInCurrentLevel(xp: Int, level: Int): Int {
+        // The total XP needed to reach the current level.
+        val totalXpForCurrentLevel = if (level > 1) 100 * (level) * (level) / 2 else 0
+        // The XP points accumulated on the current level are the total XP minus the XP needed to reach the current level.
+        return xp - totalXpForCurrentLevel
+    }
+
+    override fun calculateXpForNextLevel(level: Int): Int {
+        // The XP needed for next level is 100 times the next level number.
+        return 100 * (level + 1)
     }
 
     override suspend fun updateXpAndLevel(user: User) {

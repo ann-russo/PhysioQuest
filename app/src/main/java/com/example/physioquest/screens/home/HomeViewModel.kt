@@ -12,12 +12,14 @@ import com.example.physioquest.START_SCREEN
 import com.example.physioquest.model.User
 import com.example.physioquest.screens.PhysioQuestViewModel
 import com.example.physioquest.service.AccountService
+import com.example.physioquest.service.LevelService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val accountService: AccountService
+    private val accountService: AccountService,
+    private val levelService: LevelService
 ) :
     PhysioQuestViewModel() {
     private val _user: MutableState<User> = mutableStateOf(User())
@@ -29,6 +31,12 @@ class HomeViewModel @Inject constructor(
                 _user.value = user
             }
         }
+    }
+
+    fun calculateXpProgress(): Float {
+        val xpInCurrentLevel = levelService.calculateXpInCurrentLevel(user.value.xp, user.value.level)
+        val xpNeededForNextLevel = levelService.calculateXpForNextLevel(user.value.level)
+        return xpInCurrentLevel.toFloat() / xpNeededForNextLevel.toFloat()
     }
 
     fun onSignOutClick(restartApp: (String) -> Unit) {

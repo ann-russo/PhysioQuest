@@ -48,7 +48,7 @@ fun LeaderboardScreen(
             ActionToolBar(
                 title = R.string.leaderboard,
                 level = currentUser.level,
-                xp = currentUser.xp,
+                xpProgress = viewModel.calculateXpProgress(),
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = R.drawable.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }

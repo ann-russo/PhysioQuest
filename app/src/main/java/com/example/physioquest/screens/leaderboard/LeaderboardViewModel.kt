@@ -44,6 +44,12 @@ class LeaderboardViewModel @Inject constructor(
         return levelService.getRankName(level)
     }
 
+    fun calculateXpProgress(): Float {
+        val xpInCurrentLevel = levelService.calculateXpInCurrentLevel(user.value.xp, user.value.level)
+        val xpNeededForNextLevel = levelService.calculateXpForNextLevel(user.value.level)
+        return xpInCurrentLevel.toFloat() / xpNeededForNextLevel.toFloat()
+    }
+
     fun onHomeClick(openScreen: (String) -> Unit) {
         launchCatching {
             openScreen(HOME_SCREEN)

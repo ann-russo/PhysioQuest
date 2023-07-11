@@ -53,7 +53,7 @@ import com.example.physioquest.R.string as AppText
 fun AccountContent(
     data: AccountScreenData,
     userLevel: Int,
-    userXp: Int,
+    xpProgress: Float,
     onHomeClick: () -> Unit,
     onLeaderboardClick: () -> Unit,
     onAccountClick: () -> Unit,
@@ -66,7 +66,7 @@ fun AccountContent(
             ActionToolBar(
                 titleAsString = data.title,
                 level = userLevel,
-                xp = userXp,
+                xpProgress = xpProgress,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = AppIcon.ic_exit,
                 endAction = { onSignOutClick() },
@@ -102,7 +102,8 @@ fun AccountScreen(
     username: String,
     rank: String,
     userLevel: Int,
-    userXp: Int,
+    xpInCurrentLevel: Int,
+    xpNeededForNextLevel: Int,
     restartApp: (String) -> Unit,
     modifier: Modifier,
     viewModel: AccountViewModel = hiltViewModel()
@@ -117,7 +118,8 @@ fun AccountScreen(
             username,
             rank,
             userLevel,
-            userXp
+            xpInCurrentLevel,
+            xpNeededForNextLevel
         )
         AccountOptionItem(
             optionText = AppText.edit,
@@ -152,7 +154,8 @@ fun ProfileHeader(
     username: String,
     rank: String,
     level: Int,
-    xp: Int
+    xpInCurrentLevel: Int,
+    xpNeededForNextLevel: Int
 ) {
     Surface(
         color = Color.White,
@@ -167,7 +170,7 @@ fun ProfileHeader(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ) {
-            LevelProgressCircle(level, xp)
+            LevelProgressCircle(level, xpInCurrentLevel, xpNeededForNextLevel)
             Spacer(modifier = Modifier.width(20.dp))
             Column {
                 Text(
@@ -180,7 +183,7 @@ fun ProfileHeader(
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.Gray
                 )
-                val remainingXp = (level+1)*100 - xp
+                val remainingXp = xpNeededForNextLevel - xpInCurrentLevel
                 Text(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Normal, color = Color.Gray)) {
@@ -291,11 +294,15 @@ fun LogoutOptionItem(
 }
 
 @Composable
-fun LevelProgressCircle(level: Int, xp: Int) {
+fun LevelProgressCircle(
+    level: Int,
+    xpInCurrentLevel: Int,
+    xpNeededForNextLevel: Int
+) {
     val color = colorResource(R.color.teal_200)
     val bgColor = MaterialTheme.colorScheme.secondaryContainer
-    val xpNeededForNextLevel = level * 100
-    val xpProgress = xp.toFloat() / xpNeededForNextLevel.toFloat()
+
+    val xpProgress = xpInCurrentLevel.toFloat() / xpNeededForNextLevel.toFloat()
     val progressAngle = xpProgress * 360f
 
     Box(
@@ -326,7 +333,7 @@ fun LevelProgressCircle(level: Int, xp: Int) {
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Text(
-                text = "$xp XP",
+                text = "$xpInCurrentLevel/$xpNeededForNextLevel XP",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

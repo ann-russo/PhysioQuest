@@ -93,6 +93,18 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    fun getXpInCurrentLevel(xp: Int, level: Int): Int {
+        return levelService.calculateXpInCurrentLevel(xp, level)
+    }
+
+    fun getXpForNextLevel(level: Int): Int {
+        return levelService.calculateXpForNextLevel(level)
+    }
+
+    fun calculateXpProgress(): Float {
+        return getXpInCurrentLevel(_xp.value, _level.value).toFloat() / getXpForNextLevel(_level.value).toFloat()
+    }
+
     fun retrieveRankName(level: Int): Int {
         return levelService.getRankName(level)
     }

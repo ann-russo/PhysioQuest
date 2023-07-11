@@ -65,7 +65,7 @@ fun ActionToolBar(
     @StringRes title: Int? = null,
     titleAsString: String? = null,
     level: Int = 0,
-    xp: Int = 0,
+    xpProgress: Float = 0f,
     @DrawableRes endActionIcon: Int,
     modifier: Modifier,
     endAction: () -> Unit,
@@ -93,7 +93,7 @@ fun ActionToolBar(
             }
         },
         actions = {
-            SmallLevelProgressCircle(level, xp)
+            SmallLevelProgressCircle(level, xpProgress)
             TopAppBarMenu(
                 imageVector = Icons.Outlined.MoreVert,
                 description = stringResource(AppText.dropdown)
@@ -283,11 +283,9 @@ fun BottomNavBar(
 }
 
 @Composable
-fun SmallLevelProgressCircle(level: Int, xp: Int) {
+fun SmallLevelProgressCircle(level: Int, xpProgress: Float) {
     val color = colorResource(R.color.teal_200)
     val bgColor = MaterialTheme.colorScheme.secondaryContainer
-    val xpNeededForNextLevel = level * 100
-    val xpProgress = xp.toFloat() / xpNeededForNextLevel.toFloat()
     val progressAngle = xpProgress * 360f
 
     Box(

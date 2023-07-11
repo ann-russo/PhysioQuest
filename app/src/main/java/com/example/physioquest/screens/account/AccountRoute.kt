@@ -27,7 +27,7 @@ fun AccountRoute(
     AccountContent(
         data = data,
         userLevel = level.value,
-        userXp = xp.value,
+        xpProgress = viewModel.calculateXpProgress(),
         onHomeClick = { viewModel.onHomeClick(openScreen) },
         onLeaderboardClick = { viewModel.onLeaderboardClick(openScreen) },
         onAccountClick = { viewModel.onAccountClick(openScreen) },
@@ -69,7 +69,8 @@ fun AccountRoute(
                         username = username.value,
                         rank = stringResource(rank),
                         userLevel = level.value,
-                        userXp = xp.value,
+                        xpInCurrentLevel = viewModel.getXpInCurrentLevel(xp.value, level.value),
+                        xpNeededForNextLevel = viewModel.getXpForNextLevel(level.value),
                         restartApp = restartApp,
                         modifier = modifier
                     )

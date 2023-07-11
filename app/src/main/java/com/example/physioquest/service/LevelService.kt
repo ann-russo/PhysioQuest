@@ -7,4 +7,7 @@ interface LevelService {
     suspend fun removeXp(user: User, xp: Int)
     suspend fun updateXpAndLevel(user: User)
     fun getRankName(level: Int): Int
+    fun calculateLevel(xp: Int): Int
+    fun calculateXpInCurrentLevel(xp: Int, level: Int): Int
+    fun calculateXpForNextLevel(level: Int): Int
 }
