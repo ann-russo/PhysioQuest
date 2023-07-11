@@ -11,28 +11,38 @@ constructor() : LevelService {
 
     override suspend fun awardXp(user: User, xp: Int) {
         user.xp += xp
-        while (user.level * 100 <= user.xp) {
-            user.level++
-            if (user.level > 20) {
-                user.level = 20
-                break
-            }
+        user.level = calculateLevel(user.xp)
+        if (user.level > 20) {
+            user.level = 20
         }
         updateXpAndLevel(user)
     }
 
     override suspend fun removeXp(user: User, xp: Int) {
         user.xp -= xp
-        while (user.level * 100 <= user.xp) {
-            user.level++
-            if (user.level > 20) {
-                user.level = 20
-                break
-            }
+        if (user.xp < 0) {
+            user.xp = 0
+        }
+        user.level = calculateLevel(user.xp)
+        if (user.level > 20) {
+            user.level = 20
         }
         updateXpAndLevel(user)
     }
 
+    private fun calculateLevel(xp: Int): Int {
+        var level = 1
+        while (level * 100 <= xp) {
+            level++
+        }
+        // If the XP is exactly a multiple of 100, the level will be one too high. So, we subtract one.
+        level--
+        // Ensure the level never goes below 1.
+        if (level < 1) {
+            level = 1
+        }
+        return level
+    }
 
     override suspend fun updateXpAndLevel(user: User) {
         val docRef = FirebaseFirestore.getInstance().collection("users").document(user.id)
