@@ -65,6 +65,7 @@ fun LernmodusScreen(
             bottomBar = {
                 if (surveyScreenData.selectedCategory != null) {
                     QuizBottomBar(
+                        isDuelMode = false,
                         isEvaluationEnabled = isEvaluationEnabled,
                         selectedAnswers = surveyScreenData.selectedAnswers,
                         onEvaluateClicked = onEvaluateClicked,

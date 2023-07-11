@@ -61,9 +61,9 @@ fun DuellmodusScreen(
                             onCancelDuel()
                             showDialog.value = false
                         },
-                        title = R.string.lernmodus_cancel,
-                        content = R.string.lernmodus_cancel_desc,
-                        actionButton = R.string.lernmodus_cancel_confirm
+                        title = R.string.duellmodus_cancel,
+                        content = R.string.duellmodus_cancel_desc,
+                        actionButton = R.string.duellmodus_cancel_confirm
                     )
                 }
                 else -> {
@@ -88,6 +88,7 @@ fun DuellmodusScreen(
                 }
                 DuellmodusDestination.QUESTIONS -> {
                     QuizBottomBar(
+                        isDuelMode = true,
                         isEvaluationEnabled = isEvaluationEnabled,
                         selectedAnswers = surveyScreenData.selectedAnswers,
                         onEvaluateClicked = onEvaluateClicked,

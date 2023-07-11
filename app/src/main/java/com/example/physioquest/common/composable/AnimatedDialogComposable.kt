@@ -30,6 +30,7 @@ fun AnimatedDialog(
         exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
     ) {
         AlertDialog(
+            containerColor = MaterialTheme.colorScheme.surface,
             onDismissRequest = { onClose() },
             title = {
                 Text(stringResource(title))

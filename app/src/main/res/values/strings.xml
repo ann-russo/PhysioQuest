@@ -64,11 +64,17 @@
     <string name="questions_correct">Fragen richtig beantwortet</string>
     <string name="finish">Lern-Modus beenden</string>
 
-    <string name="lernmodus_cancel">Quiz abbrechen</string>
+    <string name="lernmodus_cancel">Lernmodus abbrechen</string>
     <string name="lernmodus_cancel_desc">
-        Bist du dir sicher, dass du das Quiz jetzt abbrechen willst? Dein Fortschritt geht somit verloren.
+        Bist du dir sicher, dass du das Lernmodus jetzt abbrechen willst?
     </string>
-    <string name="lernmodus_cancel_confirm">Quiz beenden</string>
+    <string name="lernmodus_cancel_confirm">Lernen beenden</string>
+
+    <string name="duellmodus_cancel">Duell abbrechen</string>
+    <string name="duellmodus_cancel_desc">
+        Bist du dir sicher, dass du das Quiz-Duell jetzt abbrechen willst? Dein Fortschritt geht somit verloren und du verlierst 10 XP.
+    </string>
+    <string name="duellmodus_cancel_confirm">Duell beenden</string>
 
     <!-- Categories Names -->
     <string name="categories">Verfügbare Kategorien</string>
