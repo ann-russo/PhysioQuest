@@ -166,6 +166,16 @@ class DuellmodusViewModel @Inject constructor(
         }
     }
 
+    fun onCancelDuel(openScreen: (String) -> Unit) {
+        removeXp()
+        launchCatching {
+            storageService.deleteDuel(currentDuel.id)
+        }
+        launchCatching {
+            openScreen(HOME_SCREEN)
+        }
+    }
+
     private fun selectRandomOpponent() {
         launchCatching {
             _duelOpponentUser.value = storageService.getRandomUserFromDatabase(currentUser.id)
@@ -211,6 +221,11 @@ class DuellmodusViewModel @Inject constructor(
     private fun addXp(points: Int) {
         launchCatching {
             levelService.awardXp(currentUser, points)
+        }
+    }
+    private fun removeXp(points: Int = 10) {
+        launchCatching {
+            levelService.removeXp(currentUser, points)
         }
     }
 

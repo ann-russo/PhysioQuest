@@ -19,6 +19,7 @@ fun DuellmodusScreen(
     onEvaluateClicked: () -> Unit,
     onNextClicked: () -> Unit,
     onClosePressed: () -> Unit,
+    onCancelDuel: () -> Unit,
     isLastQuestion: Boolean,
     onQuizComplete: () -> Unit,
     onStartUnfinishedDuel: () -> Unit,
@@ -57,7 +58,7 @@ fun DuellmodusScreen(
                         visible = showDialog.value,
                         onClose = { showDialog.value = false },
                         onConfirm = {
-                            onClosePressed()
+                            onCancelDuel()
                             showDialog.value = false
                         },
                         title = R.string.lernmodus_cancel,

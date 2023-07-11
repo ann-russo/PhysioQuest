@@ -11,8 +11,6 @@ constructor() : LevelService {
 
     override suspend fun awardXp(user: User, xp: Int) {
         user.xp += xp
-
-        // Calculate level based on total XP.
         while (user.level * 100 <= user.xp) {
             user.level++
             if (user.level > 20) {
@@ -20,7 +18,18 @@ constructor() : LevelService {
                 break
             }
         }
+        updateXpAndLevel(user)
+    }
 
+    override suspend fun removeXp(user: User, xp: Int) {
+        user.xp -= xp
+        while (user.level * 100 <= user.xp) {
+            user.level++
+            if (user.level > 20) {
+                user.level = 20
+                break
+            }
+        }
         updateXpAndLevel(user)
     }
 

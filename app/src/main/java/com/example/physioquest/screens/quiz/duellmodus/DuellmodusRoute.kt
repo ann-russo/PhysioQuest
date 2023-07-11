@@ -39,6 +39,7 @@ fun DuellmodusRoute(
         onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
         onNextClicked = { viewModel.onNextClicked() },
         onClosePressed = { viewModel.onClosePressed(openScreen) },
+        onCancelDuel = { viewModel.onCancelDuel(openScreen) },
         isLastQuestion = viewModel.isLastQuestion,
         onQuizComplete = { viewModel.onFinishClicked() },
         onStartUnfinishedDuel = { viewModel.startUnfinishedDuel() },
