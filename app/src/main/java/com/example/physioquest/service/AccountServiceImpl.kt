@@ -14,13 +14,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AccountServiceImpl @Inject constructor(
@@ -58,14 +56,6 @@ class AccountServiceImpl @Inject constructor(
         }
     }
 
-    private suspend fun fetchTokenForUser(uid: String): String {
-        return withContext(Dispatchers.IO) {
-            val userDocRef = firestore.collection(USERS_COLLECTION).document(uid)
-            val snapshot = userDocRef.get().await()
-            snapshot.getString("token") ?: ""
-        }
-    }
-
     override suspend fun authenticate(email: String, password: String): AuthResult {
         val result = CompletableDeferred<AuthResult>()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -80,22 +70,15 @@ class AccountServiceImpl @Inject constructor(
                     }
                 }
 
-                // Do not check if email is verified for testing purposes
-                // Must uncomment for prod (TODO)
-
-                result.complete(AuthResult.Success)
-
-                /*
                 val isEmailVerified = auth.currentUser!!.isEmailVerified
                 if (isEmailVerified) {
                     // User is signed in and email is verified
                     result.complete(AuthResult.Success)
                 } else {
                     // User's email is not verified
-                    Log.d("AccountService", "User's email is not verified.")
+                    Log.d(TAG, "User's email is not verified.")
                     result.complete(AuthResult.Failure(R.string.error_login_unverified))
                 }
-                */
 
             } else {
                 result.complete(AuthResult.Failure(R.string.error_login_wrong_email_pwd))
