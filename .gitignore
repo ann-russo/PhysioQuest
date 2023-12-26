@@ -13,9 +13,12 @@
 .externalNativeBuild
 .cxx
 local.properties
+sonar-project.properties
 /.idea
 .vscode
 .project
 .settings
 .classpath
 /.idea/dictionaries/
+/.scannerwork/
+/.idea/
