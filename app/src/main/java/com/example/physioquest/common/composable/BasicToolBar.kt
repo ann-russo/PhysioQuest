@@ -181,7 +181,7 @@ fun QuizTopAppBar(
 
         val animatedProgress by animateFloatAsState(
             targetValue = (questionIndex + 1) / totalQuestionsCount.toFloat(),
-            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = "Quiz Questions Progress"
         )
         LinearProgressIndicator(
             progress = { animatedProgress },

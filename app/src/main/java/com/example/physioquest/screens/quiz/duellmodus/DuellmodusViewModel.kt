@@ -17,7 +17,6 @@ import com.example.physioquest.service.LevelService
 import com.example.physioquest.service.StorageService
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
@@ -51,10 +50,8 @@ class DuellmodusViewModel @Inject constructor(
         set(value) {
             quizRepository.isLastQuestion = value
         }
-    val result: MutableStateFlow<Double>
-        get() = quizRepository.result
 
-    private val xpPoints: MutableStateFlow<Int>
+    private val xpPoints: StateFlow<Int>
         get() = quizRepository.xpPoints
 
     var currentDuel: Duel = Duel()
@@ -90,20 +87,31 @@ class DuellmodusViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Checks the status of a duel for a given user and updates the UI accordingly.
+     *
+     * This method retrieves the user's current unfinished duel from the quiz repository.
+     * Based on the duel's status and the user's role in it (either as the initiator or the opponent),
+     * it updates the current UI destination to reflect the appropriate state of the duel.
+     *
+     * The potential states are:
+     * 1. WAIT_FOR_RESULT: When the user has finished their part in the duel and is waiting for the result.
+     * 2. UNFINISHED_DUEL: When the user is the opponent and has not yet finished the duel.
+     * 3. RESULT: When both participants have finished the duel, and the result is ready to be displayed.
+     * 4. NEW_DUEL: When there are no unfinished duels for the user, indicating a new duel should be started.
+     *
+     * Additionally, this method handles updating the duel and screen data based on the current duel status,
+     * and observes the result if the user is waiting for it.
+     *
+     * @param userId The unique identifier of the user whose duel status is to be checked.
+     */
     private fun checkDuelStatus(userId: String) {
         launchCatching {
             val duel = quizRepository.findUnfinishedDuel(userId)
             if (duel != null) {
                 when {
-                    duel.initUser.id == userId && duel.initUserFinished -> {
-                        // Case 1: Current user initiated the duel and finished. Wait for result.
-                        currentDestination.value = DuellmodusDestination.WAIT_FOR_RESULT
-                        updateUsersAndDuel(duel)
-                        observeResult(duel.id)
-                        updateScreenData()
-                    }
-                    duel.opponentUser.id == userId && duel.opponentUserFinished -> {
-                        // Case 2: Current user is the opponent in the duel and finished. Wait for result.
+                    (duel.initUser.id == userId && duel.initUserFinished) ||
+                    (duel.opponentUser.id == userId && duel.opponentUserFinished) -> {
                         currentDestination.value = DuellmodusDestination.WAIT_FOR_RESULT
                         updateUsersAndDuel(duel)
                         observeResult(duel.id)
@@ -111,21 +119,17 @@ class DuellmodusViewModel @Inject constructor(
                     }
 
                     duel.opponentUser.id == userId && !duel.opponentUserFinished -> {
-                        // Case 3: Current user was selected as opponent and hasn't finished. Show unfinished duel.
                         currentDestination.value = DuellmodusDestination.UNFINISHED_DUEL
                         updateUsersAndDuel(duel)
                         updateScreenData()
                     }
                     duel.initUserFinished && duel.opponentUserFinished -> {
-                        // Case 4: Both users have finished. Show result.
                         currentDestination.value = DuellmodusDestination.RESULT
                         updateUsersAndDuel(duel)
                         updateScreenData()
                     }
                 }
             } else {
-                Log.d(TAG, "No unfinished duels!")
-                // Case 5: User is neither initUser nor opponentUser in any unfinished duels. Start new duel.
                 currentDestination.value = DuellmodusDestination.NEW_DUEL
                 selectRandomOpponent()
                 selectRandomQuestions()

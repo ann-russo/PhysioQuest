@@ -30,8 +30,11 @@ class QuizRepositoryImpl @Inject constructor(
     override var isEvaluateEnabled: Boolean by mutableStateOf(true)
     override var isLastQuestion: Boolean by mutableStateOf(false)
     override var isLoading: Boolean by mutableStateOf(true)
-    override var result: MutableStateFlow<Double> = MutableStateFlow(0.0)
-    override var xpPoints: MutableStateFlow<Int> = MutableStateFlow(0)
+
+    private val _xpPoints = MutableStateFlow(0)
+    override val xpPoints: StateFlow<Int> = _xpPoints
+
+    private var result: MutableStateFlow<Double> = MutableStateFlow(0.0)
 
     override suspend fun getRandomQuestions(): List<Question> {
         questions = storageService.getRandomQuestions()
@@ -102,9 +105,9 @@ class QuizRepositoryImpl @Inject constructor(
         }
         val points = calculateScore(selectedCorrectAnswers, correctAnswers)
         if (points == 1.0) {
-            xpPoints.value += 5
+            _xpPoints.value += 5
         } else if (points > 0.0 && points < 1.0) {
-            xpPoints.value += 2
+            _xpPoints.value += 2
         }
 
         result.value += points
@@ -146,7 +149,7 @@ class QuizRepositoryImpl @Inject constructor(
         if (quizResult.scorePoints == quizResult.totalPoints.toDouble()) {
             xpOnComplete += 20
         }
-        xpPoints.value += xpOnComplete
+        _xpPoints.value += xpOnComplete
         Log.d("QuizRepository", "Total XP on finish: ${xpPoints.value}")
 
         return quizResult

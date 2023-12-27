@@ -13,6 +13,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.physioquest.screens.quiz.shared.QuizActions
 import com.example.physioquest.screens.quiz.shared.QuizQuestion
 
 @Composable
@@ -35,13 +36,15 @@ fun DuellmodusRoute(
 
     DuellmodusScreen(
         surveyScreenData = screenData,
-        isEvaluationEnabled = viewModel.isEvaluateEnabled,
-        onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
-        onNextClicked = { viewModel.onNextClicked() },
         onClosePressed = { viewModel.onClosePressed(openScreen) },
+        quizActions = QuizActions(
+            isEvaluationEnabled = viewModel.isEvaluateEnabled,
+            onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
+            onNextClicked = { viewModel.onNextClicked() },
+            isLastQuestion = viewModel.isLastQuestion,
+            onQuizComplete = { viewModel.onFinishClicked() }
+        ),
         onCancelDuel = { viewModel.onCancelDuel(openScreen) },
-        isLastQuestion = viewModel.isLastQuestion,
-        onQuizComplete = { viewModel.onFinishClicked() },
         onStartUnfinishedDuel = { viewModel.startUnfinishedDuel() },
         onStartNewDuel = { viewModel.startNewDuel() }
     ) { paddingValues ->

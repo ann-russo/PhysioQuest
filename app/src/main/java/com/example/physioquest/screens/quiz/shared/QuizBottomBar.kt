@@ -26,26 +26,22 @@ import kotlinx.coroutines.delay
 @Composable
 fun QuizBottomBar(
     isDuelMode: Boolean,
-    isEvaluationEnabled: Boolean,
     selectedAnswers: List<Int>,
-    onEvaluateClicked: () -> Unit,
-    onNextClicked: () -> Unit,
-    isLastQuestion: Boolean,
-    onQuizComplete: () -> Unit
+    quizActions: QuizActions
 ) {
     var timer by remember { mutableIntStateOf(30) }
-    val animatedTimer by animateIntAsState(timer)
+    val animatedTimer by animateIntAsState(timer, label = "Quiz Question Timer")
     val progressColor = lerp(Color.Green, Color.Red, 1f - animatedTimer / 30f)
 
-    LaunchedEffect(key1 = isEvaluationEnabled, key2 = isDuelMode) {
+    LaunchedEffect(key1 = quizActions.isEvaluationEnabled, key2 = isDuelMode) {
         timer = 30
     }
-    LaunchedEffect(key1 = timer, key2 = isDuelMode, key3 = isEvaluationEnabled) {
-        if (timer > 0 && isDuelMode && isEvaluationEnabled) {
+    LaunchedEffect(key1 = timer, key2 = isDuelMode, key3 = quizActions.isEvaluationEnabled) {
+        if (timer > 0 && isDuelMode && quizActions.isEvaluationEnabled) {
             delay(1000)
             timer--
         } else if (timer == 0) {
-            onEvaluateClicked()
+            quizActions.onEvaluateClicked()
         }
     }
 
@@ -54,7 +50,7 @@ fun QuizBottomBar(
         shadowElevation = 7.dp,
     ) {
         Column {
-            if (isEvaluationEnabled && isDuelMode) {
+            if (quizActions.isEvaluationEnabled && isDuelMode) {
                 LinearProgressIndicator(
                     progress = { animatedTimer / 30f },
                     modifier = Modifier
@@ -68,25 +64,25 @@ fun QuizBottomBar(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 20.dp)
             ) {
-                if (isEvaluationEnabled) {
+                if (quizActions.isEvaluationEnabled) {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         enabled = selectedAnswers.isNotEmpty(),
-                        onClick = onEvaluateClicked
+                        onClick = quizActions.onEvaluateClicked
                     ) {
                         Text(stringResource(R.string.submit).uppercase())
                     }
-                } else if (isLastQuestion)
+                } else if (quizActions.isLastQuestion)
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = onQuizComplete
+                        onClick = quizActions.onQuizComplete
                     ) {
                         Text(stringResource(R.string.done).uppercase())
                     }
                 else {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = onNextClicked
+                        onClick = quizActions.onNextClicked
                     ) {
                         Text(stringResource(R.string.next_question).uppercase())
                     }

@@ -9,19 +9,16 @@ import com.example.physioquest.R
 import com.example.physioquest.common.composable.AnimatedDialog
 import com.example.physioquest.common.composable.CenteredTopAppBar
 import com.example.physioquest.common.composable.QuizTopAppBar
+import com.example.physioquest.screens.quiz.shared.QuizActions
 import com.example.physioquest.screens.quiz.shared.QuizBottomBar
  import com.example.physioquest.screens.quiz.shared.SimpleBottomBar
 
 @Composable
 fun DuellmodusScreen(
     surveyScreenData: DuellmodusScreenData,
-    isEvaluationEnabled: Boolean,
-    onEvaluateClicked: () -> Unit,
-    onNextClicked: () -> Unit,
     onClosePressed: () -> Unit,
+    quizActions: QuizActions,
     onCancelDuel: () -> Unit,
-    isLastQuestion: Boolean,
-    onQuizComplete: () -> Unit,
     onStartUnfinishedDuel: () -> Unit,
     onStartNewDuel: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
@@ -89,12 +86,8 @@ fun DuellmodusScreen(
                 DuellmodusDestination.QUESTIONS -> {
                     QuizBottomBar(
                         isDuelMode = true,
-                        isEvaluationEnabled = isEvaluationEnabled,
                         selectedAnswers = surveyScreenData.selectedAnswers,
-                        onEvaluateClicked = onEvaluateClicked,
-                        onNextClicked = onNextClicked,
-                        isLastQuestion = isLastQuestion,
-                        onQuizComplete = onQuizComplete
+                        quizActions = quizActions
                     )
                 }
                 else -> {null}

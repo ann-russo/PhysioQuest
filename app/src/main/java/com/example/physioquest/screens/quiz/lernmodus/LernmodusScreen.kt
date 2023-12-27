@@ -14,19 +14,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.common.composable.AnimatedDialog
 import com.example.physioquest.common.composable.CenteredTopAppBar
 import com.example.physioquest.common.composable.QuizTopAppBar
+import com.example.physioquest.screens.quiz.shared.QuizActions
 import com.example.physioquest.screens.quiz.shared.QuizBottomBar
 import com.example.physioquest.R.string as AppText
 
 @Composable
 fun LernmodusScreen(
     surveyScreenData: LernmodusScreenData,
-    isEvaluationEnabled: Boolean,
-    onEvaluateClicked: () -> Unit,
-    onNextClicked: () -> Unit,
     onClosePressed: () -> Unit,
-    isLastQuestion: Boolean,
-    onQuizComplete: () -> Unit,
-    content: @Composable (PaddingValues) -> Unit,
+    quizActions: QuizActions,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     val viewModel: LernmodusViewModel = hiltViewModel()
     if (viewModel.isLoading.value) {
@@ -66,12 +63,8 @@ fun LernmodusScreen(
                 if (surveyScreenData.selectedCategory != null) {
                     QuizBottomBar(
                         isDuelMode = false,
-                        isEvaluationEnabled = isEvaluationEnabled,
                         selectedAnswers = surveyScreenData.selectedAnswers,
-                        onEvaluateClicked = onEvaluateClicked,
-                        onNextClicked = onNextClicked,
-                        isLastQuestion = isLastQuestion,
-                        onQuizComplete = onQuizComplete
+                        quizActions = quizActions
                     )
                 }
             }

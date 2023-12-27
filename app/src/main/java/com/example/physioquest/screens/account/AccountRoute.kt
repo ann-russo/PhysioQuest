@@ -28,11 +28,13 @@ fun AccountRoute(
         data = data,
         userLevel = level.value,
         xpProgress = viewModel.calculateXpProgress(),
-        onHomeClick = { viewModel.onHomeClick(openScreen) },
-        onLeaderboardClick = { viewModel.onLeaderboardClick(openScreen) },
-        onAccountClick = { viewModel.onAccountClick(openScreen) },
-        onSignOutClick = { viewModel.onSignOutClick(restartApp) },
-        onBackClick = { viewModel.goBack() }
+        accountActions = AccountActions(
+            onHomeClick = { viewModel.onHomeClick(openScreen) },
+            onLeaderboardClick = { viewModel.onLeaderboardClick(openScreen) },
+            onAccountClick = { viewModel.onAccountClick(openScreen) },
+            onSignOutClick = { viewModel.onSignOutClick(restartApp) },
+            onBackClick = { viewModel.goBack() }
+        )
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)
@@ -66,11 +68,13 @@ fun AccountRoute(
             when (targetState.destination) {
                 AccountDestination.PROFIL -> {
                     AccountScreen(
-                        username = username.value,
-                        rank = stringResource(rank),
-                        userLevel = level.value,
-                        xpInCurrentLevel = viewModel.getXpInCurrentLevel(xp.value, level.value),
-                        xpNeededForNextLevel = viewModel.getXpForNextLevel(level.value),
+                        accountData = AccountData(
+                            username = username.value,
+                            rank = stringResource(rank),
+                            userLevel = level.value,
+                            xpInCurrentLevel = viewModel.getXpInCurrentLevel(xp.value, level.value),
+                            xpNeededForNextLevel = viewModel.getXpForNextLevel(level.value)
+                        ),
                         restartApp = restartApp,
                         modifier = modifier
                     )

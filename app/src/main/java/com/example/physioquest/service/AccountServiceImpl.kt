@@ -166,7 +166,7 @@ class AccountServiceImpl @Inject constructor(
                         SnackbarManager.showMessage(R.string.error_update_nickname)
                     }
             } else {
-                Log.d(TAG, "Current user is null")
+                Log.d(TAG, USER_NULL)
             }
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
@@ -190,7 +190,7 @@ class AccountServiceImpl @Inject constructor(
                         SnackbarManager.showMessage(R.string.error_update_email)
                     }
             } else {
-                Log.d(TAG, "Current user is null")
+                Log.d(TAG, USER_NULL)
             }
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
@@ -238,7 +238,7 @@ class AccountServiceImpl @Inject constructor(
                 SnackbarManager.showMessage(R.string.error_account_delete)
             }
         } else {
-            Log.d("deleteAccount", "Current user is null")
+            Log.d(DELETE_ACCOUNT_TAG, USER_NULL)
             SnackbarManager.showMessage(R.string.error_account_delete)
         }
     }
@@ -275,6 +275,8 @@ class AccountServiceImpl @Inject constructor(
     companion object {
         private const val TAG = "AccountService"
         private const val USERS_COLLECTION = "users"
+        private const val USER_NULL = "Current user is null"
+        private const val DELETE_ACCOUNT_TAG = "deleteAccount()"
     }
 }
 

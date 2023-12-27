@@ -4,7 +4,6 @@ import com.example.physioquest.model.Answer
 import com.example.physioquest.model.Duel
 import com.example.physioquest.model.Question
 import com.example.physioquest.model.QuizResult
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 interface QuizRepository {
@@ -16,8 +15,7 @@ interface QuizRepository {
     var isEvaluateEnabled: Boolean
     var isLastQuestion: Boolean
     var isLoading: Boolean
-    var result: MutableStateFlow<Double>
-    var xpPoints: MutableStateFlow<Int>
+    val xpPoints: StateFlow<Int>
 
     suspend fun getRandomQuestions(): List<Question>
     suspend fun findUnfinishedDuel(currentUserId: String): Duel?

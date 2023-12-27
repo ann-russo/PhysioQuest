@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.model.QuizResult
+import com.example.physioquest.screens.quiz.shared.QuizActions
 import com.example.physioquest.screens.quiz.shared.QuizQuestion
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -31,12 +32,14 @@ fun LernmodusRoute(
 
     LernmodusScreen(
         surveyScreenData = surveyScreenData,
-        isEvaluationEnabled = viewModel.isEvaluateEnabled,
-        onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
-        onNextClicked = { viewModel.onNextClicked() },
         onClosePressed = { viewModel.onClosePressed(openScreen) },
-        isLastQuestion = viewModel.isLastQuestion,
-        onQuizComplete = { onQuizComplete(viewModel.getQuizResult()) }
+        quizActions = QuizActions(
+            isEvaluationEnabled = viewModel.isEvaluateEnabled,
+            onEvaluateClicked = { viewModel.evaluateCurrentQuestion() },
+            onNextClicked = { viewModel.onNextClicked() },
+            isLastQuestion = viewModel.isLastQuestion,
+            onQuizComplete = { onQuizComplete(viewModel.getQuizResult()) }
+        )
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)

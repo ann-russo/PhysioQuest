@@ -53,12 +53,8 @@ fun AccountContent(
     data: AccountScreenData,
     userLevel: Int,
     xpProgress: Float,
-    onHomeClick: () -> Unit,
-    onLeaderboardClick: () -> Unit,
-    onAccountClick: () -> Unit,
-    onSignOutClick: () -> Unit,
-    onBackClick: () -> Unit,
-    content: @Composable (PaddingValues) -> Unit,
+    accountActions: AccountActions,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -66,8 +62,8 @@ fun AccountContent(
                 titleAsString = data.title,
                 level = userLevel,
                 xpProgress = xpProgress,
-                endAction = { onSignOutClick() },
-                onBackPressed = if (data.destination != AccountDestination.PROFIL) onBackClick else null
+                endAction = { accountActions.onSignOutClick() },
+                onBackPressed = if (data.destination != AccountDestination.PROFIL) accountActions.onBackClick else null
             )
         },
         content = content,
@@ -77,15 +73,15 @@ fun AccountContent(
                 onScreenSelected = { screen ->
                     when (screen) {
                         "Home" -> {
-                            onHomeClick()
+                            accountActions.onHomeClick()
                         }
 
                         "Leaderboard" -> {
-                            onLeaderboardClick()
+                            accountActions.onLeaderboardClick()
                         }
 
                         "Profil" -> {
-                            onAccountClick()
+                            accountActions.onAccountClick()
                         }
                     }
                 }
@@ -96,11 +92,7 @@ fun AccountContent(
 
 @Composable
 fun AccountScreen(
-    username: String,
-    rank: String,
-    userLevel: Int,
-    xpInCurrentLevel: Int,
-    xpNeededForNextLevel: Int,
+    accountData: AccountData,
     restartApp: (String) -> Unit,
     modifier: Modifier,
     viewModel: AccountViewModel = hiltViewModel()
@@ -112,11 +104,7 @@ fun AccountScreen(
             .verticalScroll(rememberScrollState())
     ) {
         ProfileHeader(
-            username,
-            rank,
-            userLevel,
-            xpInCurrentLevel,
-            xpNeededForNextLevel
+            accountData = accountData
         )
         AccountOptionItem(
             optionText = AppText.edit,
@@ -148,11 +136,7 @@ fun AccountScreen(
 
 @Composable
 fun ProfileHeader(
-    username: String,
-    rank: String,
-    level: Int,
-    xpInCurrentLevel: Int,
-    xpNeededForNextLevel: Int
+    accountData: AccountData
 ) {
     Surface(
         color = Color.White,
@@ -167,20 +151,20 @@ fun ProfileHeader(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ) {
-            LevelProgressCircle(level, xpInCurrentLevel, xpNeededForNextLevel)
+            LevelProgressCircle(accountData.userLevel, accountData.xpInCurrentLevel, accountData.xpNeededForNextLevel)
             Spacer(modifier = Modifier.width(20.dp))
             Column {
                 Text(
-                    text = username,
+                    text = accountData.username,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = rank,
+                    text = accountData.rank,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.Gray
                 )
-                val remainingXp = xpNeededForNextLevel - xpInCurrentLevel
+                val remainingXp = accountData.xpNeededForNextLevel - accountData.xpInCurrentLevel
                 Text(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Normal, color = Color.Gray)) {
@@ -193,7 +177,7 @@ fun ProfileHeader(
                             append(" bis Level ")
                         }
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = Color.Gray)) {
-                            append("${level+1}")
+                            append("${accountData.userLevel+1}")
                         }
                     },
                     style = MaterialTheme.typography.bodyLarge,
