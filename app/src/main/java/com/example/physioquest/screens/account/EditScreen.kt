@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.common.composable.EmailField
 import com.example.physioquest.common.composable.PasswordField
 import com.example.physioquest.common.composable.UsernameField
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
@@ -61,18 +62,8 @@ fun EditScreen(
     modifier: Modifier,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
-    val newUsernameState = remember { mutableStateOf("") }
-    val newEmailState = remember { mutableStateOf("") }
-    val newEmailConfirmState = remember { mutableStateOf("") }
-    val currentPasswordState = remember { mutableStateOf("") }
-    val newPasswordState = remember { mutableStateOf("") }
-    val newPasswordConfirmState = remember { mutableStateOf("") }
-
     val scope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(
-        confirmValueChange = { it != SheetValue.PartiallyExpanded },
-        skipPartiallyExpanded = true
-    )
+    val sheetState = setupSheetState()
     var selectedOption by remember { mutableStateOf<EditOption?>(null) }
 
     Column(
@@ -116,72 +107,6 @@ fun EditScreen(
     }
 
     if (sheetState.isVisible) {
-        val content: @Composable ColumnScope.() -> Unit = {
-            when (selectedOption) {
-                EditOption.Username -> {
-                    ChangeUsernameContent(
-                        newUsernameState = newUsernameState,
-                        onSaveClick = {
-                            viewModel.validateAndChangeUsername(newUsernameState.value)
-                            if (!viewModel.usernameErrorState.value) {
-                                scope.launch { sheetState.hide() }
-                            }
-                        }
-                    )
-                }
-
-                EditOption.Email -> {
-                    ChangeEmailContent(
-                        newEmailState = newEmailState,
-                        newEmailConfirmState = newEmailConfirmState,
-                        currentPasswordState = currentPasswordState,
-                        onSaveClick = {
-                            viewModel.isFieldEmpty(
-                                newEmailState.value,
-                                newEmailConfirmState.value,
-                                currentPasswordState.value
-                            )
-                            if (
-                                !viewModel.emailErrorState.value &&
-                                !viewModel.confirmEmailErrorState.value &&
-                                !viewModel.passwordErrorState.value &&
-                                viewModel.isPasswordValid(currentPasswordState.value)
-                            ) {
-                                viewModel.changeEmail(newEmailState.value)
-                                scope.launch { sheetState.hide() }
-                            }
-                        }
-                    )
-                }
-
-                EditOption.Password -> {
-                    ChangePasswordContent(
-                        currentPasswordState = currentPasswordState,
-                        newPasswordState = newPasswordState,
-                        newPasswordConfirmState = newPasswordConfirmState,
-                        onSaveClick = {
-                            viewModel.checkEmptyPasswordFields(
-                                currentPasswordState.value,
-                                newPasswordState.value,
-                                newPasswordConfirmState.value
-                            )
-                            if (
-                                !viewModel.passwordErrorState.value &&
-                                !viewModel.newPasswordErrorState.value &&
-                                !viewModel.confirmPasswordErrorState.value &&
-                                viewModel.isPasswordValid(currentPasswordState.value)
-                            ) {
-                                viewModel.changePassword(newPasswordState.value)
-                                scope.launch { sheetState.hide() }
-                            }
-                        }
-                    )
-                }
-
-                else -> null
-            }
-        }
-
         ModalBottomSheet(
             sheetState = sheetState,
             shape = BottomSheetDefaults.ExpandedShape,
@@ -189,9 +114,109 @@ fun EditScreen(
             tonalElevation = BottomSheetDefaults.Elevation,
             modifier = Modifier.height(500.dp),
             onDismissRequest = { scope.launch { sheetState.hide() } },
-            content = content
+            content = { EditContent(selectedOption, viewModel, scope, sheetState) }
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun setupSheetState() = rememberModalBottomSheetState(
+    confirmValueChange = { it != SheetValue.PartiallyExpanded },
+    skipPartiallyExpanded = true
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditContent(
+    selectedOption: EditOption?,
+    viewModel: AccountViewModel,
+    scope: CoroutineScope,
+    sheetState: SheetState
+) {
+    when (selectedOption) {
+        EditOption.Username -> EditUsername(viewModel, scope, sheetState)
+        EditOption.Email -> EditEmail(viewModel, scope, sheetState)
+        EditOption.Password -> EditPassword(viewModel, scope, sheetState)
+        else -> {
+            // no other option possible
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditUsername(viewModel: AccountViewModel, scope: CoroutineScope, sheetState: SheetState) {
+    val newUsernameState = remember { mutableStateOf("") }
+    ChangeUsernameContent(
+        newUsernameState = newUsernameState,
+        onSaveClick = {
+            viewModel.validateAndChangeUsername(newUsernameState.value)
+            if (!viewModel.usernameErrorState.value) {
+                scope.launch { sheetState.hide() }
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditEmail(viewModel: AccountViewModel, scope: CoroutineScope, sheetState: SheetState) {
+    val newEmailState = remember { mutableStateOf("") }
+    val newEmailConfirmState = remember { mutableStateOf("") }
+    val currentPasswordState = remember { mutableStateOf("") }
+
+    ChangeEmailContent(
+        newEmailState = newEmailState,
+        newEmailConfirmState = newEmailConfirmState,
+        currentPasswordState = currentPasswordState,
+        onSaveClick = {
+            viewModel.isFieldEmpty(
+                newEmailState.value,
+                newEmailConfirmState.value,
+                currentPasswordState.value
+            )
+            if (
+                !viewModel.emailErrorState.value &&
+                !viewModel.confirmEmailErrorState.value &&
+                !viewModel.passwordErrorState.value &&
+                viewModel.isPasswordValid(currentPasswordState.value)
+            ) {
+                viewModel.changeEmail(newEmailState.value)
+                scope.launch { sheetState.hide() }
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditPassword(viewModel: AccountViewModel, scope: CoroutineScope, sheetState: SheetState) {
+    val currentPasswordState = remember { mutableStateOf("") }
+    val newPasswordState = remember { mutableStateOf("") }
+    val newPasswordConfirmState = remember { mutableStateOf("") }
+
+    ChangePasswordContent(
+        currentPasswordState = currentPasswordState,
+        newPasswordState = newPasswordState,
+        newPasswordConfirmState = newPasswordConfirmState,
+        onSaveClick = {
+            viewModel.checkEmptyPasswordFields(
+                currentPasswordState.value,
+                newPasswordState.value,
+                newPasswordConfirmState.value
+            )
+            if (
+                !viewModel.passwordErrorState.value &&
+                !viewModel.newPasswordErrorState.value &&
+                !viewModel.confirmPasswordErrorState.value &&
+                viewModel.isPasswordValid(currentPasswordState.value)
+            ) {
+                viewModel.changePassword(newPasswordState.value)
+                scope.launch { sheetState.hide() }
+            }
+        }
+    )
 }
 
 @Composable

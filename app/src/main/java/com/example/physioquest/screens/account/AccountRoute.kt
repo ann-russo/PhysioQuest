@@ -61,7 +61,7 @@ fun AccountRoute(
                     animationSpec = tween(400),
                     targetOffsetX = targetOffset
                 )
-            }
+            }, label = "AccountContent"
         ) { targetState ->
             when (targetState.destination) {
                 AccountDestination.PROFIL -> {

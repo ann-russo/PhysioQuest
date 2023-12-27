@@ -55,7 +55,7 @@ fun LernmodusRoute(
                     towards = direction,
                     animationSpec = animationSpec
                 )
-            }
+            }, label = "LernmodusScreen"
         ) { targetState ->
             when {
                 targetState.selectedCategory == null -> {

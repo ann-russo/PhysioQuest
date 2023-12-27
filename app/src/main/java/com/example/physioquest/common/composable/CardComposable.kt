@@ -39,15 +39,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.physioquest.common.util.cardButton
 import kotlinx.coroutines.launch
@@ -157,44 +154,60 @@ fun ElevatedCard(
 }
 
 @Composable
+private fun getTitleColor(isEnabled: Boolean, isSelected: Boolean, correctChoice: Boolean): Color {
+    return when {
+        isEnabled && isSelected -> MaterialTheme.colorScheme.primary
+        !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
+        !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+    }
+}
+
+@Composable
+private fun getBorderColor(isEnabled: Boolean, isSelected: Boolean, correctChoice: Boolean): Color {
+    return when {
+        isEnabled && isSelected -> MaterialTheme.colorScheme.primary
+        !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
+        !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+    }
+}
+
+@Composable
+private fun getIcon(isEnabled: Boolean, isSelected: Boolean, correctChoice: Boolean): Painter {
+    return when {
+        isEnabled && isSelected -> painterResource(AppIcon.circle_checked)
+        !isEnabled && isSelected && !correctChoice -> painterResource(AppIcon.circle_false)
+        !isEnabled && isSelected && correctChoice -> painterResource(AppIcon.circle_true)
+        !isEnabled && !isSelected && !correctChoice -> painterResource(AppIcon.circle_true)
+        else -> painterResource(AppIcon.circle_empty)
+    }
+}
+
+@Composable
+private fun getColorFilter(isEnabled: Boolean, isSelected: Boolean, correctChoice: Boolean): Color {
+    return when {
+        isEnabled && isSelected -> MaterialTheme.colorScheme.primary
+        !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
+        !isEnabled && !isSelected && !correctChoice -> Color(0xFF26BB5D)
+        !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+    }
+}
+
+@Composable
 fun SelectableAnswerOption(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     isEnabled: Boolean,
     correctChoice: Boolean,
     title: String,
-    titleColor: Color =
-        when {
-            isEnabled && isSelected -> MaterialTheme.colorScheme.primary
-            !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
-            !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
-            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-        },
-    titleSize: TextUnit = MaterialTheme.typography.titleMedium.fontSize,
-    titleWeight: FontWeight = FontWeight.Normal,
-    subtitle: String? = null,
-    subtitleColor: Color =
-        if (isEnabled && isSelected) MaterialTheme.colorScheme.onSurface
-        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-    borderWidth: Dp = 1.dp,
-    borderColor: Color =
-        when {
-            isEnabled && isSelected -> MaterialTheme.colorScheme.primary
-            !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
-            !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
-            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
-        },
-    borderShape: Shape = RoundedCornerShape(size = 10.dp),
-    icon: Painter =
-        when {
-            isEnabled && isSelected -> painterResource(AppIcon.circle_checked)
-            !isEnabled && isSelected && !correctChoice -> painterResource(AppIcon.circle_false)
-            !isEnabled && isSelected && correctChoice -> painterResource(AppIcon.circle_true)
-            !isEnabled && !isSelected && !correctChoice -> painterResource(AppIcon.circle_true)
-            else -> painterResource(AppIcon.circle_empty)
-        },
     onClick: () -> Unit
 ) {
+    val titleColor: Color = getTitleColor(isEnabled, isSelected, correctChoice)
+    val borderColor: Color = getBorderColor(isEnabled, isSelected, correctChoice)
+    val icon: Painter = getIcon(isEnabled, isSelected, correctChoice)
+
     val scaleA = remember { Animatable(initialValue = 1f) }
     val scaleB = remember { Animatable(initialValue = 1f) }
     val clickEnabled = remember { mutableStateOf(true) }
@@ -233,7 +246,6 @@ fun SelectableAnswerOption(
                     )
                 )
             }
-
             jobA.join()
             jobB.join()
             clickEnabled.value = true
@@ -244,11 +256,11 @@ fun SelectableAnswerOption(
         modifier = modifier
             .scale(scale = scaleB.value)
             .border(
-                width = borderWidth,
+                width = 1.dp,
                 color = borderColor,
-                shape = borderShape
+                shape = RoundedCornerShape(size = 10.dp)
             )
-            .clip(borderShape)
+            .clip(RoundedCornerShape(size = 10.dp))
             .clickable(enabled = clickEnabled.value && isEnabled) {
                 onClick()
             }
@@ -264,8 +276,8 @@ fun SelectableAnswerOption(
                 text = title,
                 style = TextStyle(
                     color = titleColor,
-                    fontSize = titleSize,
-                    fontWeight = titleWeight
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = FontWeight.Normal
                 ),
                 maxLines = Int.MAX_VALUE,
                 overflow = TextOverflow.Visible
@@ -284,30 +296,9 @@ fun SelectableAnswerOption(
                         .size(30.dp),
                     painter = icon,
                     contentDescription = "Icon",
-                    colorFilter = ColorFilter.tint(
-                        when {
-                            isEnabled && isSelected -> MaterialTheme.colorScheme.primary
-                            !isEnabled && isSelected && correctChoice -> Color(0xFF26BB5D)
-                            !isEnabled && !isSelected && !correctChoice -> Color(0xFF26BB5D)
-                            !isEnabled && isSelected && !correctChoice -> Color(0xFFE91E63)
-                            else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
-                        }
-                    )
+                    colorFilter = ColorFilter.tint( getColorFilter(isEnabled, isSelected, correctChoice) )
                 )
             }
-        }
-        if (subtitle != null) {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .padding(bottom = 12.dp),
-                text = subtitle,
-                style = TextStyle(
-                    color = subtitleColor
-                ),
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
         }
     }
 }

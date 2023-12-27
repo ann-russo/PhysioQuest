@@ -62,7 +62,7 @@ fun DuellmodusRoute(
                     towards = direction,
                     animationSpec = animationSpec
                 )
-            }
+            }, label = "DuellmodusScreen"
         ) { targetState ->
             when (targetState.destination) {
 

@@ -115,11 +115,14 @@ fun resources(): Resources {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
+private fun NavGraphBuilder.startScreen(appState: PhysioQuestAppState) {
     composable(START_SCREEN) {
         StartScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.welcomeScreen(appState: PhysioQuestAppState) {
     composable(WELCOME_SCREEN) {
         WelcomeScreen(
             openAndPopUp = { route, popUp ->
@@ -127,7 +130,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             }
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.loginScreen(appState: PhysioQuestAppState) {
     composable(
         route = LOGIN_SCREEN,
         enterTransition = {
@@ -182,7 +188,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             }
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.registrationScreen(appState: PhysioQuestAppState) {
     composable(
         route = REGISTRATION_SCREEN,
         enterTransition = {
@@ -237,14 +246,20 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             }
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.homeScreen(appState: PhysioQuestAppState) {
     composable(HOME_SCREEN) {
         HomeScreen(
             restartApp = { route -> appState.clearAndNavigate(route) },
             openScreen = { route -> appState.navigate(route) }
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.lernmodusScreen(appState: PhysioQuestAppState) {
     composable(
         route = LERNMODUS_ROUTE,
         enterTransition = {
@@ -303,7 +318,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             onNavUp = { appState.popUp() },
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.lernmodusResultsScreen(appState: PhysioQuestAppState) {
     composable(
         route = LERNMODUS_RESULTS,
         enterTransition = {
@@ -361,14 +379,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             openScreen = { route -> appState.navigate(route) }
         )
     }
+}
 
-    composable(LEADERBOARD_SCREEN) {
-        LeaderboardScreen(
-            restartApp = { route -> appState.clearAndNavigate(route) },
-            openScreen = { route -> appState.navigate(route) }
-        )
-    }
-
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.duellmodusScreen(appState: PhysioQuestAppState) {
     composable(
         route = DUELLMODUS_ROUTE,
         enterTransition = {
@@ -426,7 +440,10 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             onNavUp = { appState.popUp() }
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.duellmodusResultsScreen(appState: PhysioQuestAppState) {
     composable(
         route = DUELLMODUS_RESULTS,
         enterTransition = {
@@ -479,11 +496,41 @@ fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
             openScreen = { route -> appState.navigate(route) }
         )
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.leaderboardScreen(appState: PhysioQuestAppState) {
+    composable(LEADERBOARD_SCREEN) {
+        LeaderboardScreen(
+            restartApp = { route -> appState.clearAndNavigate(route) },
+            openScreen = { route -> appState.navigate(route) }
+        )
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+private fun NavGraphBuilder.accountScreen(appState: PhysioQuestAppState) {
     composable(ACCOUNT_ROUTE) {
         AccountRoute(
             restartApp = { route -> appState.clearAndNavigate(route) },
             openScreen = { route -> appState.navigate(route) }
         )
     }
+}
+
+fun NavGraphBuilder.physioQuestGraph(appState: PhysioQuestAppState) {
+    startScreen(appState)
+    welcomeScreen(appState)
+
+    loginScreen(appState)
+    registrationScreen(appState)
+    homeScreen(appState)
+
+    lernmodusScreen(appState)
+    lernmodusResultsScreen(appState)
+    duellmodusScreen(appState)
+    duellmodusResultsScreen(appState)
+
+    leaderboardScreen(appState)
+    accountScreen(appState)
 }
