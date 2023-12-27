@@ -25,7 +25,6 @@ import com.example.physioquest.common.composable.ElevatedCard
 import com.example.physioquest.common.util.bigSpacer
 import com.example.physioquest.common.util.card
 import com.example.physioquest.common.util.smallSpacer
-import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -44,8 +43,6 @@ fun HomeScreen(
                 title = AppText.app_name,
                 level = viewModel.user.value.level,
                 xpProgress = viewModel.calculateXpProgress(),
-                modifier = Modifier.toolbarActions(),
-                endActionIcon = AppIcon.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }
             )
         },

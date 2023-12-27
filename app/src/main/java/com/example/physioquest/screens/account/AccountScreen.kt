@@ -21,7 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -45,7 +45,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.BottomNavBar
-import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
@@ -67,8 +66,6 @@ fun AccountContent(
                 titleAsString = data.title,
                 level = userLevel,
                 xpProgress = xpProgress,
-                modifier = Modifier.toolbarActions(),
-                endActionIcon = AppIcon.ic_exit,
                 endAction = { onSignOutClick() },
                 onBackPressed = if (data.destination != AccountDestination.PROFIL) onBackClick else null
             )
@@ -244,7 +241,7 @@ fun AccountOptionItem(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
                 tint = Color.Gray,
                 modifier = Modifier.size(20.dp)

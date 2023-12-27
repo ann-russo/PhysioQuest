@@ -105,13 +105,12 @@ class RegistrationViewModel @Inject constructor(private val accountService: Acco
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
-            when (val authResult = accountService.createAccount(username, email, password)) {
-                is AuthResult.Info -> {
-                    openAndPopUp(WELCOME_SCREEN, LOGIN_SCREEN)
-                    SnackbarManager.showMessage(authResult.message)
-                }
-                is AuthResult.Failure -> SnackbarManager.showMessage(authResult.message)
-                else -> {}
+            val authResult = accountService.createAccount(username, email, password)
+            if (authResult is AuthResult.Info) {
+                openAndPopUp(WELCOME_SCREEN, LOGIN_SCREEN)
+                SnackbarManager.showMessage(authResult.message)
+            } else if (authResult is AuthResult.Failure) {
+                SnackbarManager.showMessage(authResult.message)
             }
         }
     }

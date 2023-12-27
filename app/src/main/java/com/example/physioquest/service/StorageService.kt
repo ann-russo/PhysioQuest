@@ -12,7 +12,7 @@ interface StorageService {
     suspend fun getUsersFromDatabase(): List<User>
     suspend fun getHighestXpUsers(): List<User>
     suspend fun getRandomUserFromDatabase(currentUserId: String): User
-    suspend fun getDuel(duelId: String): Flow<Duel>
+    fun getDuel(duelId: String): Flow<Duel>
     suspend fun saveDuel(duel: Duel)
     suspend fun updateDuel(duel: Duel)
     suspend fun deleteDuel(duelId: String)

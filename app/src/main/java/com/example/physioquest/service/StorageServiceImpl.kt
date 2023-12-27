@@ -37,22 +37,25 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
 
     private fun mapSnapshotToQuestions(snapshot: QuerySnapshot): List<Question> {
         return snapshot.documents.mapNotNull { document ->
-            val answers = document.get(ANSWERS_ARRAY) as? List<Map<String, Any>>
-            if (answers != null) {
-                val answerList = answers.mapNotNull { answersMap ->
-                    Answer(
-                        content = answersMap["content"] as? String ?: return@mapNotNull null,
-                        isCorrect = answersMap["isCorrect"] as? Boolean ?: return@mapNotNull null,
-                    )
+            val rawAnswers = document[ANSWERS_ARRAY]
+            val answers = (rawAnswers as? List<*>)?.filterIsInstance<Map<*, *>>()
+
+            answers?.mapNotNull { answersMap ->
+                val content = answersMap["content"]
+                val isCorrect = answersMap["isCorrect"]
+
+                if (content is String && isCorrect is Boolean) {
+                    Answer(content = content, isCorrect = isCorrect)
+                } else {
+                    null
                 }
+            }?.let { answerList ->
                 Question(
                     id = document.id,
-                    category = document.get("category") as? String ?: "",
-                    content = document.get("content") as? String ?: "",
+                    category = document["category"] as? String ?: "",
+                    content = document["content"] as? String ?: "",
                     answers = answerList
                 )
-            } else {
-                null
             }
         }
     }
@@ -128,7 +131,7 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
         return randomOpponent
     }
 
-    override suspend fun getDuel(duelId: String): Flow<Duel> = callbackFlow {
+    override fun getDuel(duelId: String): Flow<Duel> = callbackFlow {
         val duelRef = firestore.collection(DUELS_COLLECTION).document(duelId)
         val listenerRegistration = duelRef.addSnapshotListener { snapshot, error ->
             if (error != null) {

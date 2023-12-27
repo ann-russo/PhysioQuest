@@ -289,12 +289,10 @@ class DuellmodusViewModel @Inject constructor(
     }
 
     private fun determineWinner() {
-        if (currentDuel.initUserResult.scorePoints > currentDuel.opponentUserResult.scorePoints) {
-            currentDuel.winnerUser = currentDuel.initUser
-        } else if (currentDuel.initUserResult.scorePoints < currentDuel.opponentUserResult.scorePoints) {
-            currentDuel.winnerUser = currentDuel.opponentUser
-        } else if (currentDuel.initUserResult.scorePoints == currentDuel.opponentUserResult.scorePoints) {
-            currentDuel.winnerUser = User()
+        currentDuel.winnerUser = when {
+            currentDuel.initUserResult.scorePoints > currentDuel.opponentUserResult.scorePoints -> currentDuel.initUser
+            currentDuel.initUserResult.scorePoints < currentDuel.opponentUserResult.scorePoints -> currentDuel.opponentUser
+            else -> User()
         }
     }
 

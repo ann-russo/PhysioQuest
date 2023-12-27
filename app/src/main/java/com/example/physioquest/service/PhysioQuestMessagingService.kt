@@ -20,17 +20,10 @@ class PhysioQuestMessagingService : FirebaseMessagingService() {
 
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
-            val notificationType = remoteMessage.data["type"]
-            val duelId = remoteMessage.data["duelId"]
-            when (notificationType) {
-                "duel_finished" -> handleDuelFinishedNotification(duelId)
+            when (val notificationType = remoteMessage.data["type"]) {
                 "opponent_finished" -> handleOpponentFinishedNotification(notificationType)
             }
         }
-    }
-
-    private fun handleDuelFinishedNotification(duelId: String?) {
-        // Do nothing, since DuelFinishedNotifications are handled in the PhysioQuestActivity already
     }
 
     private fun handleOpponentFinishedNotification(notificationType: String) {

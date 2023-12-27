@@ -30,7 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.physioquest.R
 import com.example.physioquest.common.composable.ActionToolBar
 import com.example.physioquest.common.composable.BottomNavBar
-import com.example.physioquest.common.util.toolbarActions
 import com.example.physioquest.model.User
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -49,8 +48,6 @@ fun LeaderboardScreen(
                 title = R.string.leaderboard,
                 level = currentUser.level,
                 xpProgress = viewModel.calculateXpProgress(),
-                modifier = Modifier.toolbarActions(),
-                endActionIcon = R.drawable.ic_exit,
                 endAction = { viewModel.onSignOutClick(restartApp) }
             )
         },

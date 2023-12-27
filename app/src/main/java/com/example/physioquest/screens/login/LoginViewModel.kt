@@ -71,7 +71,7 @@ class LoginViewModel @Inject constructor(private val accountService: AccountServ
             when (val authResult = accountService.authenticate(email, password)) {
                 is AuthResult.Success -> openAndPopUp(HOME_SCREEN, LOGIN_SCREEN)
                 is AuthResult.Failure -> SnackbarManager.showMessage(authResult.message)
-                else -> {}
+                is AuthResult.Info -> SnackbarManager.showMessage(authResult.message)
             }
         }
     }

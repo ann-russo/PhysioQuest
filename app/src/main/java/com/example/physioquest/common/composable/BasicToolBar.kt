@@ -1,6 +1,5 @@
 package com.example.physioquest.common.composable
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -14,8 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.MoreVert
@@ -66,8 +65,6 @@ fun ActionToolBar(
     titleAsString: String? = null,
     level: Int = 0,
     xpProgress: Float,
-    @DrawableRes endActionIcon: Int,
-    modifier: Modifier,
     endAction: () -> Unit,
     onBackPressed: (() -> Unit)? = null
 ) {
@@ -86,7 +83,7 @@ fun ActionToolBar(
             if (onBackPressed != null) {
                 IconButton(onClick = onBackPressed) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back"
                     )
                 }
@@ -187,7 +184,7 @@ fun QuizTopAppBar(
             animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
         )
         LinearProgressIndicator(
-            progress = animatedProgress,
+            progress = { animatedProgress },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),

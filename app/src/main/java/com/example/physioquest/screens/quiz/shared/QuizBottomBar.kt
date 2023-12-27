@@ -56,7 +56,7 @@ fun QuizBottomBar(
         Column {
             if (isEvaluationEnabled && isDuelMode) {
                 LinearProgressIndicator(
-                    progress = animatedTimer / 30f,
+                    progress = { animatedTimer / 30f },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
