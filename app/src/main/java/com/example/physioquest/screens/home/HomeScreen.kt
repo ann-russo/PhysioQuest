@@ -25,7 +25,6 @@ import com.example.physioquest.common.composable.ElevatedCard
 import com.example.physioquest.common.util.bigSpacer
 import com.example.physioquest.common.util.card
 import com.example.physioquest.common.util.smallSpacer
-import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

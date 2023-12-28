@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -48,15 +47,6 @@ import com.example.physioquest.ui.theme.PhysioQuestTheme
 import com.example.physioquest.ui.theme.md_theme_light_inverseOnSurface
 import com.example.physioquest.R.drawable as AppIcon
 import com.example.physioquest.R.string as AppText
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BasicToolBar(@StringRes title: Int) {
-    TopAppBar(
-        title = { Text(stringResource(title)) },
-        modifier = Modifier.background(toolbarColor())
-    )
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
