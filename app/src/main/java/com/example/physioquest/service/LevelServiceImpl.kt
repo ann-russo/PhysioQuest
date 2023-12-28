@@ -13,7 +13,7 @@ constructor() : LevelService {
         user.xp += xp
         user.level = calculateLevel(user.xp).coerceAtMost(20)
         updateXpAndLevel(user)
-        Log.d("LevelService", "Added $xp XP to user ${user.username}")
+        Log.d(TAG, "Added $xp XP to user ${user.username}")
     }
 
     override suspend fun removeXp(user: User, xp: Int) {
@@ -56,10 +56,10 @@ constructor() : LevelService {
                 "level", user.level
             )
             .addOnSuccessListener {
-                Log.d("LevelService", "User Xp and Level updated")
+                Log.d(TAG, "User XP and Level updated")
             }
             .addOnFailureListener { exception ->
-                Log.w("LevelService", "Error updating user XP and Level", exception)
+                Log.e(TAG, "Error updating XP and Level", exception)
             }
     }
 
@@ -71,5 +71,9 @@ constructor() : LevelService {
             level >= 15 -> R.string.rank_extreme
             else -> R.string.rank_default
         }
+    }
+
+    companion object {
+        private const val TAG = "LevelService"
     }
 }

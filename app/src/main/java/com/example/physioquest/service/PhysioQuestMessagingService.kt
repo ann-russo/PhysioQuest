@@ -19,7 +19,6 @@ class PhysioQuestMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.data)
             when (val notificationType = remoteMessage.data["type"]) {
                 "opponent_finished" -> handleOpponentFinishedNotification(notificationType)
             }
@@ -60,7 +59,7 @@ class PhysioQuestMessagingService : FirebaseMessagingService() {
 
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
+        Log.d(TAG, "Refreshed token successfully.")
     }
 
     companion object {

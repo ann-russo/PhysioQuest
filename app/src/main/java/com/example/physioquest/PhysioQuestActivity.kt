@@ -63,7 +63,7 @@ class PhysioQuestActivity : ComponentActivity() {
     private fun setupFirebaseTokenRefreshListener() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                Log.d(TAG, "Fetching FCM registration token failed", task.exception)
                 return@addOnCompleteListener
             }
             val token = task.result

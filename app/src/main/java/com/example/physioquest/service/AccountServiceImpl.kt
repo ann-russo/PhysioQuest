@@ -51,7 +51,7 @@ class AccountServiceImpl @Inject constructor(
             val snapshot = docRef.get().await()
             snapshot.toObject(User::class.java) ?: User()
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             User()
         }
     }
@@ -61,7 +61,6 @@ class AccountServiceImpl @Inject constructor(
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { tokenTask ->
-                    Log.d(TAG, "token: ${tokenTask.result}")
                     if (tokenTask.isSuccessful) {
                         val token = tokenTask.result
                         updateToken(token)
@@ -115,7 +114,7 @@ class AccountServiceImpl @Inject constructor(
 
                     FirebaseMessaging.getInstance().token.addOnCompleteListener { tokenTask ->
                         if (!tokenTask.isSuccessful) {
-                            Log.w(TAG, "Fetching FCM registration token failed", tokenTask.exception)
+                            Log.d(TAG, "Fetching FCM registration token failed", tokenTask.exception)
                             return@addOnCompleteListener
                         }
 
@@ -158,7 +157,6 @@ class AccountServiceImpl @Inject constructor(
                 val userDocRef = firestore.collection(USERS_COLLECTION).document(currentUser.uid)
                 userDocRef.update("username", newNickname)
                     .addOnSuccessListener {
-                        Log.d(TAG, "Updated nickname in Firestore")
                         SnackbarManager.showMessage(R.string.success_update_nickname)
                     }
                     .addOnFailureListener { exception ->
@@ -169,7 +167,7 @@ class AccountServiceImpl @Inject constructor(
                 Log.d(TAG, USER_NULL)
             }
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             SnackbarManager.showMessage(R.string.error_update_nickname)
         }
     }
@@ -193,7 +191,7 @@ class AccountServiceImpl @Inject constructor(
                 Log.d(TAG, USER_NULL)
             }
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             SnackbarManager.showMessage(R.string.error_update_email)
         }
     }
@@ -203,7 +201,7 @@ class AccountServiceImpl @Inject constructor(
             auth.currentUser?.updatePassword(newPassword)?.await()
             SnackbarManager.showMessage(R.string.success_update_pwd)
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             SnackbarManager.showMessage(R.string.error_update_pwd)
         }
     }
@@ -218,10 +216,10 @@ class AccountServiceImpl @Inject constructor(
                     Log.d(TAG, "User FCM token updated successfully.")
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error updating user FCM token.", exception)
+                    Log.d(TAG, "Error updating user FCM token.", exception)
                 }
         } else {
-            Log.w(TAG, "Cannot update token: no user is currently logged in.")
+            Log.d(TAG, "Cannot update token: no user is currently logged in.")
         }
     }
 
@@ -243,7 +241,6 @@ class AccountServiceImpl @Inject constructor(
         }
     }
 
-
     override suspend fun signOut() {
         val userId = auth.currentUser?.uid
         if (userId != null) {
@@ -254,7 +251,7 @@ class AccountServiceImpl @Inject constructor(
                     Log.d(TAG, "User FCM token cleared successfully.")
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error clearing user FCM token.", exception)
+                    Log.d(TAG, "Error clearing user FCM token.", exception)
                 }
         }
         auth.signOut()

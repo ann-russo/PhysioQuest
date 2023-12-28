@@ -1,6 +1,5 @@
 package com.example.physioquest.screens.quiz.duellmodus
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -183,7 +182,6 @@ class DuellmodusViewModel @Inject constructor(
     private fun selectRandomOpponent() {
         launchCatching {
             _duelOpponentUser.value = storageService.getRandomUserFromDatabase(currentUser.id)
-            Log.d(TAG, "Selected opponent: ${duelOpponentUser.username}")
         }
     }
 
@@ -281,11 +279,9 @@ class DuellmodusViewModel @Inject constructor(
 
     private fun checkOpponentAndProceed(opponentFinished: Boolean) {
         if (opponentFinished) {
-            Log.d(TAG, "opponentFinished = true")
             currentDestination.value = DuellmodusDestination.RESULT
             updateScreenData()
         } else {
-            Log.d(TAG, "opponentFinished = false")
             currentDestination.value = DuellmodusDestination.WAIT_FOR_RESULT
             observeResult(currentDuel.id)
             updateScreenData()
@@ -326,10 +322,6 @@ class DuellmodusViewModel @Inject constructor(
 
     private fun updateScreenData() {
         _surveyScreenData.value = createDuellmodusScreenData()
-    }
-
-    companion object {
-        private const val TAG = "DuellmodusViewModel"
     }
 }
 

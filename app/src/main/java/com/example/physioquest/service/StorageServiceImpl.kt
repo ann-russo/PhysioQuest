@@ -113,7 +113,6 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
                 val users = documents.mapNotNull { document ->
                     document.toObject(User::class.java)
                 }
-                Log.d(TAG, "top users size: ${users.size}")
                 continuation.resume(users)
             }
             .addOnFailureListener { exception ->
@@ -135,7 +134,7 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
         val duelRef = firestore.collection(DUELS_COLLECTION).document(duelId)
         val listenerRegistration = duelRef.addSnapshotListener { snapshot, error ->
             if (error != null) {
-                Log.d(TAG, error.toString())
+                Log.e(TAG, error.toString())
                 close(error)
                 return@addSnapshotListener
             }
@@ -157,7 +156,7 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
             documentReference.set(duel).await()
             Log.d(TAG, "Duel ${duel.id} saved successfully")
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             SnackbarManager.showMessage(R.string.duel_start_error)
         }
     }
@@ -182,7 +181,7 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
             val snapshot = query.get().await()
             snapshot.toObjects(Duel::class.java)
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             emptyList()
         }
     }
@@ -237,7 +236,7 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
             val snapshot = query.get().await()
             snapshot.toObjects(Duel::class.java)
         } catch (e: Exception) {
-            Log.d(TAG, e.toString())
+            Log.e(TAG, e.toString())
             emptyList()
         }
     }
@@ -252,7 +251,7 @@ constructor(private val firestore: FirebaseFirestore) : StorageService {
             val snapshot = query.get().await()
             snapshot.toObjects(Duel::class.java)
         } catch (e: Exception) {
-            Log.d("getUnfinishedDuelsByOpponent", e.toString())
+            Log.e(TAG, e.toString())
             emptyList()
         }
     }
